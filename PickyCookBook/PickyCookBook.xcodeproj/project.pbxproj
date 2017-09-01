@@ -1,0 +1,435 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		3F7971311F59F23D0074C3DF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F7971301F59F23D0074C3DF /* AppDelegate.swift */; };
+		3F7971361F59F23D0074C3DF /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3F7971341F59F23D0074C3DF /* Main.storyboard */; };
+		3F7971381F59F23D0074C3DF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3F7971371F59F23D0074C3DF /* Assets.xcassets */; };
+		3F79713B1F59F23D0074C3DF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3F7971391F59F23D0074C3DF /* LaunchScreen.storyboard */; };
+		3F7971441F59F2CF0074C3DF /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F7971431F59F2CF0074C3DF /* User.swift */; };
+		3F7971461F59F2FB0074C3DF /* Recipe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F7971451F59F2FB0074C3DF /* Recipe.swift */; };
+		3F7971481F59F3030074C3DF /* Recipe_Step.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F7971471F59F3030074C3DF /* Recipe_Step.swift */; };
+		3F79714A1F59F30B0074C3DF /* Recipe_Comment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F7971491F59F30B0074C3DF /* Recipe_Comment.swift */; };
+		3F79714C1F59F3130074C3DF /* Recipe_Review.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F79714B1F59F3130074C3DF /* Recipe_Review.swift */; };
+		3F79714E1F59F31C0074C3DF /* Recipe_Bookmark.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F79714D1F59F31C0074C3DF /* Recipe_Bookmark.swift */; };
+		3F7971501F59F3260074C3DF /* Recipe_Like.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F79714F1F59F3260074C3DF /* Recipe_Like.swift */; };
+		3F7971521F59F32B0074C3DF /* Recipe_Rate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F7971511F59F32B0074C3DF /* Recipe_Rate.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		3F79712D1F59F23D0074C3DF /* PickyCookBook.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PickyCookBook.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		3F7971301F59F23D0074C3DF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		3F7971351F59F23D0074C3DF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		3F7971371F59F23D0074C3DF /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		3F79713A1F59F23D0074C3DF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		3F79713C1F59F23D0074C3DF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		3F7971431F59F2CF0074C3DF /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		3F7971451F59F2FB0074C3DF /* Recipe.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Recipe.swift; sourceTree = "<group>"; };
+		3F7971471F59F3030074C3DF /* Recipe_Step.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Recipe_Step.swift; sourceTree = "<group>"; };
+		3F7971491F59F30B0074C3DF /* Recipe_Comment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Recipe_Comment.swift; sourceTree = "<group>"; };
+		3F79714B1F59F3130074C3DF /* Recipe_Review.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Recipe_Review.swift; sourceTree = "<group>"; };
+		3F79714D1F59F31C0074C3DF /* Recipe_Bookmark.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Recipe_Bookmark.swift; sourceTree = "<group>"; };
+		3F79714F1F59F3260074C3DF /* Recipe_Like.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Recipe_Like.swift; sourceTree = "<group>"; };
+		3F7971511F59F32B0074C3DF /* Recipe_Rate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Recipe_Rate.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		3F79712A1F59F23D0074C3DF /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		3F7971241F59F23D0074C3DF = {
+			isa = PBXGroup;
+			children = (
+				3F79712F1F59F23D0074C3DF /* PickyCookBook */,
+				3F79712E1F59F23D0074C3DF /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		3F79712E1F59F23D0074C3DF /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				3F79712D1F59F23D0074C3DF /* PickyCookBook.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		3F79712F1F59F23D0074C3DF /* PickyCookBook */ = {
+			isa = PBXGroup;
+			children = (
+				3F7971301F59F23D0074C3DF /* AppDelegate.swift */,
+				3F7971531F59F32F0074C3DF /* DATA */,
+				3F7971541F59F35F0074C3DF /* MAIN */,
+				3F7971341F59F23D0074C3DF /* Main.storyboard */,
+				3F7971571F59F3850074C3DF /* RECIPE */,
+				3F79715B1F59F3B10074C3DF /* RECIPE_BOOKMARK */,
+				3F7971591F59F39E0074C3DF /* RECIPE_COMMENT */,
+				3F79715C1F59F3BC0074C3DF /* RECIPE_LIKE */,
+				3F79715D1F59F3C20074C3DF /* RECIPE_RATE */,
+				3F79715A1F59F3AA0074C3DF /* RECIPE_REVIEW */,
+				3F7971581F59F3910074C3DF /* RECIPE_STEP */,
+				3F7971551F59F3720074C3DF /* SIGNIN */,
+				3F7971561F59F37A0074C3DF /* SIGNUP */,
+				3F7971421F59F2510074C3DF /* XCODE */,
+			);
+			path = PickyCookBook;
+			sourceTree = "<group>";
+		};
+		3F7971421F59F2510074C3DF /* XCODE */ = {
+			isa = PBXGroup;
+			children = (
+				3F7971371F59F23D0074C3DF /* Assets.xcassets */,
+				3F7971391F59F23D0074C3DF /* LaunchScreen.storyboard */,
+				3F79713C1F59F23D0074C3DF /* Info.plist */,
+			);
+			name = XCODE;
+			sourceTree = "<group>";
+		};
+		3F7971531F59F32F0074C3DF /* DATA */ = {
+			isa = PBXGroup;
+			children = (
+				3F7971431F59F2CF0074C3DF /* User.swift */,
+				3F7971451F59F2FB0074C3DF /* Recipe.swift */,
+				3F7971471F59F3030074C3DF /* Recipe_Step.swift */,
+				3F7971491F59F30B0074C3DF /* Recipe_Comment.swift */,
+				3F79714B1F59F3130074C3DF /* Recipe_Review.swift */,
+				3F79714D1F59F31C0074C3DF /* Recipe_Bookmark.swift */,
+				3F79714F1F59F3260074C3DF /* Recipe_Like.swift */,
+				3F7971511F59F32B0074C3DF /* Recipe_Rate.swift */,
+			);
+			name = DATA;
+			sourceTree = "<group>";
+		};
+		3F7971541F59F35F0074C3DF /* MAIN */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = MAIN;
+			sourceTree = "<group>";
+		};
+		3F7971551F59F3720074C3DF /* SIGNIN */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = SIGNIN;
+			sourceTree = "<group>";
+		};
+		3F7971561F59F37A0074C3DF /* SIGNUP */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = SIGNUP;
+			sourceTree = "<group>";
+		};
+		3F7971571F59F3850074C3DF /* RECIPE */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = RECIPE;
+			sourceTree = "<group>";
+		};
+		3F7971581F59F3910074C3DF /* RECIPE_STEP */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = RECIPE_STEP;
+			sourceTree = "<group>";
+		};
+		3F7971591F59F39E0074C3DF /* RECIPE_COMMENT */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = RECIPE_COMMENT;
+			sourceTree = "<group>";
+		};
+		3F79715A1F59F3AA0074C3DF /* RECIPE_REVIEW */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = RECIPE_REVIEW;
+			sourceTree = "<group>";
+		};
+		3F79715B1F59F3B10074C3DF /* RECIPE_BOOKMARK */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = RECIPE_BOOKMARK;
+			sourceTree = "<group>";
+		};
+		3F79715C1F59F3BC0074C3DF /* RECIPE_LIKE */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = RECIPE_LIKE;
+			sourceTree = "<group>";
+		};
+		3F79715D1F59F3C20074C3DF /* RECIPE_RATE */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = RECIPE_RATE;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		3F79712C1F59F23D0074C3DF /* PickyCookBook */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3F79713F1F59F23D0074C3DF /* Build configuration list for PBXNativeTarget "PickyCookBook" */;
+			buildPhases = (
+				3F7971291F59F23D0074C3DF /* Sources */,
+				3F79712A1F59F23D0074C3DF /* Frameworks */,
+				3F79712B1F59F23D0074C3DF /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = PickyCookBook;
+			productName = PickyCookBook;
+			productReference = 3F79712D1F59F23D0074C3DF /* PickyCookBook.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		3F7971251F59F23D0074C3DF /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0830;
+				LastUpgradeCheck = 0830;
+				ORGANIZATIONNAME = jaeseong;
+				TargetAttributes = {
+					3F79712C1F59F23D0074C3DF = {
+						CreatedOnToolsVersion = 8.3.3;
+						DevelopmentTeam = FNEH2787UY;
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = 3F7971281F59F23D0074C3DF /* Build configuration list for PBXProject "PickyCookBook" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 3F7971241F59F23D0074C3DF;
+			productRefGroup = 3F79712E1F59F23D0074C3DF /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				3F79712C1F59F23D0074C3DF /* PickyCookBook */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		3F79712B1F59F23D0074C3DF /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3F79713B1F59F23D0074C3DF /* LaunchScreen.storyboard in Resources */,
+				3F7971381F59F23D0074C3DF /* Assets.xcassets in Resources */,
+				3F7971361F59F23D0074C3DF /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		3F7971291F59F23D0074C3DF /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3F7971501F59F3260074C3DF /* Recipe_Like.swift in Sources */,
+				3F7971461F59F2FB0074C3DF /* Recipe.swift in Sources */,
+				3F7971441F59F2CF0074C3DF /* User.swift in Sources */,
+				3F7971311F59F23D0074C3DF /* AppDelegate.swift in Sources */,
+				3F79714C1F59F3130074C3DF /* Recipe_Review.swift in Sources */,
+				3F79714E1F59F31C0074C3DF /* Recipe_Bookmark.swift in Sources */,
+				3F79714A1F59F30B0074C3DF /* Recipe_Comment.swift in Sources */,
+				3F7971521F59F32B0074C3DF /* Recipe_Rate.swift in Sources */,
+				3F7971481F59F3030074C3DF /* Recipe_Step.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		3F7971341F59F23D0074C3DF /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				3F7971351F59F23D0074C3DF /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		3F7971391F59F23D0074C3DF /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				3F79713A1F59F23D0074C3DF /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		3F79713D1F59F23D0074C3DF /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		3F79713E1F59F23D0074C3DF /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		3F7971401F59F23D0074C3DF /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = FNEH2787UY;
+				INFOPLIST_FILE = PickyCookBook/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.toygift.PickyCookBook;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+			};
+			name = Debug;
+		};
+		3F7971411F59F23D0074C3DF /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = FNEH2787UY;
+				INFOPLIST_FILE = PickyCookBook/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.toygift.PickyCookBook;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		3F7971281F59F23D0074C3DF /* Build configuration list for PBXProject "PickyCookBook" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3F79713D1F59F23D0074C3DF /* Debug */,
+				3F79713E1F59F23D0074C3DF /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		3F79713F1F59F23D0074C3DF /* Build configuration list for PBXNativeTarget "PickyCookBook" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3F7971401F59F23D0074C3DF /* Debug */,
+				3F7971411F59F23D0074C3DF /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 3F7971251F59F23D0074C3DF /* Project object */;
+}
