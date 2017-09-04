@@ -50,19 +50,6 @@ class SignInViewController: UIViewController, UITextFieldDelegate, UINavigationC
     }
     
     
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     // MARK: Life Cycle
     // 라이프사이클 관리
     override func viewDidLoad() {
@@ -80,6 +67,8 @@ class SignInViewController: UIViewController, UITextFieldDelegate, UINavigationC
 }
 
 extension SignInViewController {
+    // MARK: SignIn Func
+    // http 통신할경우 info.plist 수정 해야함
     func signIn(email: String, password: String) {
         
         let parameters: Parameters = ["email": email, "password": password]
@@ -108,7 +97,7 @@ extension SignInViewController {
                     print("UserDefaults Set Token   :   ", UserDefaults.standard.string(forKey: "token") ?? "데이터없음")
                     UserDefaults.standard.set(userPK, forKey: "userpk")
                     print("UserDefaults Set UserPK  :   ", UserDefaults.standard.string(forKey: "userpk") ?? "데이터없음")
-                    
+                    DataTelecom.shared.myPageUserData()
                     guard let nextViewController = self.storyboard?.instantiateViewController(withIdentifier: "TABBAR") as? MainTabBar else { return }
                     self.present(nextViewController, animated: true, completion: nil)
                 }
