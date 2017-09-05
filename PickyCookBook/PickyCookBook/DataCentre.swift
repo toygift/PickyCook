@@ -14,5 +14,8 @@ import Toaster
 class DataCentre {
     
     static let shared: DataCentre = DataCentre()
-  
+    var user: User = User(user: <#JSON#>)
+    var recipe: Recipe = Recipe(recipe: <#JSON#>)
+    var recipe_bookmark: Recipe_Bookmark = Recipe_Bookmark(bookmark: <#JSON#>)
+    
 }

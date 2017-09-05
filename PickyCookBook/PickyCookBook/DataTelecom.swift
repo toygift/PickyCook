@@ -25,6 +25,9 @@ class DataTelecom {
     // 서버에서 데이터 가져와서 저장함
     // SignIn시에 user에 데이터 저장함
     func myPageUserData(){
+        print("====================================================================")
+        print("========================myPageUserData()============================")
+        print("====================================================================")
         guard let token = UserDefaults.standard.string(forKey: "token") else { return }
         let userPK = UserDefaults.standard.object(forKey: "userpk") as! Int
         let headers: HTTPHeaders = ["Authorization":"token \(token)"]
@@ -79,7 +82,9 @@ class DataTelecom {
                     print("UserDefaults Set Token   :   ", UserDefaults.standard.string(forKey: "token") ?? "데이터없음")
                     UserDefaults.standard.set(userPK, forKey: "userpk")
                     print("UserDefaults Set UserPK  :   ", UserDefaults.standard.string(forKey: "userpk") ?? "데이터없음")
-                    self.myPageUserData()
+                    DispatchQueue.main.async {
+                        self.myPageUserData()
+                    }
                     
                     let storyboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
                     let viewController: UIViewController = HomeViewController()

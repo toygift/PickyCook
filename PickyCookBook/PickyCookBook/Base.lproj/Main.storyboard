@@ -52,7 +52,7 @@
                                 </connections>
                             </button>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="0.9591330885887146" green="0.85827004909515381" blue="0.96036726236343384" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </view>
                     <navigationItem key="navigationItem" id="ONN-dt-SAC"/>
                     <connections>
@@ -129,7 +129,7 @@
                                 </connections>
                             </button>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="0.9591330885887146" green="0.85827004909515381" blue="0.96036726236343384" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </view>
                     <connections>
                         <outlet property="buttonConfirm" destination="IjX-Cf-J2D" id="cbT-Du-Wmv"/>
@@ -148,7 +148,7 @@
         <!--북마크-->
         <scene sceneID="nxw-OS-7FD">
             <objects>
-                <viewController storyboardIdentifier="BOOKMARK" id="uEZ-dy-4vP" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="BOOKMARK" id="uEZ-dy-4vP" customClass="BookMarkViewController" customModule="PickyCookBook" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="bXu-CF-DDa"/>
                         <viewControllerLayoutGuide type="bottom" id="urH-eU-kw7"/>
@@ -156,7 +156,33 @@
                     <view key="view" contentMode="scaleToFill" id="l3C-H3-9oM">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Sp2-n2-7KW">
+                                <rect key="frame" x="-0.5" y="-0.5" width="375" height="667"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="BOOKMARKREUSE" id="ahD-dw-nUX" customClass="BookMarkTableViewCell" customModule="PickyCookBook" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="28" width="375" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ahD-dw-nUX" id="QLL-Zl-j8a">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="uEZ-dy-4vP" id="K93-iv-Jpp"/>
+                                    <outlet property="delegate" destination="uEZ-dy-4vP" id="CHQ-c1-TFD"/>
+                                </connections>
+                            </tableView>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="Sp2-n2-7KW" firstAttribute="centerY" secondItem="l3C-H3-9oM" secondAttribute="centerY" id="CCO-Ud-qgo"/>
+                            <constraint firstItem="Sp2-n2-7KW" firstAttribute="centerX" secondItem="l3C-H3-9oM" secondAttribute="centerX" id="GA5-Cq-sAZ"/>
+                            <constraint firstItem="Sp2-n2-7KW" firstAttribute="width" secondItem="l3C-H3-9oM" secondAttribute="width" id="WdO-Dk-Ipt"/>
+                            <constraint firstItem="Sp2-n2-7KW" firstAttribute="height" secondItem="l3C-H3-9oM" secondAttribute="height" id="mXj-rv-lh5"/>
+                        </constraints>
                     </view>
                     <tabBarItem key="tabBarItem" title="북마크" id="HTM-NR-6kW"/>
                 </viewController>
@@ -186,6 +212,7 @@
                                             <constraint firstAttribute="height" constant="80" id="Gk8-qt-GVH"/>
                                             <constraint firstAttribute="width" constant="80" id="OMY-Cj-9aP"/>
                                         </constraints>
+                                        <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Fti-0u-FUL">
                                         <rect key="frame" x="77" y="90" width="220" height="20"/>
@@ -410,6 +437,7 @@
                                             <constraint firstAttribute="height" constant="80" id="CHw-iZ-g97"/>
                                             <constraint firstAttribute="width" constant="80" id="ZTn-xu-QdT"/>
                                         </constraints>
+                                        <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <connections>
                                             <action selector="selectPicture:" destination="msr-JT-7wa" eventType="touchUpInside" id="pdz-OK-93K"/>
                                         </connections>

@@ -66,21 +66,30 @@ class MyPageViewController: UIViewController {
     
     // MARK: Life Cycle
     //
-    
+    // 뷰가 나타나기전에 싱글톤 데이터 가져와서 표시
     override func viewDidLoad() {
         super.viewDidLoad()
-       
+        print("================================================================")
+        print("===========================viewDidLoad==========================")
+        print("================================================================")
+        //여기서 사진등등 띄우니 수정후에 안뜨는 문제발생
+        //그래서 viewWillAppear에서 띄움
     }
-    // 뷰가 나타나기전에 싱글톤 데이터 가져와서 표시
+    
     override func viewWillAppear(_ animated: Bool) {
+        print("================================================================")
+        print("=========================viewWillAppear=========================")
+        print("================================================================")
         self.img_profile.clipsToBounds = true
         self.img_profile.layer.cornerRadius = self.img_profile.frame.width/2
         self.email.text = DataTelecom.shared.user?.email.stringValue
+//        let back = UIImage(named: "no_image.jpg")
+//        self.img_profile.setImage(back?.withRenderingMode(.alwaysOriginal), for: .normal)
         
         if let path = DataTelecom.shared.user?.img_profile.string {
             if let imageData = try? Data(contentsOf: URL(string: path)!) {
                 let back = UIImage(data: imageData)
-                self.img_profile.setBackgroundImage(back, for: .normal)
+                self.img_profile.setImage(back?.withRenderingMode(.alwaysOriginal), for: .normal)
                 
             }
         }

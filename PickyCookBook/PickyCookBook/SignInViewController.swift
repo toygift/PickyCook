@@ -70,16 +70,16 @@ extension SignInViewController {
     // MARK: SignIn Func
     // http 통신할경우 info.plist 수정 해야함
     func signIn(email: String, password: String) {
-        
         let parameters: Parameters = ["email": email, "password": password]
-        
         let call = Alamofire.request(rootDomain + "member/login/", method: .post, parameters: parameters, encoding: JSONEncoding.default)
         
         call.responseJSON { (response) in
             switch response.result {
             case .success(let value):
                 let json = JSON(value)
-                print("response   :   ",json)
+                print("=================================================================")
+                print("==========================    SignIn    =========================")
+                print("=================================================================")
                 
                 if !json["empty_email"].stringValue.isEmpty {
                     Toast(text: "email을 입력하세요.").show()
@@ -102,7 +102,9 @@ extension SignInViewController {
                     print("UserDefaults Set Token   :   ", UserDefaults.standard.string(forKey: "token") ?? "데이터없음")
                     UserDefaults.standard.set(userPK, forKey: "userpk")
                     print("UserDefaults Set UserPK  :   ", UserDefaults.standard.string(forKey: "userpk") ?? "데이터없음")
-                    DataTelecom.shared.myPageUserData()
+                    DispatchQueue.main.async {
+                        DataTelecom.shared.myPageUserData()
+                    }
                     guard let nextViewController = self.storyboard?.instantiateViewController(withIdentifier: "TABBAR") as? MainTabBar else { return }
                     self.present(nextViewController, animated: true, completion: nil)
                 }
