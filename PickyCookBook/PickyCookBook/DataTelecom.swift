@@ -23,7 +23,7 @@ class DataTelecom {
     
     // MARK: 데이터 가져오기
     // 서버에서 데이터 가져와서 저장함
-    // 
+    // SignIn시에 user에 데이터 저장함
     func myPageUserData(){
         guard let token = UserDefaults.standard.string(forKey: "token") else { return }
         let userPK = UserDefaults.standard.object(forKey: "userpk") as! Int
@@ -46,7 +46,55 @@ class DataTelecom {
         }
     }
 
-    
+    func signIn(email: String, password: String) {
+        
+        let parameters: Parameters = ["email": email, "password": password]
+        
+        let call = Alamofire.request(rootDomain + "member/login/", method: .post, parameters: parameters, encoding: JSONEncoding.default)
+        
+        call.responseJSON { (response) in
+            switch response.result {
+            case .success(let value):
+                let json = JSON(value)
+                print("response   :   ",json)
+                
+                if !json["empty_email"].stringValue.isEmpty {
+                    Toast(text: "email을 입력하세요.").show()
+                    break
+                } else if !json["empty_password"].stringValue.isEmpty {
+                    Toast(text: "password를 입력하세요.").show()
+                    break
+                } else if !json["empty_error"].stringValue.isEmpty {
+                    Toast(text: "email과 password를 입력하세요.").show()
+                    break
+                } else if !json["login_error"].stringValue.isEmpty {
+                    Toast(text: "email 또는 password가 맞지 않습니다.").show()
+                    break
+                } else {
+                    
+                    let userToken = json["token"].stringValue
+                    let userPK = json["pk"].intValue
+                    
+                    UserDefaults.standard.set(userToken, forKey: "token")
+                    print("UserDefaults Set Token   :   ", UserDefaults.standard.string(forKey: "token") ?? "데이터없음")
+                    UserDefaults.standard.set(userPK, forKey: "userpk")
+                    print("UserDefaults Set UserPK  :   ", UserDefaults.standard.string(forKey: "userpk") ?? "데이터없음")
+                    self.myPageUserData()
+                    
+                    let storyboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+                    let viewController: UIViewController = HomeViewController()
+                    guard let nextViewController = storyboard.instantiateViewController(withIdentifier: "HOME") as? HomeViewController else { return }
+                    viewController.present(nextViewController, animated: true, completion: nil)
+                    
+
+                }
+                                
+            case .failure(let error):
+                print(error)
+            }
+        }
+    }
+
     // MARK: SignIn Func
     // http 통신할경우 info.plist 수정 해야함
 //    func signIn(email: String, password: String) {

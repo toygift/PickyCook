@@ -305,31 +305,6 @@
             </objects>
             <point key="canvasLocation" x="1111.2" y="-59.820089955022496"/>
         </scene>
-        <!--View Controller-->
-        <scene sceneID="TGL-RX-6KP">
-            <objects>
-                <viewController id="pHE-Xq-VbO" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="d6S-Hz-raa"/>
-                        <viewControllerLayoutGuide type="bottom" id="olR-3z-yfP"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="y8b-FK-rgf">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="vIG-KS-Vn1">
-                                <rect key="frame" x="85" y="56" width="240" height="128"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                            </view>
-                        </subviews>
-                        <color key="backgroundColor" red="0.93740695714950562" green="0.93722790479660034" blue="0.95777112245559692" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                    </view>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="kf5-bK-8Qv" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="2584.8000000000002" y="-19.340329835082461"/>
-        </scene>
         <!--레시피입력-->
         <scene sceneID="RK5-je-h1E">
             <objects>
@@ -352,7 +327,7 @@
         <!--홈-->
         <scene sceneID="e0t-Rx-NjC">
             <objects>
-                <viewController storyboardIdentifier="HOME" id="2Pg-Px-bGc" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="HOME" id="2Pg-Px-bGc" customClass="HomeViewController" customModule="PickyCookBook" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="N5N-64-zbP"/>
                         <viewControllerLayoutGuide type="bottom" id="ETV-CT-4sk"/>
@@ -435,6 +410,9 @@
                                             <constraint firstAttribute="height" constant="80" id="CHw-iZ-g97"/>
                                             <constraint firstAttribute="width" constant="80" id="ZTn-xu-QdT"/>
                                         </constraints>
+                                        <connections>
+                                            <action selector="selectPicture:" destination="msr-JT-7wa" eventType="touchUpInside" id="pdz-OK-93K"/>
+                                        </connections>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3Ta-cA-Z3E">
                                         <rect key="frame" x="77" y="90" width="220" height="20"/>
@@ -484,6 +462,7 @@
                                             <constraint firstAttribute="width" constant="375" id="saD-kr-8hb"/>
                                         </constraints>
                                         <nil key="textColor"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits"/>
                                     </textField>
                                 </subviews>
@@ -508,6 +487,7 @@
                                             <constraint firstAttribute="height" constant="44" id="yix-Uu-6G0"/>
                                         </constraints>
                                         <nil key="textColor"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits"/>
                                     </textField>
                                 </subviews>
@@ -532,6 +512,7 @@
                                             <constraint firstAttribute="height" constant="44" id="y30-WO-yCs"/>
                                         </constraints>
                                         <nil key="textColor"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits"/>
                                     </textField>
                                 </subviews>
@@ -556,6 +537,7 @@
                                             <constraint firstAttribute="height" constant="44" id="mwQ-dV-a2D"/>
                                         </constraints>
                                         <nil key="textColor"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits"/>
                                     </textField>
                                 </subviews>
@@ -580,6 +562,7 @@
                                             <constraint firstAttribute="width" constant="375" id="T4W-KW-AU1"/>
                                         </constraints>
                                         <nil key="textColor"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits"/>
                                     </textField>
                                 </subviews>
@@ -604,6 +587,9 @@
                                             <constraint firstAttribute="width" constant="375" id="9RB-1c-PL7"/>
                                         </constraints>
                                         <state key="normal" title="확인"/>
+                                        <connections>
+                                            <action selector="modifyComplete:" destination="msr-JT-7wa" eventType="touchUpInside" id="eNn-XG-sib"/>
+                                        </connections>
                                     </button>
                                 </subviews>
                                 <color key="backgroundColor" red="0.93740695709999999" green="0.93722790479999996" blue="0.95777112249999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -641,6 +627,18 @@
                             <constraint firstItem="8Is-sT-mjZ" firstAttribute="leading" secondItem="Wys-RA-i0v" secondAttribute="leading" id="yxW-ST-wTv"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="completeModify" destination="UB3-sQ-nId" id="OQv-oI-raD"/>
+                        <outlet property="email" destination="3Ta-cA-Z3E" id="cWY-Py-UGS"/>
+                        <outlet property="img_profile" destination="nyr-N9-C1C" id="ZPd-9A-tA0"/>
+                        <outlet property="modifyContent" destination="6VP-cX-INA" id="4Ty-0H-OPf"/>
+                        <outlet property="modifyNickname" destination="cpk-7i-18a" id="0MN-1Y-az0"/>
+                        <outlet property="newModifyPassword" destination="yNu-Jn-R48" id="uSw-lh-eXg"/>
+                        <outlet property="newModifyPasswordConfirm" destination="o1h-Px-fSB" id="dNj-R4-4lf"/>
+                        <outlet property="nickname" destination="IVN-V4-ODK" id="95f-Kp-Buy"/>
+                        <outlet property="oldPassword" destination="Ag5-XI-1D5" id="Vc1-2I-HN5"/>
+                        <outlet property="topView" destination="vpE-45-gfz" id="P8S-ha-ant"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="G7U-xl-FzA" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

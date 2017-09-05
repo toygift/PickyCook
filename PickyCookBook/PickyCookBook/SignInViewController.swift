@@ -22,7 +22,7 @@ class SignInViewController: UIViewController, UITextFieldDelegate, UINavigationC
     @IBAction func signInButton(_ sender: UIButton) {
         guard let email = emailTextField.text else { return }
         guard let password = passwordTextField.text else { return }
-        signIn(email: email, password: password)
+        self.signIn(email: email, password: password)
     }
     
     @IBAction func signUpButton(_ sender: UIButton) {
@@ -80,14 +80,19 @@ extension SignInViewController {
             case .success(let value):
                 let json = JSON(value)
                 print("response   :   ",json)
+                
                 if !json["empty_email"].stringValue.isEmpty {
                     Toast(text: "email을 입력하세요.").show()
+                    break
                 } else if !json["empty_password"].stringValue.isEmpty {
                     Toast(text: "password를 입력하세요.").show()
+                    break
                 } else if !json["empty_error"].stringValue.isEmpty {
                     Toast(text: "email과 password를 입력하세요.").show()
+                    break
                 } else if !json["login_error"].stringValue.isEmpty {
                     Toast(text: "email 또는 password가 맞지 않습니다.").show()
+                    break
                 } else {
                     
                     let userToken = json["token"].stringValue
@@ -101,7 +106,6 @@ extension SignInViewController {
                     guard let nextViewController = self.storyboard?.instantiateViewController(withIdentifier: "TABBAR") as? MainTabBar else { return }
                     self.present(nextViewController, animated: true, completion: nil)
                 }
-                
                 
             case .failure(let error):
                 print(error)

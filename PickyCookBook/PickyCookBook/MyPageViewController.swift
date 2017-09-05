@@ -15,8 +15,10 @@ import Toaster
 
 class MyPageViewController: UIViewController {
     
-    var signup: SignUpViewController = SignUpViewController()
     
+    // MARK: OUTLER 및 Properties
+    //
+    //
     @IBOutlet var email: UILabel!
     
     @IBOutlet var img_profile: UIButton!
@@ -24,10 +26,14 @@ class MyPageViewController: UIViewController {
     @IBOutlet var withdrawal: UIButton!
     @IBOutlet var topView: UIView!
     
+    
     @IBAction func myInfoChange(_ sender: UIButton) {
         guard let nextViewController = storyboard?.instantiateViewController(withIdentifier: "INFOMODIFY") as? InfoModifyViewController else { return }
         self.navigationController?.pushViewController(nextViewController, animated: true)
     }
+    // MARK: 회원탈퇴
+    // 탈퇴버튼 클릭시 Alert창 띄움
+    // 싱글톤에 저장된 유저정보 지움
     @IBAction func withdrawal(_ sender: UIButton) {
         let alertController = UIAlertController(title: "경고", message: "탈퇴하시겠습니까?", preferredStyle: .actionSheet)
         let cancel = UIAlertAction(title: "취소", style: .cancel, handler: nil)
@@ -41,6 +47,9 @@ class MyPageViewController: UIViewController {
         
         self.present(alertController, animated: true, completion: nil)
     }
+    // MARK: 로그아웃
+    // 로그아웃버튼 클릭시 Alert창 띄움
+    // 싱글톤에 저장된 유저정보 지움
     @IBAction func signOut(_ sender: UIButton) {
         let alertController = UIAlertController(title: "알림", message: "로그아웃 하시겠습니까?", preferredStyle: .actionSheet)
         let cancel = UIAlertAction(title: "취소", style: .cancel, handler: nil)
@@ -60,10 +69,11 @@ class MyPageViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-       self.img_profile.clipsToBounds = true
+       
     }
-    
+    // 뷰가 나타나기전에 싱글톤 데이터 가져와서 표시
     override func viewWillAppear(_ animated: Bool) {
+        self.img_profile.clipsToBounds = true
         self.img_profile.layer.cornerRadius = self.img_profile.frame.width/2
         self.email.text = DataTelecom.shared.user?.email.stringValue
         

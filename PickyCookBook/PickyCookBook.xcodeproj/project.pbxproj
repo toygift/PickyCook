@@ -29,6 +29,7 @@
 		3F79716D1F5D1BA40074C3DF /* MyPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F79716C1F5D1BA40074C3DF /* MyPageViewController.swift */; };
 		3FAE669A1F5DB086007A13E7 /* MediaData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FAE66991F5DB086007A13E7 /* MediaData.swift */; };
 		3FAE669C1F5DB710007A13E7 /* InfoModifyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FAE669B1F5DB710007A13E7 /* InfoModifyViewController.swift */; };
+		3FAE669E1F5E5EEC007A13E7 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FAE669D1F5E5EEC007A13E7 /* HomeViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -55,6 +56,7 @@
 		3F79716C1F5D1BA40074C3DF /* MyPageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyPageViewController.swift; sourceTree = "<group>"; };
 		3FAE66991F5DB086007A13E7 /* MediaData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaData.swift; sourceTree = "<group>"; };
 		3FAE669B1F5DB710007A13E7 /* InfoModifyViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InfoModifyViewController.swift; sourceTree = "<group>"; };
+		3FAE669D1F5E5EEC007A13E7 /* HomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		45EE35A1669CC918A1644DE4 /* Pods-PickyCookBook.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PickyCookBook.release.xcconfig"; path = "Pods/Target Support Files/Pods-PickyCookBook/Pods-PickyCookBook.release.xcconfig"; sourceTree = "<group>"; };
 		B1C947CFC4B43A2D5A59E1E5 /* Pods-PickyCookBook.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PickyCookBook.debug.xcconfig"; path = "Pods/Target Support Files/Pods-PickyCookBook/Pods-PickyCookBook.debug.xcconfig"; sourceTree = "<group>"; };
 		B3629AAED91DFC939D8AC746 /* Pods_PickyCookBook.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PickyCookBook.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -95,7 +97,6 @@
 			children = (
 				3F7971301F59F23D0074C3DF /* AppDelegate.swift */,
 				3F7971341F59F23D0074C3DF /* Main.storyboard */,
-				3FAE669B1F5DB710007A13E7 /* InfoModifyViewController.swift */,
 				3F7971531F59F32F0074C3DF /* DATA */,
 				3F7971541F59F35F0074C3DF /* MAIN */,
 				3F7971571F59F3850074C3DF /* RECIPE */,
@@ -146,6 +147,7 @@
 			isa = PBXGroup;
 			children = (
 				3F7971681F5D12F30074C3DF /* MainTabBar.swift */,
+				3FAE669D1F5E5EEC007A13E7 /* HomeViewController.swift */,
 			);
 			name = MAIN;
 			sourceTree = "<group>";
@@ -219,6 +221,7 @@
 			isa = PBXGroup;
 			children = (
 				3F79716C1F5D1BA40074C3DF /* MyPageViewController.swift */,
+				3FAE669B1F5DB710007A13E7 /* InfoModifyViewController.swift */,
 			);
 			name = MYPAGE;
 			sourceTree = "<group>";
@@ -370,6 +373,7 @@
 				3F7971691F5D12F30074C3DF /* MainTabBar.swift in Sources */,
 				3F7971631F5CEE3E0074C3DF /* DataCentre.swift in Sources */,
 				3FAE669A1F5DB086007A13E7 /* MediaData.swift in Sources */,
+				3FAE669E1F5E5EEC007A13E7 /* HomeViewController.swift in Sources */,
 				3F7971461F59F2FB0074C3DF /* Recipe.swift in Sources */,
 				3F7971441F59F2CF0074C3DF /* User.swift in Sources */,
 				3F7971311F59F23D0074C3DF /* AppDelegate.swift in Sources */,

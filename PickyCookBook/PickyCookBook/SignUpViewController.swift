@@ -103,8 +103,8 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
     // 라이프사이클 관리
     override func viewDidLoad() {
         super.viewDidLoad()
-        let userImage = UIImage(named: "User.png")
-        self.pictureConfirm.setBackgroundImage(userImage, for: .normal)
+        
+        
     }
 
     override func didReceiveMemoryWarning() {
