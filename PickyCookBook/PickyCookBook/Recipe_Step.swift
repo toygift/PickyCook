@@ -7,3 +7,13 @@
 //
 
 import Foundation
+
+struct Recipe_Step {
+    let pk: Int
+    let step: Int
+    let description: String
+    var is_timer: Bool
+    var timer: Int
+    let img_step: String
+
+}

@@ -214,10 +214,10 @@ class InfoModifyViewController: UIViewController, UITextFieldDelegate, UIImagePi
         
         self.img_profile.clipsToBounds = true
         self.img_profile.layer.cornerRadius = self.img_profile.frame.width/2
-        self.email.text = DataTelecom.shared.user?.email.stringValue
-        self.nickname.text = DataTelecom.shared.user?.nickname.stringValue
+        self.email.text = DataTelecom.shared.user?.email
+        self.nickname.text = DataTelecom.shared.user?.nickname
         
-        if let path = DataTelecom.shared.user?.img_profile.string {
+        if let path = DataTelecom.shared.user?.img_profile {
             if let imageData = try? Data(contentsOf: URL(string: path)!) {
                 let back = UIImage(data: imageData)
                 self.img_profile.setImage(back?.withRenderingMode(.alwaysOriginal), for: .normal)

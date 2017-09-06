@@ -17,9 +17,6 @@
 		3F7971481F59F3030074C3DF /* Recipe_Step.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F7971471F59F3030074C3DF /* Recipe_Step.swift */; };
 		3F79714A1F59F30B0074C3DF /* Recipe_Comment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F7971491F59F30B0074C3DF /* Recipe_Comment.swift */; };
 		3F79714C1F59F3130074C3DF /* Recipe_Review.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F79714B1F59F3130074C3DF /* Recipe_Review.swift */; };
-		3F79714E1F59F31C0074C3DF /* Recipe_Bookmark.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F79714D1F59F31C0074C3DF /* Recipe_Bookmark.swift */; };
-		3F7971501F59F3260074C3DF /* Recipe_Like.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F79714F1F59F3260074C3DF /* Recipe_Like.swift */; };
-		3F7971521F59F32B0074C3DF /* Recipe_Rate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F7971511F59F32B0074C3DF /* Recipe_Rate.swift */; };
 		3F79715F1F5CE9810074C3DF /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F79715E1F5CE9810074C3DF /* SignInViewController.swift */; };
 		3F7971611F5CE9A30074C3DF /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F7971601F5CE9A30074C3DF /* SignUpViewController.swift */; };
 		3F7971631F5CEE3E0074C3DF /* DataCentre.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F7971621F5CEE3E0074C3DF /* DataCentre.swift */; };
@@ -29,9 +26,12 @@
 		3F79716D1F5D1BA40074C3DF /* MyPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F79716C1F5D1BA40074C3DF /* MyPageViewController.swift */; };
 		3F9E28DB1F5EAD6000B661D2 /* BookMarkViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F9E28DA1F5EAD6000B661D2 /* BookMarkViewController.swift */; };
 		3F9E28DD1F5EAEAB00B661D2 /* BookMarkTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F9E28DC1F5EAEAB00B661D2 /* BookMarkTableViewCell.swift */; };
+		3F9E28E11F5F814A00B661D2 /* RecipeDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F9E28E01F5F814A00B661D2 /* RecipeDetailViewController.swift */; };
+		3F9E28E51F60306200B661D2 /* Recipe_Bookmark.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F9E28E41F60306200B661D2 /* Recipe_Bookmark.swift */; };
 		3FAE669A1F5DB086007A13E7 /* MediaData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FAE66991F5DB086007A13E7 /* MediaData.swift */; };
 		3FAE669C1F5DB710007A13E7 /* InfoModifyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FAE669B1F5DB710007A13E7 /* InfoModifyViewController.swift */; };
 		3FAE669E1F5E5EEC007A13E7 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FAE669D1F5E5EEC007A13E7 /* HomeViewController.swift */; };
+		3FC6017F1F6052C600931909 /* Temp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FC6017E1F6052C600931909 /* Temp.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -46,9 +46,6 @@
 		3F7971471F59F3030074C3DF /* Recipe_Step.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Recipe_Step.swift; sourceTree = "<group>"; };
 		3F7971491F59F30B0074C3DF /* Recipe_Comment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Recipe_Comment.swift; sourceTree = "<group>"; };
 		3F79714B1F59F3130074C3DF /* Recipe_Review.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Recipe_Review.swift; sourceTree = "<group>"; };
-		3F79714D1F59F31C0074C3DF /* Recipe_Bookmark.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Recipe_Bookmark.swift; sourceTree = "<group>"; };
-		3F79714F1F59F3260074C3DF /* Recipe_Like.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Recipe_Like.swift; sourceTree = "<group>"; };
-		3F7971511F59F32B0074C3DF /* Recipe_Rate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Recipe_Rate.swift; sourceTree = "<group>"; };
 		3F79715E1F5CE9810074C3DF /* SignInViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignInViewController.swift; sourceTree = "<group>"; };
 		3F7971601F5CE9A30074C3DF /* SignUpViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
 		3F7971621F5CEE3E0074C3DF /* DataCentre.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataCentre.swift; sourceTree = "<group>"; };
@@ -58,9 +55,12 @@
 		3F79716C1F5D1BA40074C3DF /* MyPageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyPageViewController.swift; sourceTree = "<group>"; };
 		3F9E28DA1F5EAD6000B661D2 /* BookMarkViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BookMarkViewController.swift; sourceTree = "<group>"; };
 		3F9E28DC1F5EAEAB00B661D2 /* BookMarkTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BookMarkTableViewCell.swift; sourceTree = "<group>"; };
+		3F9E28E01F5F814A00B661D2 /* RecipeDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecipeDetailViewController.swift; sourceTree = "<group>"; };
+		3F9E28E41F60306200B661D2 /* Recipe_Bookmark.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Recipe_Bookmark.swift; sourceTree = "<group>"; };
 		3FAE66991F5DB086007A13E7 /* MediaData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaData.swift; sourceTree = "<group>"; };
 		3FAE669B1F5DB710007A13E7 /* InfoModifyViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InfoModifyViewController.swift; sourceTree = "<group>"; };
 		3FAE669D1F5E5EEC007A13E7 /* HomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
+		3FC6017E1F6052C600931909 /* Temp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Temp.swift; sourceTree = "<group>"; };
 		45EE35A1669CC918A1644DE4 /* Pods-PickyCookBook.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PickyCookBook.release.xcconfig"; path = "Pods/Target Support Files/Pods-PickyCookBook/Pods-PickyCookBook.release.xcconfig"; sourceTree = "<group>"; };
 		B1C947CFC4B43A2D5A59E1E5 /* Pods-PickyCookBook.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PickyCookBook.debug.xcconfig"; path = "Pods/Target Support Files/Pods-PickyCookBook/Pods-PickyCookBook.debug.xcconfig"; sourceTree = "<group>"; };
 		B3629AAED91DFC939D8AC746 /* Pods_PickyCookBook.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PickyCookBook.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -136,12 +136,11 @@
 				3F7971451F59F2FB0074C3DF /* Recipe.swift */,
 				3F7971471F59F3030074C3DF /* Recipe_Step.swift */,
 				3F7971491F59F30B0074C3DF /* Recipe_Comment.swift */,
+				3F9E28E41F60306200B661D2 /* Recipe_Bookmark.swift */,
 				3F79714B1F59F3130074C3DF /* Recipe_Review.swift */,
-				3F79714D1F59F31C0074C3DF /* Recipe_Bookmark.swift */,
-				3F79714F1F59F3260074C3DF /* Recipe_Like.swift */,
-				3F7971511F59F32B0074C3DF /* Recipe_Rate.swift */,
 				3F7971621F5CEE3E0074C3DF /* DataCentre.swift */,
 				3F7971641F5CFD660074C3DF /* DataTelecom.swift */,
+				3FC6017E1F6052C600931909 /* Temp.swift */,
 				3FAE66991F5DB086007A13E7 /* MediaData.swift */,
 			);
 			name = DATA;
@@ -175,6 +174,7 @@
 		3F7971571F59F3850074C3DF /* RECIPE */ = {
 			isa = PBXGroup;
 			children = (
+				3F9E28E01F5F814A00B661D2 /* RecipeDetailViewController.swift */,
 			);
 			name = RECIPE;
 			sourceTree = "<group>";
@@ -375,7 +375,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				3F7971611F5CE9A30074C3DF /* SignUpViewController.swift in Sources */,
-				3F7971501F59F3260074C3DF /* Recipe_Like.swift in Sources */,
 				3F7971691F5D12F30074C3DF /* MainTabBar.swift in Sources */,
 				3F7971631F5CEE3E0074C3DF /* DataCentre.swift in Sources */,
 				3FAE669A1F5DB086007A13E7 /* MediaData.swift in Sources */,
@@ -383,14 +382,15 @@
 				3F7971461F59F2FB0074C3DF /* Recipe.swift in Sources */,
 				3F7971441F59F2CF0074C3DF /* User.swift in Sources */,
 				3F7971311F59F23D0074C3DF /* AppDelegate.swift in Sources */,
+				3FC6017F1F6052C600931909 /* Temp.swift in Sources */,
+				3F9E28E51F60306200B661D2 /* Recipe_Bookmark.swift in Sources */,
 				3F79714C1F59F3130074C3DF /* Recipe_Review.swift in Sources */,
-				3F79714E1F59F31C0074C3DF /* Recipe_Bookmark.swift in Sources */,
 				3F9E28DD1F5EAEAB00B661D2 /* BookMarkTableViewCell.swift in Sources */,
 				3F79714A1F59F30B0074C3DF /* Recipe_Comment.swift in Sources */,
 				3F79716D1F5D1BA40074C3DF /* MyPageViewController.swift in Sources */,
-				3F7971521F59F32B0074C3DF /* Recipe_Rate.swift in Sources */,
 				3F79715F1F5CE9810074C3DF /* SignInViewController.swift in Sources */,
 				3F7971481F59F3030074C3DF /* Recipe_Step.swift in Sources */,
+				3F9E28E11F5F814A00B661D2 /* RecipeDetailViewController.swift in Sources */,
 				3FAE669C1F5DB710007A13E7 /* InfoModifyViewController.swift in Sources */,
 				3F7971651F5CFD660074C3DF /* DataTelecom.swift in Sources */,
 				3F9E28DB1F5EAD6000B661D2 /* BookMarkViewController.swift in Sources */,

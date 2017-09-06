@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="e03-9O-HPx">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="gG5-V5-fYX">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -375,7 +375,35 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gDe-HY-5B8" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2436" y="-45"/>
+            <point key="canvasLocation" x="-3367" y="-45"/>
+        </scene>
+        <!--Recipe Detail View Controller-->
+        <scene sceneID="afa-fl-4wX">
+            <objects>
+                <viewController storyboardIdentifier="RECIPEDETAIL" id="gG5-V5-fYX" customClass="RecipeDetailViewController" customModule="PickyCookBook" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Aaz-um-ir6"/>
+                        <viewControllerLayoutGuide type="bottom" id="0Lo-dz-XDA"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="yCZ-3b-eJO">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JZM-Le-2eL">
+                                <rect key="frame" x="164" y="71" width="46" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Button"/>
+                                <connections>
+                                    <action selector="getReivew:" destination="gG5-V5-fYX" eventType="touchUpInside" id="INt-3G-IBD"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="AN9-4g-8u4" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-2574" y="-45"/>
         </scene>
         <!--Main Tab Bar-->
         <scene sceneID="rK2-tm-mbr">

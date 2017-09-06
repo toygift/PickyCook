@@ -11,8 +11,6 @@ import Alamofire
 import SwiftyJSON
 import Toaster
 
-
-
 class MyPageViewController: UIViewController {
     
     
@@ -82,11 +80,11 @@ class MyPageViewController: UIViewController {
         print("================================================================")
         self.img_profile.clipsToBounds = true
         self.img_profile.layer.cornerRadius = self.img_profile.frame.width/2
-        self.email.text = DataTelecom.shared.user?.email.stringValue
+        self.email.text = DataTelecom.shared.user?.email
 //        let back = UIImage(named: "no_image.jpg")
 //        self.img_profile.setImage(back?.withRenderingMode(.alwaysOriginal), for: .normal)
         
-        if let path = DataTelecom.shared.user?.img_profile.string {
+        if let path = DataTelecom.shared.user?.img_profile {
             if let imageData = try? Data(contentsOf: URL(string: path)!) {
                 let back = UIImage(data: imageData)
                 self.img_profile.setImage(back?.withRenderingMode(.alwaysOriginal), for: .normal)
