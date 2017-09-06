@@ -60,7 +60,9 @@ extension SignUpViewController {
                 UISaveVideoAtPathToSavedPhotosAlbum(videoURL.relativePath, self, nil, nil)
             }
         }
-        self.dismiss(animated: true, completion: nil)
+        self.dismiss(animated: true) { 
+            self.pictureConfirm.setImage(self.captureImage.withRenderingMode(.alwaysOriginal), for: .normal)
+        }
     }
     
     // MARK: 사진, 비디오 취소시

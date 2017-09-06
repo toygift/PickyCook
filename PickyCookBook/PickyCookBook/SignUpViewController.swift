@@ -35,7 +35,7 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
     
     @IBAction func pictureSelect(_ sender: UIButton) {
         
-        let alert = UIAlertController(title: "선택", message: "선택해주세요", preferredStyle: .actionSheet)
+        let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         let photo = UIAlertAction(title: "포토라이브러리", style: .default) { (_) in
             self.media(.photoLibrary, flag: false, editing: true)
             //self.media(.photoLibrary, flag: false, editing: true)
@@ -103,8 +103,13 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
     // 라이프사이클 관리
     override func viewDidLoad() {
         super.viewDidLoad()
-        let userImage = UIImage(named: "User.png")
-        self.pictureConfirm.setBackgroundImage(userImage, for: .normal)
+        emailTextField.becomeFirstResponder()
+        emailTextField.delegate = self
+        nicknameTextField.delegate = self
+        passwordTextField.delegate = self
+        passwordConfirmTextField.delegate = self
+        contentTextField.delegate = self
+        
     }
 
     override func didReceiveMemoryWarning() {
@@ -190,7 +195,9 @@ extension SignUpViewController {
                     switch response.result {
                     case .success(let value):
                         let json = JSON(value)
-                        print(json)
+                        print("=================================================================")
+                        print("==========================    SignUp    =========================")
+                        print("=================================================================")
                         
                         if !json["email_empty"].stringValue.isEmpty {
                             Toast(text: "email을 입력해주세요").show()
@@ -217,7 +224,12 @@ extension SignUpViewController {
                             UserDefaults.standard.set(userPK, forKey: "userpk")
                             print("UserDefaults Set UserPK  :   ", UserDefaults.standard.string(forKey: "userpk") ?? "데이터없음")
                             guard let nextViewController = self.storyboard?.instantiateViewController(withIdentifier: "TABBAR") as? MainTabBar else { return }
-                            self.present(nextViewController, animated: true, completion: nil)
+                            self.present(nextViewController, animated: true, completion: { 
+                                DispatchQueue.main.async {
+                                    DataTelecom.shared.myPageUserData()
+                                }
+                                
+                            })
                         }
                     case .failure(let error):
                         print(error)

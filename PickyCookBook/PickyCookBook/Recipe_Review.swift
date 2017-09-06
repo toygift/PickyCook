@@ -7,3 +7,12 @@
 //
 
 import Foundation
+
+struct Recipe_Review {
+    let pk: Int
+    let recipe: Int
+    let user: Int
+    var content: String
+    var img_review: String
+
+}

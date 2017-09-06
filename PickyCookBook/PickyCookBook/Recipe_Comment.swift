@@ -7,3 +7,10 @@
 //
 
 import Foundation
+
+struct Recipe_Comment {
+    let pk: Int
+    let recipe_step: Int
+    let user: Int
+    var content: String
+}
