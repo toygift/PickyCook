@@ -17,38 +17,11 @@ class DataTelecom {
     
     var user: User?
     var recipe: Recipe?
-    var recipes: [Recipe]?
+    
     var recipe_review: [Recipe_Review]?
     var recipe_comment: [Recipe_Comment]?
     var recipe_step: [Recipe_Step]?
-    var recipe_bookmark: [Recipe_Bookmark]?
-    // MARK: Bookmark 가져오기
-    //
-    //
-    func bookmarkList(){
-        print("====================================================================")
-        print("==========================bookmarkList()============================")
-        print("====================================================================")
-        guard let token = UserDefaults.standard.string(forKey: "token") else { return }
-        let headers: HTTPHeaders = ["Authorization":"token \(token)"]
-        
-        let call = Alamofire.request(rootDomain + "recipe/bookmark/", method: .get, headers: headers)
-        
-        call.responseJSON { (response) in
-            switch response.result {
-            case .success(let value):
-                let json = JSON(value)
-                print(json)
-                self.recipe_bookmark = DataCentre.shared.recipeBookmarkList(response: json)
-                print("유저프린트   :   ",self.recipe_bookmark ?? "데이터없음")
-                
-            case .failure(let error):
-                print(error)
-                
-            }
-        }
-    }
-    // MARK: 데이터 가져오기
+        // MARK: 데이터 가져오기
     // 서버에서 데이터 가져와서 저장함
     // SignIn시에 user에 데이터 저장함
     func myPageUserData(){
@@ -114,29 +87,5 @@ class DataTelecom {
     // MARK: AllRecipe
     //
     //
-    func allRecipeList(){
-        print("====================================================================")
-        print("=========================AllrecipeList()============================")
-        print("====================================================================")
-        //        guard let token = UserDefaults.standard.string(forKey: "token") else { return }
-        //        let userPK = UserDefaults.standard.object(forKey: "userpk") as! Int
-        //        let headers: HTTPHeaders = ["Authorization":"token \(token)"]
-        
-        let call = Alamofire.request(rootDomain + "recipe/", method: .get)
-        print("=========================AllrecipeList()============================")
-        call.responseJSON { (response) in
-            switch response.result {
-            case .success(let value):
-                print("=========================AllrecipeList()============================")
-                let json = JSON(value)
-                
-                self.recipes = DataCentre.shared.allRecipeList(response: json) // AllRecipe
-                //print("Recipes   :   ", self.recipes?.count ?? "데이터없음")
-                
-            case .failure(let error):
-                print(error)
-                
-            }
-        }
-    }
+    
 }

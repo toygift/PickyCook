@@ -109,7 +109,7 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
         passwordTextField.delegate = self
         passwordConfirmTextField.delegate = self
         contentTextField.delegate = self
-        DataTelecom.shared.allRecipeList()
+        //DataTelecom.shared.allRecipeList()
     }
 
     override func didReceiveMemoryWarning() {

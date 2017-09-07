@@ -22,22 +22,12 @@ class RecipeDetailViewController: UIViewController, UITableViewDelegate, UITable
         
     }
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+        
     // MARK: TableView
     //
     //
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        print("numberOfRowsInSection")
+        
         return (self.recipe_review?.count ?? 1)!
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -62,7 +52,7 @@ class RecipeDetailViewController: UIViewController, UITableViewDelegate, UITable
     //
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        recipeList(recipePk: recipepk_r)
         print("viewDidLoad")
         self.navigationItem.title = "레시피상세"
         
@@ -74,7 +64,9 @@ class RecipeDetailViewController: UIViewController, UITableViewDelegate, UITable
         
     }
     override func viewWillAppear(_ animated: Bool) {
-        recipeList(recipePk: recipepk_r)
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
+        }
         print("viewWillAppear")
     }
     override func viewWillDisappear(_ animated: Bool) {
@@ -93,7 +85,7 @@ extension RecipeDetailViewController {
             switch response.result {
             case .success(let value):
                 let json = JSON(value)
-                print("JSON",json)
+                
                 self.recipe_review = DataCentre.shared.recipeReviewList(response: json["reviews"]) // Review
                 print("DATATELECOM",self.recipe_review ?? "no")
                 DispatchQueue.main.async {

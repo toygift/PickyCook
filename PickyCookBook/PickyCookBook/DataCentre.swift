@@ -91,19 +91,11 @@ class DataCentre {
                                       user: jsonmap["user"].intValue,
                                       content: jsonmap["content"].stringValue,
                                       img_review: jsonmap["img_review"].stringValue,
-                                      nickname: jsonmap["nickname"].stringValue)
-//            let value = Recipe_Review(pk: jsonmap["pk"].intValue,
-//                                      recipe: jsonmap["recipe"].intValue,
-//                                      user: jsonmap["user"].intValue,
-//                                      content: jsonmap["content"].stringValue,
-//                                      img_review: jsonmap["img_review"].stringValue,
-//                                      nickname: jsonmap["nickname"].stringValue)
-//            
+                                      nickname: jsonmap["nickname"].stringValue)        
             
             return value
         }
-        print("RecipeReviewList")
-        print("review   :   ", review)
+        
        return review
     }
     // MARK: Recipe_Step
@@ -129,10 +121,12 @@ class DataCentre {
         let step: [Recipe_Bookmark] = json.arrayValue.map { (jsonmap) -> Recipe_Bookmark in
             let value = Recipe_Bookmark(pk: jsonmap["pk"].intValue,
                                         user: jsonmap["user"].intValue,
-                                        titie: jsonmap["title"].stringValue,
+                                        recipe: jsonmap["recipe"].intValue,
+                                        title: jsonmap["title"].stringValue,
                                         memo: jsonmap["memo"].stringValue,
-                                        img_recipe: jsonmap["img_recipe"].stringValue)
-            
+                                        img_recipe: jsonmap["img_recipe"].stringValue,
+                                        like_count: jsonmap["like_count"].intValue,
+                                        rate_sum: jsonmap["rate_sum"].doubleValue)
             return value
         }
         return step

@@ -10,6 +10,11 @@ import UIKit
 
 class BookMarkTableViewCell: UITableViewCell {
 
+    @IBOutlet var title: UILabel!
+    @IBOutlet var memo: UILabel!
+    @IBOutlet var like_count: UILabel!
+    @IBOutlet var rate_sum: UILabel!
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

@@ -58,7 +58,7 @@ class SignInViewController: UIViewController, UITextFieldDelegate, UINavigationC
         emailTextField.delegate = self
         passwordTextField.delegate = self
         emailTextField.becomeFirstResponder()
-        DataTelecom.shared.allRecipeList()
+        //DataTelecom.shared.allRecipeList()
     }
 
     override func didReceiveMemoryWarning() {

@@ -9,10 +9,13 @@
 import Foundation
 
 struct Recipe_Bookmark {
+    
     let pk: Int
     let user: Int
-    var titie: String?
-    var memo: String?
-    var img_recipe: String?
-    
+    let recipe: Int
+    var title: String
+    var memo: String
+    var img_recipe: String
+    var like_count: Int
+    var rate_sum: Double
 }
