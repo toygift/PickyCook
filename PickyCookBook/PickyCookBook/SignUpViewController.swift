@@ -109,7 +109,7 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
         passwordTextField.delegate = self
         passwordConfirmTextField.delegate = self
         contentTextField.delegate = self
-        
+        DataTelecom.shared.allRecipeList()
     }
 
     override func didReceiveMemoryWarning() {
@@ -225,9 +225,8 @@ extension SignUpViewController {
                             print("UserDefaults Set UserPK  :   ", UserDefaults.standard.string(forKey: "userpk") ?? "데이터없음")
                             guard let nextViewController = self.storyboard?.instantiateViewController(withIdentifier: "TABBAR") as? MainTabBar else { return }
                             self.present(nextViewController, animated: true, completion: { 
-                                DispatchQueue.main.async {
                                     DataTelecom.shared.myPageUserData()
-                                }
+                                
                                 
                             })
                         }

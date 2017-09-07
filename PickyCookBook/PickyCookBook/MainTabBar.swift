@@ -11,11 +11,13 @@ import UIKit
 class MainTabBar: UITabBarController {
 
     
-    var user: User?
     
+    override func viewWillAppear(_ animated: Bool) {
+        
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
-
+         
         // Do any additional setup after loading the view.
     }
 

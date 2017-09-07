@@ -58,6 +58,7 @@ class SignInViewController: UIViewController, UITextFieldDelegate, UINavigationC
         emailTextField.delegate = self
         passwordTextField.delegate = self
         emailTextField.becomeFirstResponder()
+        DataTelecom.shared.allRecipeList()
     }
 
     override func didReceiveMemoryWarning() {
@@ -102,9 +103,9 @@ extension SignInViewController {
                     print("UserDefaults Set Token   :   ", UserDefaults.standard.string(forKey: "token") ?? "데이터없음")
                     UserDefaults.standard.set(userPK, forKey: "userpk")
                     print("UserDefaults Set UserPK  :   ", UserDefaults.standard.string(forKey: "userpk") ?? "데이터없음")
-                    DispatchQueue.main.async {
-                        DataTelecom.shared.myPageUserData()
-                    }
+
+                    DataTelecom.shared.myPageUserData()
+                    
                     guard let nextViewController = self.storyboard?.instantiateViewController(withIdentifier: "TABBAR") as? MainTabBar else { return }
                     self.present(nextViewController, animated: true, completion: nil)
                 }

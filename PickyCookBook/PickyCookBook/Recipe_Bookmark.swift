@@ -9,5 +9,10 @@
 import Foundation
 
 struct Recipe_Bookmark {
+    let pk: Int
+    let user: Int
+    var titie: String?
+    var memo: String?
+    var img_recipe: String?
     
 }

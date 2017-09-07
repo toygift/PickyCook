@@ -15,7 +15,7 @@ struct Recipe {
     var img_recipe: String
     var ingredient: String
     let description: String
-    var like_count: Double
+    var like_count: Int
     var rate_sum: Double
     var tag: String
 

@@ -12,7 +12,9 @@ class BookMarkViewController: UIViewController, UITableViewDelegate, UITableView
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+//        DataTelecom.shared.myPageUserData()
+//        DataTelecom.shared.recipeList()
+        DataTelecom.shared.bookmarkList()
         // Do any additional setup after loading the view.
     }
 
