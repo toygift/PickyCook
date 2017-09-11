@@ -53,6 +53,7 @@ class RecipeDetailViewController: UIViewController, UITableViewDelegate, UITable
     override func viewDidLoad() {
         super.viewDidLoad()
         recipeList(recipePk: recipepk_r)
+        UIApplication.shared.isNetworkActivityIndicatorVisible = true
         print("viewDidLoad")
         self.navigationItem.title = "레시피상세"
         
@@ -91,8 +92,10 @@ extension RecipeDetailViewController {
                 DispatchQueue.main.async {
                     self.tableView.reloadData()
                 }
+                UIApplication.shared.isNetworkActivityIndicatorVisible = false
             case .failure(let error):
                 print(error)
+                UIApplication.shared.isNetworkActivityIndicatorVisible = false
                 
             }
         }

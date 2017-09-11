@@ -37,6 +37,7 @@ class RecipeSearchViewController: UIViewController, UISearchBarDelegate, UITable
         guard let searchText = recipe_search.text else { return }
         recipeSearch(recipeSearch: searchText)
         recipe_search.resignFirstResponder()
+        UIApplication.shared.isNetworkActivityIndicatorVisible = true
         
     }
     func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
@@ -109,8 +110,10 @@ extension RecipeSearchViewController {
                 DispatchQueue.main.async {
                     self.tableView.reloadData()
                 }
+                UIApplication.shared.isNetworkActivityIndicatorVisible = false
             case .failure(let error):
                 print(error)
+                UIApplication.shared.isNetworkActivityIndicatorVisible = false
                 
             }
         }

@@ -28,11 +28,14 @@ class DataTelecom {
         print("====================================================================")
         print("========================myPageUserData()============================")
         print("====================================================================")
-        guard let token = UserDefaults.standard.string(forKey: "token") else { return }
-        let userPK = UserDefaults.standard.object(forKey: "userpk") as! Int
-        let headers: HTTPHeaders = ["Authorization":"token \(token)"]
+//        guard let token = UserDefaults.standard.string(forKey: "token") else { return }
+//        let userpk = UserDefaults.standard.object(forKey: "userpk") as! Int
         
-        let call = Alamofire.request(rootDomain + "member/detail/\(userPK)/", method: .get, headers: headers)
+//        let headers: HTTPHeaders = ["Authorization":"token \(token)"]
+        let tokenValue = TokenAuth()
+        guard let headers: HTTPHeaders = tokenValue.getAuthHeaders() else { return }
+        guard let userpk = tokenValue.load("com.toygift.PickyCookBook", account: "userpk") else { return }
+        let call = Alamofire.request(rootDomain + "member/detail/\(userpk)/", method: .get, headers: headers)
         
         call.responseJSON { (response) in
             switch response.result {

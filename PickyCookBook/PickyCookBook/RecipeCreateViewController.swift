@@ -43,7 +43,7 @@ class RecipeCreateViewController: UIViewController, UITextFieldDelegate, UIImage
         guard let img_recipe = captureImage else { return }
         
         createRecipe(title: title, description: description, ingredient: ingredient, tag: tag, img_recipe: img_recipe)
-        
+        UIApplication.shared.isNetworkActivityIndicatorVisible = true
         titleTextField.text = ""
         descriptionTextField.text = ""
         ingredientTextField.text = ""
@@ -99,13 +99,13 @@ extension RecipeCreateViewController {
     
     func createRecipe(title: String, description: String, ingredient: String, tag: String, img_recipe: UIImage) {
         
-        guard let token = UserDefaults.standard.string(forKey: "token") else { return }
-        
-        
+//        guard let token = UserDefaults.standard.string(forKey: "token") else { return }
         let url = "http://pickycookbook.co.kr/api/recipe/create/"
         let parameters : [String:Any] = ["title":title, "description":description, "ingredient":ingredient,"tag":tag, "img_recipe":img_recipe]
-        let headers: HTTPHeaders = ["Authorization":"token \(token)"]
+//        let headers: HTTPHeaders = ["Authorization":"token \(token)"]
         
+        let tokenValue = TokenAuth()
+        guard let headers = tokenValue.getAuthHeaders() else { return }
         
         Alamofire.upload(multipartFormData: { (multipartFormData) in
             
@@ -148,17 +148,18 @@ extension RecipeCreateViewController {
                             nextViewControllers.select = false
                             self.navigationController?.pushViewController(nextViewController, animated: true)
                         }
-                        
+                        UIApplication.shared.isNetworkActivityIndicatorVisible = false
                     case .failure(let error):
                         print(error)
+                        UIApplication.shared.isNetworkActivityIndicatorVisible = false
                     }
-                    print("리스폰스스스스스: ",response)
                     
                 })
                 
             case .failure(let encodingError):
                 print(encodingError)
                 Toast(text: "네트워크에러").show()
+                UIApplication.shared.isNetworkActivityIndicatorVisible = false
             }
         }
     }

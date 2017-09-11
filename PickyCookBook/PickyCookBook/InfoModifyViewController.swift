@@ -50,19 +50,24 @@ class InfoModifyViewController: UIViewController, UITextFieldDelegate, UIImagePi
         guard let password2 = newModifyPasswordConfirm.text else { return }
         guard let content = modifyContent.text else { return }
         self.fetchUserData(nickname: nickname, password: password, password1: password1, password2: password2, content: content)
+        UIApplication.shared.isNetworkActivityIndicatorVisible = true
     }
     // MARK: 정보수정(사진제외)
     //
     //
     func fetchUserData(nickname: String, password: String, password1: String, password2: String, content: String) {
         
-        guard let token = UserDefaults.standard.string(forKey: "token") else { return }
-        let userPK = UserDefaults.standard.object(forKey: "userpk") as! Int
+        
+//        guard let token = UserDefaults.standard.string(forKey: "token") else { return }
+//        let userpk = UserDefaults.standard.object(forKey: "userpk") as! Int
         let parameters: Parameters = ["nickname":nickname, "password":password,"password1":password1,"password2":password2,"content":content]
-        let headers: HTTPHeaders = ["Authorization":"token \(token)"]
+//        let headers: HTTPHeaders = ["Authorization":"token \(token)"]
+        let tokenValue = TokenAuth()
+        guard let headers = tokenValue.getAuthHeaders() else { return }
+        guard let userpk = tokenValue.load("com.toygift.PickyCookBook", account: "userpk") else { return }
         
         
-        let call = Alamofire.request(rootDomain + "member/update/\(userPK)/", method: .patch, parameters: parameters, headers: headers)
+        let call = Alamofire.request(rootDomain + "member/update/\(userpk)/", method: .patch, parameters: parameters, headers: headers)
         
         call.responseJSON { (response) in
             switch response.result {
@@ -90,9 +95,11 @@ class InfoModifyViewController: UIViewController, UITextFieldDelegate, UIImagePi
                         DataTelecom.shared.myPageUserData()
                     }
                     self.navigationController?.popViewController(animated: true)
+                    UIApplication.shared.isNetworkActivityIndicatorVisible = false
                 }
             case .failure(let error):
                 print(error)
+                UIApplication.shared.isNetworkActivityIndicatorVisible = false
                 
             }
         }
@@ -106,12 +113,15 @@ class InfoModifyViewController: UIViewController, UITextFieldDelegate, UIImagePi
     //
     //
     func fetchUserPhoto(img_profile: UIImage){
-        guard let token = UserDefaults.standard.string(forKey: "token") else { return }
-        let userPK = UserDefaults.standard.object(forKey: "userpk") as! Int
-        let url = rootDomain + "member/update/\(userPK)/"
-        //let parameters: Parameters = ["img_profile": img_profile]
-        let headers: HTTPHeaders = ["Authorization":"token \(token)"]
+//        guard let token = UserDefaults.standard.string(forKey: "token") else { return }
+//        let userpk = UserDefaults.standard.object(forKey: "userpk") as! Int
         
+        //let parameters: Parameters = ["img_profile": img_profile]
+//        let headers: HTTPHeaders = ["Authorization":"token \(token)"]
+        let tokenValue = TokenAuth()
+        guard let headers = tokenValue.getAuthHeaders() else { return }
+        guard let userpk = tokenValue.load("com.toygift.PickyCookBook", account: "userpk") else { return }
+        let url = rootDomain + "member/update/\(userpk)/"
         Alamofire.upload(multipartFormData: { (multipartFormData) in
             if let imgData = UIImageJPEGRepresentation(img_profile, 0.25) {
                 multipartFormData.append(imgData, withName: "img_profile", fileName: "photo.jpg", mimeType: "image/jpg")
@@ -131,7 +141,7 @@ class InfoModifyViewController: UIViewController, UITextFieldDelegate, UIImagePi
                             DataTelecom.shared.myPageUserData()
                         }
                         Toast(text: "사진이변경됨").show()
-                        
+                        UIApplication.shared.isNetworkActivityIndicatorVisible = false
                     case .failure(let error):
                         print(error)
                     }
@@ -139,6 +149,7 @@ class InfoModifyViewController: UIViewController, UITextFieldDelegate, UIImagePi
             case .failure(let error):
                 print(error)
                 Toast(text: "네트워크에러").show()
+                UIApplication.shared.isNetworkActivityIndicatorVisible = false
             }
         }
     }

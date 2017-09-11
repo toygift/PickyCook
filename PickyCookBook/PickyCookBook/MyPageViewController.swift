@@ -46,7 +46,9 @@ class MyPageViewController: UIViewController {
             DataTelecom.shared.user = nil
             print(DataTelecom.shared.user ?? "데이터 없음!")
         }))
-        self.present(alertController, animated: true, completion: nil)
+        self.present(alertController, animated: true, completion: {
+            UIApplication.shared.isNetworkActivityIndicatorVisible = true
+        })
     }
     // MARK: 로그아웃
     // 로그아웃버튼 클릭시 Alert창 띄움
@@ -59,7 +61,9 @@ class MyPageViewController: UIViewController {
             DataTelecom.shared.user = nil
             print(DataTelecom.shared.user ?? "데이터 없음!")
         }))
-        self.present(alertController, animated: true, completion: nil)
+        self.present(alertController, animated: true, completion: {
+            UIApplication.shared.isNetworkActivityIndicatorVisible = true
+        })
     }
     
     // MARK: Life Cycle
@@ -83,14 +87,16 @@ class MyPageViewController: UIViewController {
         self.email.text = DataTelecom.shared.user?.email
         //        let back = UIImage(named: "no_image.jpg")
         //        self.img_profile.setImage(back?.withRenderingMode(.alwaysOriginal), for: .normal)
-        
-        if let path = DataTelecom.shared.user?.img_profile {
-            if let imageData = try? Data(contentsOf: URL(string: path)!) {
-                let back = UIImage(data: imageData)
-                self.img_profile.setImage(back?.withRenderingMode(.alwaysOriginal), for: .normal)
-                
+        DispatchQueue.main.async {
+            if let path = DataTelecom.shared.user?.img_profile {
+                if let imageData = try? Data(contentsOf: URL(string: path)!) {
+                    let back = UIImage(data: imageData)
+                    self.img_profile.setImage(back?.withRenderingMode(.alwaysOriginal), for: .normal)
+                    
+                }
             }
         }
+        
     }
     
     override func didReceiveMemoryWarning() {
@@ -103,11 +109,16 @@ extension MyPageViewController {
     
     
     func userWithDrawal(){
-        guard let token = UserDefaults.standard.string(forKey: "token") else { return }
-        let userPK = UserDefaults.standard.object(forKey: "userpk") as! Int
-        let headers: HTTPHeaders = ["Authorization":"token \(token)"]
+//        guard let token = UserDefaults.standard.string(forKey: "token") else { return }
+//        let userpk = UserDefaults.standard.object(forKey: "userpk") as! Int
+//        let headers: HTTPHeaders = ["Authorization":"token \(token)"]
         
-        let call = Alamofire.request(rootDomain + "member/update/\(userPK)/", method: .delete, headers: headers)
+        
+        let tokenValue = TokenAuth()
+        guard let headers: HTTPHeaders = tokenValue.getAuthHeaders() else { return }
+        guard let userpk = tokenValue.load("com.toygift.PickyCookBook", account: "userpk") else { return }
+        
+        let call = Alamofire.request(rootDomain + "member/update/\(userpk)/", method: .delete, headers: headers)
         call.responseJSON { (response) in
             switch response.result {
             case .success(let value):
@@ -118,16 +129,22 @@ extension MyPageViewController {
                     guard let nextViewController = self.storyboard?.instantiateViewController(withIdentifier: "SIGNIN") as? SignInViewController else { return }
                     self.present(nextViewController, animated: true, completion: nil)
                 }
-                
+                tokenValue.delete("com.toygift.PickyCookBook", account: "accessToken")
+                tokenValue.delete("com.toygift.PickyCookBook", account: "userpk")
+                UIApplication.shared.isNetworkActivityIndicatorVisible = false
             case .failure(let error):
                 print(error)
+                UIApplication.shared.isNetworkActivityIndicatorVisible = false
             }
         }
     }
     
     func userSignOut(){
-        guard let token = UserDefaults.standard.string(forKey: "token") else { return }
-        let headers: HTTPHeaders = ["Authorization":"token \(token)"]
+//        guard let token = UserDefaults.standard.string(forKey: "token") else { return }
+//        let headers: HTTPHeaders = ["Authorization":"token \(token)"]
+
+        let tokenValue = TokenAuth()
+        guard let headers = tokenValue.getAuthHeaders() else { return }
         
         let call = Alamofire.request(rootDomain + "member/logout/", method: .post, headers: headers)
         call.responseJSON { (response) in
@@ -140,9 +157,12 @@ extension MyPageViewController {
                     guard let nextViewController = self.storyboard?.instantiateViewController(withIdentifier: "SIGNIN") as? SignInViewController else { return }
                     self.present(nextViewController, animated: true, completion: nil)
                 }
-                
+                tokenValue.delete("com.toygift.PickyCookBook", account: "accessToken")
+                tokenValue.delete("com.toygift.PickyCookBook", account: "userpk")
+                UIApplication.shared.isNetworkActivityIndicatorVisible = false
             case .failure(let error):
                 print(error)
+                UIApplication.shared.isNetworkActivityIndicatorVisible = false
             }
         }
     }

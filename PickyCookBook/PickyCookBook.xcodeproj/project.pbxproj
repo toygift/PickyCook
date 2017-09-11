@@ -31,6 +31,7 @@
 		3F81D0281F631FB900D256EC /* RecipeSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F81D0271F631FB900D256EC /* RecipeSearchViewController.swift */; };
 		3F81D02A1F631FD200D256EC /* RecipeSearchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F81D0291F631FD200D256EC /* RecipeSearchTableViewCell.swift */; };
 		3F81D02C1F63289300D256EC /* Recipe_Search.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F81D02B1F63289300D256EC /* Recipe_Search.swift */; };
+		3F81D02E1F66855900D256EC /* TokenAuth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F81D02D1F66855900D256EC /* TokenAuth.swift */; };
 		3F9E28DB1F5EAD6000B661D2 /* BookMarkViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F9E28DA1F5EAD6000B661D2 /* BookMarkViewController.swift */; };
 		3F9E28DD1F5EAEAB00B661D2 /* BookMarkTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F9E28DC1F5EAEAB00B661D2 /* BookMarkTableViewCell.swift */; };
 		3F9E28E51F60306200B661D2 /* Recipe_Bookmark.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F9E28E41F60306200B661D2 /* Recipe_Bookmark.swift */; };
@@ -69,6 +70,7 @@
 		3F81D0271F631FB900D256EC /* RecipeSearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecipeSearchViewController.swift; sourceTree = "<group>"; };
 		3F81D0291F631FD200D256EC /* RecipeSearchTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecipeSearchTableViewCell.swift; sourceTree = "<group>"; };
 		3F81D02B1F63289300D256EC /* Recipe_Search.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Recipe_Search.swift; sourceTree = "<group>"; };
+		3F81D02D1F66855900D256EC /* TokenAuth.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TokenAuth.swift; sourceTree = "<group>"; };
 		3F9E28DA1F5EAD6000B661D2 /* BookMarkViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BookMarkViewController.swift; sourceTree = "<group>"; };
 		3F9E28DC1F5EAEAB00B661D2 /* BookMarkTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BookMarkTableViewCell.swift; sourceTree = "<group>"; };
 		3F9E28E41F60306200B661D2 /* Recipe_Bookmark.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Recipe_Bookmark.swift; sourceTree = "<group>"; };
@@ -179,6 +181,7 @@
 			isa = PBXGroup;
 			children = (
 				3F79715E1F5CE9810074C3DF /* SignInViewController.swift */,
+				3F81D02D1F66855900D256EC /* TokenAuth.swift */,
 			);
 			name = SIGNIN;
 			sourceTree = "<group>";
@@ -425,6 +428,7 @@
 				3F79715F1F5CE9810074C3DF /* SignInViewController.swift in Sources */,
 				3FB32EBE1F6144C400C4B9FC /* RecipeDetailTableViewCell.swift in Sources */,
 				3FB32EBC1F610C4100C4B9FC /* RecipeDetailViewController.swift in Sources */,
+				3F81D02E1F66855900D256EC /* TokenAuth.swift in Sources */,
 				3F7971481F59F3030074C3DF /* Recipe_Step.swift in Sources */,
 				3FAE669C1F5DB710007A13E7 /* InfoModifyViewController.swift in Sources */,
 				3F7971651F5CFD660074C3DF /* DataTelecom.swift in Sources */,

@@ -25,11 +25,14 @@ class SignInViewController: UIViewController, UITextFieldDelegate, UINavigationC
         guard let email = emailTextField.text else { return }
         guard let password = passwordTextField.text else { return }
         self.signIn(email: email, password: password)
+        UIApplication.shared.isNetworkActivityIndicatorVisible = true
     }
     
     // MARK: Facebook signin
     @IBAction func signInFacebook(_ sender: UIButton){
-      sender.addTarget(self, action: #selector(handleCostomFBlogin), for: .touchUpInside)
+        
+        sender.addTarget(self, action: #selector(handleCostomFBlogin), for: .touchUpInside)
+        UIApplication.shared.isNetworkActivityIndicatorVisible = true
     }
     func handleCostomFBlogin() {
         FBSDKLoginManager().logIn(withReadPermissions: ["email", "public_profile"], from: self) { (result, err) in
@@ -137,22 +140,28 @@ extension SignInViewController {
                     break
                 } else {
                     
-                    let userToken = json["token"].stringValue
-                    let userPK = json["pk"].intValue
+                    let accessToken = json["token"].stringValue
+                    let userpk = json["pk"].intValue
                     
-                    UserDefaults.standard.set(userToken, forKey: "token")
-                    print("UserDefaults Set Token   :   ", UserDefaults.standard.string(forKey: "token") ?? "데이터없음")
-                    UserDefaults.standard.set(userPK, forKey: "userpk")
-                    print("UserDefaults Set UserPK  :   ", UserDefaults.standard.string(forKey: "userpk") ?? "데이터없음")
+                    let tokenValue = TokenAuth()
+                    tokenValue.save("com.toygift.PickyCookBook", account: "accessToken", value: accessToken)
+                    tokenValue.save("com.toygift.PickyCookBook", account: "userpk", value: "\(userpk)")
+//                    UserDefaults.standard.set(userToken, forKey: "token")
+//                    print("UserDefaults Set Token   :   ", UserDefaults.standard.string(forKey: "token") ?? "데이터없음")
+//                    UserDefaults.standard.set(userpk, forKey: "userpk")
+//                    print("UserDefaults Set UserPK  :   ", UserDefaults.standard.string(forKey: "userpk") ?? "데이터없음")
 
                     DataTelecom.shared.myPageUserData()
                     
                     guard let nextViewController = self.storyboard?.instantiateViewController(withIdentifier: "TABBAR") as? MainTabBar else { return }
-                    self.present(nextViewController, animated: true, completion: nil)
+                    self.present(nextViewController, animated: true, completion: { 
+                        UIApplication.shared.isNetworkActivityIndicatorVisible = false
+                    })
                 }
                 
             case .failure(let error):
                 print(error)
+                UIApplication.shared.isNetworkActivityIndicatorVisible = false
             }
         }
     }
@@ -173,21 +182,31 @@ extension SignInViewController {
                 print("=================================================================")
                 print("======================    FacebookSignIn    =====================")
                 print("=================================================================")
-                let userToken = json["token"].stringValue
-                let userPK = json["pk"].intValue
-                UserDefaults.standard.set(userToken, forKey: "token")
-                print("UserDefaults Set Token   :   ", UserDefaults.standard.string(forKey: "token") ?? "데이터없음")
                 
-                UserDefaults.standard.set(userPK, forKey: "userpk")
-                print("UserDefaults Set UserPK  :   ", UserDefaults.standard.string(forKey: "userpk") ?? "데이터없음")
-                // UserDefaults 에 토큰 저장
+//                UserDefaults.standard.set(userToken, forKey: "token")
+//                print("UserDefaults Set Token   :   ", UserDefaults.standard.string(forKey: "token") ?? "데이터없음")
+                let accessToken = json["token"].stringValue
+                let userpk = json["pk"].intValue
+                
+                let tokenValue = TokenAuth()
+                tokenValue.save("com.toygift.PickyCookBook", account: "accessToken", value: accessToken)
+                tokenValue.save("com.toygift.PickyCookBook", account: "userpk", value: "\(userpk)")
+                
+                
+//                UserDefaults.standard.set(userpk, forKey: "userpk")
+//                print("UserDefaults Set UserPK  :   ", UserDefaults.standard.string(forKey: "userpk") ?? "데이터없음")
+//                // UserDefaults 에 토큰 저장
                 
                 
                 guard let nextViewController = self.storyboard?.instantiateViewController(withIdentifier: "TABBAR") as? MainTabBar else { return }
-                self.present(nextViewController, animated: true, completion: nil)
+                self.present(nextViewController, animated: true, completion: {
+                  UIApplication.shared.isNetworkActivityIndicatorVisible = false
+                })
+                    
                 
             case .failure(let error):
                 Toast(text: "네트워크에러").show()
+                UIApplication.shared.isNetworkActivityIndicatorVisible = false
                 print(error)
             }
         }

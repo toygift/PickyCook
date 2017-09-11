@@ -45,6 +45,7 @@ class RecipeStepCreateViewController: UIViewController, UITextFieldDelegate, UII
         guard let is_timer = is_timer else { return }
         
         recipeStepCreate(recipepk: recipepk, description: desc, is_timer: is_timer, timer: timer, img_step: captureImage)
+        UIApplication.shared.isNetworkActivityIndicatorVisible = true
     }
     
     @IBAction func completeStep(_ sender: UIButton) {
@@ -54,7 +55,9 @@ class RecipeStepCreateViewController: UIViewController, UITextFieldDelegate, UII
             self.navigationController?.popViewController(animated: true)
         }))
         
-        self.present(alert, animated: true, completion: nil)
+        self.present(alert, animated: true, completion: {
+          UIApplication.shared.isNetworkActivityIndicatorVisible = true
+        })
         
     }
     // MARK: Life Cycle
@@ -88,12 +91,14 @@ class RecipeStepCreateViewController: UIViewController, UITextFieldDelegate, UII
 }
 extension RecipeStepCreateViewController {
     func recipeStepCreate(recipepk: Int, description: String, is_timer: Bool, timer: Int, img_step:UIImage){
-        guard let token = UserDefaults.standard.string(forKey: "token") else { return }
+//        guard let token = UserDefaults.standard.string(forKey: "token") else { return }
         
         let url = "http://pickycookbook.co.kr/api/recipe/step/create/"
         let parameters : [String:Any] = ["recipe":recipepk, "description": description, "is_timer":is_timer, "timer":timer*60, "img_step":img_step]
-        let headers: HTTPHeaders = ["Authorization":"token \(token)"]
+//        let headers: HTTPHeaders = ["Authorization":"token \(token)"]
         
+        let tokenValue = TokenAuth()
+        guard let headers = tokenValue.getAuthHeaders() else { return }
         
         Alamofire.upload(multipartFormData: { (multipartFormData) in
             
@@ -131,17 +136,18 @@ extension RecipeStepCreateViewController {
                         } else {
                             guard let nextViewController = self.storyboard?.instantiateViewController(withIdentifier: "RECIPESTEP") else { return }
                             self.navigationController?.pushViewController(nextViewController, animated: true)
-                           
-                            
                         }
+                        UIApplication.shared.isNetworkActivityIndicatorVisible = false
                     case .failure(let error):
                         print(error)
+                        UIApplication.shared.isNetworkActivityIndicatorVisible = false
                     }
               
                 })
                 
             case .failure(let encodingError):
                 print(encodingError)
+                UIApplication.shared.isNetworkActivityIndicatorVisible = false
             }
         }
         

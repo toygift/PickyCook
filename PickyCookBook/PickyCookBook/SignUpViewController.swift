@@ -59,6 +59,7 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
         }
         
         signUp(email: email, nickname: nickname, password: password, passwordConfirm: passwordConfirm, content: content, img_profile: captureImage)
+        UIApplication.shared.isNetworkActivityIndicatorVisible = true
         
     }
     @IBAction func signUpCancel(_ sender: UIButton) {
@@ -210,22 +211,29 @@ extension SignUpViewController {
                         } else if !json["nickname_error"].stringValue.isEmpty {
                             Toast(text: "사용중인 nickname입니다.").show()
                         } else {
-                            let userToken = json["token"].stringValue
-                            let userPK = json["pk"].intValue
+                            let accessToken = json["token"].stringValue
+                            let userpk = json["pk"].intValue
                             
-                            UserDefaults.standard.set(userToken, forKey: "token")
-                            print("UserDefaults Set Token   :   ", UserDefaults.standard.string(forKey: "token") ?? "데이터없음")
-                            UserDefaults.standard.set(userPK, forKey: "userpk")
-                            print("UserDefaults Set UserPK  :   ", UserDefaults.standard.string(forKey: "userpk") ?? "데이터없음")
+//                            UserDefaults.standard.set(userToken, forKey: "token")
+//                            print("UserDefaults Set Token   :   ", UserDefaults.standard.string(forKey: "token") ?? "데이터없음")
+                            let tokenValue = TokenAuth()
+                            tokenValue.save("com.toygift.PickyCookBook", account: "accessToken", value: accessToken)
+                            tokenValue.save("com.toygift.PickyCookBook", account: "userpk", value: "\(userpk)")
+
+//                            UserDefaults.standard.set(userpk, forKey: "userpk")
+//                            print("UserDefaults Set UserPK  :   ", UserDefaults.standard.string(forKey: "userpk") ?? "데이터없음")
                             guard let nextViewController = self.storyboard?.instantiateViewController(withIdentifier: "TABBAR") as? MainTabBar else { return }
-                            self.present(nextViewController, animated: true, completion: { 
-                                    DataTelecom.shared.myPageUserData()
+                            self.present(nextViewController, animated: true, completion: {
+                                
+                                DataTelecom.shared.myPageUserData()
+                                UIApplication.shared.isNetworkActivityIndicatorVisible = false
                                 
                                 
                             })
                         }
                     case .failure(let error):
                         print(error)
+                        UIApplication.shared.isNetworkActivityIndicatorVisible = false
                     }
                     
                 })

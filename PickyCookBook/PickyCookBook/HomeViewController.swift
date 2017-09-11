@@ -34,46 +34,46 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ALLRECIPE", for: indexPath) as? AllRecipeTableViewCell
-        
-        if select == false {
-            let count_like = self.recipes?[indexPath.row].like_count
-            let sum_rate = self.recipes?[indexPath.row].rate_sum
+        DispatchQueue.main.async {
             
-            cell?.title.text = self.recipes?[indexPath.row].title
-            cell?.descriptions.text = self.recipes?[indexPath.row].description
-            cell?.tags.text = self.recipes?[indexPath.row].tag
-            cell?.like_count.text = "좋아요 " + "\(count_like ?? 1)"
-            cell?.rate_sum.text = "평점 " + "\(sum_rate ?? 1)"
-            
-            DispatchQueue.main.async {
+            if self.select == false {
+                let count_like = self.recipes?[indexPath.row].like_count
+                let sum_rate = self.recipes?[indexPath.row].rate_sum
+                
+                cell?.title.text = self.recipes?[indexPath.row].title
+                cell?.descriptions.text = self.recipes?[indexPath.row].description
+                cell?.tags.text = self.recipes?[indexPath.row].tag
+                cell?.like_count.text = "좋아요 " + "\(count_like ?? 1)"
+                cell?.rate_sum.text = "평점 " + "\(sum_rate ?? 1)"
+                
+                
                 if let path = self.recipes?[indexPath.row].img_recipe {
                     if let image = try? Data(contentsOf: URL(string: path)!) {
                         cell?.img_recipe.image = UIImage(data: image)
                     }
                 }
-            }
-            
-            
-        } else if select == true {
-            let count_like = self.myrecipes?[indexPath.row].like_count
-            let sum_rate = self.myrecipes?[indexPath.row].rate_sum
-            
-            cell?.title.text = self.myrecipes?[indexPath.row].title
-            cell?.descriptions.text = self.myrecipes?[indexPath.row].description
-            cell?.tags.text = self.myrecipes?[indexPath.row].tag
-            cell?.like_count.text = "좋아요 " + "\(count_like ?? 1)"
-            cell?.rate_sum.text = "평점 " + "\(sum_rate ?? 1)"
-            
-            DispatchQueue.main.async {
+                
+                
+                
+            } else if self.select == true {
+                let count_like = self.myrecipes?[indexPath.row].like_count
+                let sum_rate = self.myrecipes?[indexPath.row].rate_sum
+                
+                cell?.title.text = self.myrecipes?[indexPath.row].title
+                cell?.descriptions.text = self.myrecipes?[indexPath.row].description
+                cell?.tags.text = self.myrecipes?[indexPath.row].tag
+                cell?.like_count.text = "좋아요 " + "\(count_like ?? 1)"
+                cell?.rate_sum.text = "평점 " + "\(sum_rate ?? 1)"
+                
+                
                 if let path = self.myrecipes?[indexPath.row].img_recipe {
                     if let image = try? Data(contentsOf: URL(string: path)!) {
                         cell?.img_recipe.image = UIImage(data: image)
                     }
                 }
             }
-            
-            
         }
+        
         return cell!
     }
     
@@ -101,8 +101,8 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
-       
-            let bookmark = UITableViewRowAction(style: .default, title: "북마크") { (action, indexPath) in
+        
+        let bookmark = UITableViewRowAction(style: .default, title: "북마크") { (action, indexPath) in
             let recipepk = self.recipes?[indexPath.row].pk
             print("ppkpkpkpkpkpkpkpkpkpkpkpkpk     ",recipepk ?? 1)
             
@@ -115,6 +115,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
                     if title.isEmpty == false {
                         
                         self.bookmarkRecipe(recipepks: recipepk!, memo: title)
+                        UIApplication.shared.isNetworkActivityIndicatorVisible = true
                         self.tableView.reloadData()
                     } else {
                         
@@ -135,16 +136,27 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     //
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // 임시코드
+        let tk = TokenAuth()
+        if let accessToken = tk.load("com.toygift.PickyCookBook", account: "userToken") {
+            print("엑세스토큰 = \(accessToken)")
+        } else {
+            print("엑세서 토큰 없음")
+        }
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
         print("HOMEviewWillAppear")
         
         if select == false {
+            UIApplication.shared.isNetworkActivityIndicatorVisible = true
             self.navigationItem.title = "레시피"
             self.allRecipeList()
             print("select : false", select)
         } else if select == true {
+            UIApplication.shared.isNetworkActivityIndicatorVisible = true
             self.navigationItem.title = "내가작성한레시피"
             self.mycreateRecipe()
             print("select : true", select)
@@ -195,8 +207,10 @@ extension HomeViewController {
                 DispatchQueue.main.async {
                     self.tableView.reloadData()
                 }
+                UIApplication.shared.isNetworkActivityIndicatorVisible = false
             case .failure(let error):
                 print(error)
+                UIApplication.shared.isNetworkActivityIndicatorVisible = false
                 
             }
         }
@@ -208,9 +222,12 @@ extension HomeViewController {
         print("====================================================================")
         print("========================mycreateRecipe()============================")
         print("====================================================================")
-        guard let token = UserDefaults.standard.string(forKey: "token") else { return }
-        //        let userPK = UserDefaults.standard.object(forKey: "userpk") as! Int
-        let headers: HTTPHeaders = ["Authorization":"token \(token)"]
+        //        guard let token = UserDefaults.standard.string(forKey: "token") else { return }
+        //        //        let userPK = UserDefaults.standard.object(forKey: "userpk") as! Int
+        //        let headers: HTTPHeaders = ["Authorization":"token \(token)"]
+        
+        let tokenValue = TokenAuth()
+        guard let headers = tokenValue.getAuthHeaders() else { return }
         
         let call = Alamofire.request(rootDomain + "recipe/myrecipe/", method: .get, headers: headers)
         
@@ -226,8 +243,10 @@ extension HomeViewController {
                 DispatchQueue.main.async {
                     self.tableView.reloadData()
                 }
+                UIApplication.shared.isNetworkActivityIndicatorVisible = false
             case .failure(let error):
                 print(error)
+                UIApplication.shared.isNetworkActivityIndicatorVisible = false
                 
             }
         }
@@ -236,9 +255,12 @@ extension HomeViewController {
         print("====================================================================")
         print("========================bookmarkRecipe()============================")
         print("====================================================================")
-        guard let token = UserDefaults.standard.string(forKey: "token") else { return }
-        //        let userPK = UserDefaults.standard.object(forKey: "userpk") as! Int
-        let headers: HTTPHeaders = ["Authorization":"token \(token)"]
+        //        guard let token = UserDefaults.standard.string(forKey: "token") else { return }
+        //        //        let userPK = UserDefaults.standard.object(forKey: "userpk") as! Int
+        //        let headers: HTTPHeaders = ["Authorization":"token \(token)"]
+        let tokenValue = TokenAuth()
+        guard let headers = tokenValue.getAuthHeaders() else { return }
+        
         let parameters: Parameters = ["memo":memo]
         let call = Alamofire.request(rootDomain + "recipe/bookmark/\(recipepks)/", method: .post, parameters: parameters, headers: headers)
         
@@ -259,8 +281,10 @@ extension HomeViewController {
                 DispatchQueue.main.async {
                     self.tableView.reloadData()
                 }
+                UIApplication.shared.isNetworkActivityIndicatorVisible = false
             case .failure(let error):
                 print(error)
+                UIApplication.shared.isNetworkActivityIndicatorVisible = false
                 
             }
         }
