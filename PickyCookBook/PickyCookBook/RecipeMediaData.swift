@@ -54,7 +54,7 @@ extension RecipeCreateViewController {
             }
         }
         self.dismiss(animated: true) {
-            self.img_recipe.setImage(self.captureImage.withRenderingMode(.alwaysOriginal), for: .normal)
+            self.img_recipe.image = self.captureImage
         }
     }
     

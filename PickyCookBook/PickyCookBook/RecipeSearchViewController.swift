@@ -21,8 +21,9 @@ class RecipeSearchViewController: UIViewController, UISearchBarDelegate, UITable
     @IBOutlet var tableView: UITableView!
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         recipe_search.delegate = self
+        tableView.delegate = self
+        recipe_search.placeholder = "검색할 재료를 입력하세요"
         //recipe_search.isSearchResultsButtonSelected = true
     }
     
@@ -33,18 +34,33 @@ class RecipeSearchViewController: UIViewController, UISearchBarDelegate, UITable
     }
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        searchBar.placeholder = "검색할 재료를 입력하세요"
+        
         guard let searchText = recipe_search.text else { return }
         recipeSearch(recipeSearch: searchText)
         recipe_search.resignFirstResponder()
+        recipe_search.showsCancelButton = false
+        recipe_search.endEditing(true)
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
         
+    }
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        recipe_search.showsCancelButton = false
+        recipe_search.text = ""
+        recipe_search.endEditing(true)
+    }
+    func searchBar(_ searchBar: UISearchBar, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        return true
+    }
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        recipe_search.showsCancelButton = true
     }
     func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
         //disablesAutomaticKeyboardDismissal = true
     }
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         recipe_search.resignFirstResponder()
+        recipe_search.endEditing(true)
+//        tableView.touchesBegan(touches, with: recipe_search.endEditing(true))
     }
     // MARK: TableView
     //
@@ -96,7 +112,7 @@ extension RecipeSearchViewController {
         print("=======================recipeSearch()===============================")
         print("====================================================================")
         
-        let recipesURL = "http://pickycookbook.co.kr/api/recipe/search/?search=" + recipeSearch
+        let recipesURL = rootDomain + "/recipe/search/?search=" + recipeSearch
         let searchEncoding = recipesURL.addingPercentEncoding(withAllowedCharacters: NSCharacterSet.urlQueryAllowed)
         
         let call = Alamofire.request(searchEncoding!)

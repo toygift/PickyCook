@@ -19,7 +19,7 @@ class MyPageViewController: UIViewController {
     //
     @IBOutlet var email: UILabel!
     
-    @IBOutlet var img_profile: UIButton!
+    @IBOutlet var img_profile: UIImageView!
     @IBOutlet var signOut: UIButton!
     @IBOutlet var withdrawal: UIButton!
     @IBOutlet var topView: UIView!
@@ -27,7 +27,7 @@ class MyPageViewController: UIViewController {
     @IBAction func mycreateRecipe(_ sender: UIButton){
         guard let nextViewController = storyboard?.instantiateViewController(withIdentifier: "HOME") as? HomeViewController else { return }
         nextViewController.select = true
-        nextViewController.selects = true
+//        nextViewController.selects = true
         self.navigationController?.pushViewController(nextViewController, animated: true)
     }
     
@@ -76,23 +76,24 @@ class MyPageViewController: UIViewController {
         print("================================================================")
         //여기서 사진등등 띄우니 수정후에 안뜨는 문제발생
         //그래서 viewWillAppear에서 띄움
+        self.img_profile.layer.cornerRadius = self.img_profile.frame.width / 2
+        self.img_profile.layer.masksToBounds = true
     }
     
     override func viewWillAppear(_ animated: Bool) {
         print("================================================================")
         print("=========================viewWillAppear=========================")
         print("================================================================")
-        self.img_profile.clipsToBounds = true
-        self.img_profile.layer.cornerRadius = self.img_profile.frame.width/2
+        
+        
+        
         self.email.text = DataTelecom.shared.user?.email
         //        let back = UIImage(named: "no_image.jpg")
         //        self.img_profile.setImage(back?.withRenderingMode(.alwaysOriginal), for: .normal)
         DispatchQueue.main.async {
             if let path = DataTelecom.shared.user?.img_profile {
                 if let imageData = try? Data(contentsOf: URL(string: path)!) {
-                    let back = UIImage(data: imageData)
-                    self.img_profile.setImage(back?.withRenderingMode(.alwaysOriginal), for: .normal)
-                    
+                    self.img_profile.image = UIImage(data: imageData)
                 }
             }
         }
@@ -116,8 +117,8 @@ extension MyPageViewController {
         
         let tokenValue = TokenAuth()
         guard let headers: HTTPHeaders = tokenValue.getAuthHeaders() else { return }
-        guard let userpk = tokenValue.load("com.toygift.PickyCookBook", account: "userpk") else { return }
-        
+        guard let userpk = Int(tokenValue.load(serviceName, account: "userpk")!) else { return }
+        //"member/update/\(userpk)/"
         let call = Alamofire.request(rootDomain + "member/update/\(userpk)/", method: .delete, headers: headers)
         call.responseJSON { (response) in
             switch response.result {
@@ -129,8 +130,10 @@ extension MyPageViewController {
                     guard let nextViewController = self.storyboard?.instantiateViewController(withIdentifier: "SIGNIN") as? SignInViewController else { return }
                     self.present(nextViewController, animated: true, completion: nil)
                 }
-                tokenValue.delete("com.toygift.PickyCookBook", account: "accessToken")
-                tokenValue.delete("com.toygift.PickyCookBook", account: "userpk")
+                tokenValue.delete(serviceName, account: "accessToken")
+                tokenValue.delete(serviceName, account: "userpk")
+                tokenValue.delete(serviceName, account: "id")
+                tokenValue.delete(serviceName, account: "password")
                 UIApplication.shared.isNetworkActivityIndicatorVisible = false
             case .failure(let error):
                 print(error)
@@ -145,20 +148,22 @@ extension MyPageViewController {
 
         let tokenValue = TokenAuth()
         guard let headers = tokenValue.getAuthHeaders() else { return }
-        
+        print("rkrkrjkrjkrjkrjrkjrk :  ", headers)
         let call = Alamofire.request(rootDomain + "member/logout/", method: .post, headers: headers)
         call.responseJSON { (response) in
             switch response.result {
             case .success(let value):
                 let json = JSON(value)
-                
+                print(json)
                 if !json["result"].stringValue.isEmpty {
                     Toast(text: "로그아웃되었습니다").show()
                     guard let nextViewController = self.storyboard?.instantiateViewController(withIdentifier: "SIGNIN") as? SignInViewController else { return }
                     self.present(nextViewController, animated: true, completion: nil)
                 }
-                tokenValue.delete("com.toygift.PickyCookBook", account: "accessToken")
-                tokenValue.delete("com.toygift.PickyCookBook", account: "userpk")
+                tokenValue.delete(serviceName, account: "accessToken")
+                tokenValue.delete(serviceName, account: "userpk")
+                tokenValue.delete(serviceName, account: "id")
+                tokenValue.delete(serviceName, account: "password")
                 UIApplication.shared.isNetworkActivityIndicatorVisible = false
             case .failure(let error):
                 print(error)

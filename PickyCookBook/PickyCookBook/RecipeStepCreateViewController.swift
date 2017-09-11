@@ -93,7 +93,7 @@ extension RecipeStepCreateViewController {
     func recipeStepCreate(recipepk: Int, description: String, is_timer: Bool, timer: Int, img_step:UIImage){
 //        guard let token = UserDefaults.standard.string(forKey: "token") else { return }
         
-        let url = "http://pickycookbook.co.kr/api/recipe/step/create/"
+        let url = rootDomain + "recipe/step/create/"
         let parameters : [String:Any] = ["recipe":recipepk, "description": description, "is_timer":is_timer, "timer":timer*60, "img_step":img_step]
 //        let headers: HTTPHeaders = ["Authorization":"token \(token)"]
         
@@ -129,10 +129,13 @@ extension RecipeStepCreateViewController {
                         
                         if !(json["title_error"].stringValue.isEmpty) {
                             Toast(text: "제목을 입력하세요").show()
+                            UIApplication.shared.isNetworkActivityIndicatorVisible = false
                         } else if !(json["description_error"].stringValue.isEmpty) {
                             Toast(text: "설명을 입력하세요").show()
+                            UIApplication.shared.isNetworkActivityIndicatorVisible = false
                         } else if !(json["ingredient_error"].stringValue.isEmpty) {
                             Toast(text: "재료를 입력하세요").show()
+                            UIApplication.shared.isNetworkActivityIndicatorVisible = false
                         } else {
                             guard let nextViewController = self.storyboard?.instantiateViewController(withIdentifier: "RECIPESTEP") else { return }
                             self.navigationController?.pushViewController(nextViewController, animated: true)

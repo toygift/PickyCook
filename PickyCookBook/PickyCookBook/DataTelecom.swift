@@ -34,7 +34,7 @@ class DataTelecom {
 //        let headers: HTTPHeaders = ["Authorization":"token \(token)"]
         let tokenValue = TokenAuth()
         guard let headers: HTTPHeaders = tokenValue.getAuthHeaders() else { return }
-        guard let userpk = tokenValue.load("com.toygift.PickyCookBook", account: "userpk") else { return }
+        guard let userpk = tokenValue.load(serviceName, account: "userpk") else { return }
         let call = Alamofire.request(rootDomain + "member/detail/\(userpk)/", method: .get, headers: headers)
         
         call.responseJSON { (response) in

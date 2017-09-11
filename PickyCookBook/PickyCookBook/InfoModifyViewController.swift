@@ -14,8 +14,9 @@ import MobileCoreServices
 
 class InfoModifyViewController: UIViewController, UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate{
     
-    @IBOutlet weak var topView: UIView!
-    @IBOutlet var img_profile: UIButton!
+    @IBOutlet var img_profile: UIImageView!
+    @IBOutlet var topView: UIView!
+    
     @IBOutlet var completeModify: UIButton!
     @IBOutlet var email: UILabel!
     @IBOutlet var nickname: UILabel!
@@ -31,17 +32,7 @@ class InfoModifyViewController: UIViewController, UITextFieldDelegate, UIImagePi
     var videoURL: URL!
     
     
-    @IBAction func selectPicture(_ sender: UIButton){
-        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-        alertController.addAction(UIAlertAction(title: "포토라이브러리", style: .default, handler: { (_) in
-            self.media(.photoLibrary, flag: false, editing: true)
-        }))
-        alertController.addAction(UIAlertAction(title: "카메라", style: .default, handler: { (_) in
-            self.media(.camera, flag: true, editing: false)
-        }))
-        alertController.addAction(UIAlertAction(title: "취소", style: .cancel, handler: nil))
-        self.present(alertController, animated: true, completion: nil)
-    }
+
     
     @IBAction func modifyComplete(_ sender: UIButton){
         guard let nickname = modifyNickname.text else { return }
@@ -64,7 +55,7 @@ class InfoModifyViewController: UIViewController, UITextFieldDelegate, UIImagePi
 //        let headers: HTTPHeaders = ["Authorization":"token \(token)"]
         let tokenValue = TokenAuth()
         guard let headers = tokenValue.getAuthHeaders() else { return }
-        guard let userpk = tokenValue.load("com.toygift.PickyCookBook", account: "userpk") else { return }
+        guard let userpk = tokenValue.load(serviceName, account: "userpk") else { return }
         
         
         let call = Alamofire.request(rootDomain + "member/update/\(userpk)/", method: .patch, parameters: parameters, headers: headers)
@@ -78,25 +69,33 @@ class InfoModifyViewController: UIViewController, UITextFieldDelegate, UIImagePi
                 print("=================================================================")
                 if !json["nickname_exists"].stringValue.isEmpty {
                     Toast(text: "이미 사용중인 넥네임입니다").show()
+                    UIApplication.shared.isNetworkActivityIndicatorVisible = false
                 } else if !json["empty_old_password"].stringValue.isEmpty {
                     Toast(text: "기존 패스워드를 입력해주세요").show()
+                    UIApplication.shared.isNetworkActivityIndicatorVisible = false
                 } else if !json["empty_password1"].stringValue.isEmpty {
                     Toast(text: "새 비밀번호를 입력해주세요").show()
+                    UIApplication.shared.isNetworkActivityIndicatorVisible = false
                 } else if !json["empty_password2"].stringValue.isEmpty {
                     Toast(text: "새 비밀번호 확인을 입력해주세요").show()
+                    UIApplication.shared.isNetworkActivityIndicatorVisible = false
                 } else if !json["password_not_match"].stringValue.isEmpty {
                     Toast(text: "입력된 패스워드가 일치 하지 않습니다").show()
+                    UIApplication.shared.isNetworkActivityIndicatorVisible = false
                 } else if !json["too_short_password"].stringValue.isEmpty {
                     Toast(text: "패스워드는 최소 4글자 이상이어야 합니다.").show()
+                    UIApplication.shared.isNetworkActivityIndicatorVisible = false
                 } else if !json["old_password_error"].stringValue.isEmpty {
                     Toast(text: "기존 패스워드가 맞지 않습니다").show()
+                    UIApplication.shared.isNetworkActivityIndicatorVisible = false
                 } else {
                     DispatchQueue.main.async {
                         DataTelecom.shared.myPageUserData()
                     }
                     self.navigationController?.popViewController(animated: true)
-                    UIApplication.shared.isNetworkActivityIndicatorVisible = false
+                    
                 }
+                UIApplication.shared.isNetworkActivityIndicatorVisible = false
             case .failure(let error):
                 print(error)
                 UIApplication.shared.isNetworkActivityIndicatorVisible = false
@@ -120,7 +119,7 @@ class InfoModifyViewController: UIViewController, UITextFieldDelegate, UIImagePi
 //        let headers: HTTPHeaders = ["Authorization":"token \(token)"]
         let tokenValue = TokenAuth()
         guard let headers = tokenValue.getAuthHeaders() else { return }
-        guard let userpk = tokenValue.load("com.toygift.PickyCookBook", account: "userpk") else { return }
+        guard let userpk = tokenValue.load(serviceName, account: "userpk") else { return }
         let url = rootDomain + "member/update/\(userpk)/"
         Alamofire.upload(multipartFormData: { (multipartFormData) in
             if let imgData = UIImageJPEGRepresentation(img_profile, 0.25) {
@@ -153,27 +152,6 @@ class InfoModifyViewController: UIViewController, UITextFieldDelegate, UIImagePi
             }
         }
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     
     
     
@@ -212,16 +190,20 @@ class InfoModifyViewController: UIViewController, UITextFieldDelegate, UIImagePi
         print("===========================viewDidLoad==========================")
         print("================================================================")
         
-        self.img_profile.clipsToBounds = true
-        self.img_profile.layer.cornerRadius = self.img_profile.frame.width/2
+        self.img_profile.layer.cornerRadius = self.img_profile.frame.width / 2
+        self.img_profile.layer.masksToBounds = true
+        let gesture = UITapGestureRecognizer(target: self, action: #selector(tappedProfile(_:)))
+        self.img_profile.addGestureRecognizer(gesture)
+        
         self.email.text = DataTelecom.shared.user?.email
         self.nickname.text = DataTelecom.shared.user?.nickname
         
         DispatchQueue.main.async {
             if let path = DataTelecom.shared.user?.img_profile {
                 if let imageData = try? Data(contentsOf: URL(string: path)!) {
-                    let back = UIImage(data: imageData)
-                    self.img_profile.setImage(back?.withRenderingMode(.alwaysOriginal), for: .normal)
+                    self.img_profile.image = UIImage(data: imageData)
+                    
+//                    self.img_profile.setImage(back?.withRenderingMode(.alwaysOriginal), for: .normal)
                     
                 }
             }
@@ -234,6 +216,19 @@ class InfoModifyViewController: UIViewController, UITextFieldDelegate, UIImagePi
         newModifyPassword.delegate = self
         newModifyPasswordConfirm.delegate = self
         
+        
+    }
+    @objc func tappedProfile(_ sender: Any){
+        
+        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        alertController.addAction(UIAlertAction(title: "포토라이브러리", style: .default, handler: { (_) in
+            self.media(.photoLibrary, flag: false, editing: true)
+        }))
+        alertController.addAction(UIAlertAction(title: "카메라", style: .default, handler: { (_) in
+            self.media(.camera, flag: true, editing: false)
+        }))
+        alertController.addAction(UIAlertAction(title: "취소", style: .cancel, handler: nil))
+        self.present(alertController, animated: true, completion: nil)
         
     }
     // 뷰가 나타나기전에 싱글톤 데이터 가져와서 표시
@@ -268,6 +263,7 @@ extension InfoModifyViewController {
         } else {
             if type == .photoLibrary{
                 Toast(text: "포토라이브러리에 접근할수 없음").show()
+                
             } else {
                 Toast(text: "카메라에 접근할수 없음").show()
             }
@@ -297,7 +293,7 @@ extension InfoModifyViewController {
         }
         self.dismiss(animated: true) { 
             self.fetchUserPhoto(img_profile: self.captureImage)
-            self.img_profile.setImage(self.captureImage.withRenderingMode(.alwaysOriginal), for: .normal)
+            self.img_profile.image = self.captureImage
         }
        
     }

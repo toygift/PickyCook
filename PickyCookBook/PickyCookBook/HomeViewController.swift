@@ -23,10 +23,15 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     var recipes: [Recipe]?
     var myrecipes: [Recipe]?
     var select: Bool = false
-    var selects: Bool = false
+//    var selects: Bool = false
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        
-        return (self.recipes?.count ?? 1)!
+        var returnValue: Int = 0
+        if select == false {
+            returnValue = (self.recipes?.count ?? 1)!
+        } else {
+            returnValue = (self.myrecipes?.count ?? 1)!
+        }
+        return returnValue
     }
     // MARK : TableView
     //
@@ -34,7 +39,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ALLRECIPE", for: indexPath) as? AllRecipeTableViewCell
-        DispatchQueue.main.async {
+        
             
             if self.select == false {
                 let count_like = self.recipes?[indexPath.row].like_count
@@ -47,15 +52,16 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
                 cell?.rate_sum.text = "평점 " + "\(sum_rate ?? 1)"
                 
                 
-                if let path = self.recipes?[indexPath.row].img_recipe {
-                    if let image = try? Data(contentsOf: URL(string: path)!) {
-                        cell?.img_recipe.image = UIImage(data: image)
+                DispatchQueue.main.async {
+                    if let path = self.recipes?[indexPath.row].img_recipe {
+                        if let image = try? Data(contentsOf: URL(string: path)!) {
+                            cell?.img_recipe.image = UIImage(data: image)
+                        }
                     }
                 }
                 
                 
-                
-            } else if self.select == true {
+            } else  {
                 let count_like = self.myrecipes?[indexPath.row].like_count
                 let sum_rate = self.myrecipes?[indexPath.row].rate_sum
                 
@@ -65,14 +71,15 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
                 cell?.like_count.text = "좋아요 " + "\(count_like ?? 1)"
                 cell?.rate_sum.text = "평점 " + "\(sum_rate ?? 1)"
                 
-                
-                if let path = self.myrecipes?[indexPath.row].img_recipe {
-                    if let image = try? Data(contentsOf: URL(string: path)!) {
-                        cell?.img_recipe.image = UIImage(data: image)
+                DispatchQueue.main.async {
+                    if let path = self.myrecipes?[indexPath.row].img_recipe {
+                        if let image = try? Data(contentsOf: URL(string: path)!) {
+                            cell?.img_recipe.image = UIImage(data: image)
+                        }
                     }
                 }
             }
-        }
+        
         
         return cell!
     }
@@ -136,20 +143,15 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     //
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        // 임시코드
-        let tk = TokenAuth()
-        if let accessToken = tk.load("com.toygift.PickyCookBook", account: "userToken") {
-            print("엑세스토큰 = \(accessToken)")
-        } else {
-            print("엑세서 토큰 없음")
-        }
-        
+        self.customViewLoadAppear()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         print("HOMEviewWillAppear")
-        
+        self.customViewLoadAppear()
+           }
+    // MARK: view Load and Appear
+    func customViewLoadAppear(){
         if select == false {
             UIApplication.shared.isNetworkActivityIndicatorVisible = true
             self.navigationItem.title = "레시피"
@@ -162,16 +164,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
             print("select : true", select)
             
         }
-        //
-        //
-        //        if selects == false {
-        //            self.allRecipeList()
-        //            selects = false
-        //        }else {
-        //            self.mycreateRecipe()
-        //            selects = true
-        //        }
-        //
+
     }
     override func viewDidDisappear(_ animated: Bool) {
         
@@ -237,7 +230,7 @@ extension HomeViewController {
             case .success(let value):
                 print("========================mycreateRecipe()============================")
                 let json = JSON(value)
-                
+                print(json)
                 self.myrecipes = DataCentre.shared.allRecipeList(response: json) // AllRecipe
                 //print("Recipes   :   ", self.recipes?.count ?? "데이터없음")
                 DispatchQueue.main.async {
@@ -273,8 +266,10 @@ extension HomeViewController {
                 print(json)
                 if !(json["memo"].stringValue.isEmpty) == true {
                     Toast(text: "북마크 되었습니다").show()
+                    UIApplication.shared.isNetworkActivityIndicatorVisible = false
                 } else if !(json["detail"].stringValue.isEmpty) == true {
                     Toast(text: "이미 북마크 되었습니다").show()
+                    UIApplication.shared.isNetworkActivityIndicatorVisible = false
                 }
                 //                self.myrecipes = DataCentre.shared.allRecipeList(response: json) // AllRecipe
                 //                //print("Recipes   :   ", self.recipes?.count ?? "데이터없음")

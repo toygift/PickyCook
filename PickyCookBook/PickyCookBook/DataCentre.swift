@@ -13,7 +13,7 @@ import Toaster
 
 
 let rootDomain: String = "http://pickycookbook.co.kr/api/"
-
+let serviceName: String = "com.toygift.PickyCookBook"
 public enum Detail {
     case MAIN
     case MYPAGE

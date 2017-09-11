@@ -59,8 +59,8 @@ class TokenAuth {
     func delete(_ service: String, account: String) {
         let keyChainQuery : NSDictionary = [
         kSecClass : kSecClassGenericPassword,
-        kSecAttrService: service,
-        kSecAttrAccount : account ]
+        kSecAttrService : service,
+        kSecAttrAccount : account]
         
         let status = SecItemDelete(keyChainQuery)
         assert(status == noErr, "토큰삭제실패")
@@ -68,7 +68,7 @@ class TokenAuth {
     }
     
     func getAuthHeaders() -> HTTPHeaders? {
-        let serviceID = "com.toygift.PickyCookBook"
+        let serviceID = serviceName
         if let accessToken = self.load(serviceID, account: "accessToken") {
             return ["Authorization" : "token \(accessToken)"] as HTTPHeaders
         } else {
