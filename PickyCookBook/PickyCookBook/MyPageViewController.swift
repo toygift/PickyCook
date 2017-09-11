@@ -24,6 +24,12 @@ class MyPageViewController: UIViewController {
     @IBOutlet var withdrawal: UIButton!
     @IBOutlet var topView: UIView!
     
+    @IBAction func mycreateRecipe(_ sender: UIButton){
+        guard let nextViewController = storyboard?.instantiateViewController(withIdentifier: "HOME") as? HomeViewController else { return }
+        nextViewController.select = true
+        nextViewController.selects = true
+        self.navigationController?.pushViewController(nextViewController, animated: true)
+    }
     
     @IBAction func myInfoChange(_ sender: UIButton) {
         guard let nextViewController = storyboard?.instantiateViewController(withIdentifier: "INFOMODIFY") as? InfoModifyViewController else { return }
@@ -34,15 +40,12 @@ class MyPageViewController: UIViewController {
     // 싱글톤에 저장된 유저정보 지움
     @IBAction func withdrawal(_ sender: UIButton) {
         let alertController = UIAlertController(title: "경고", message: "탈퇴하시겠습니까?", preferredStyle: .actionSheet)
-        let cancel = UIAlertAction(title: "취소", style: .cancel, handler: nil)
-        let ok = UIAlertAction(title: "확인", style: .destructive) { (_) in
+        alertController.addAction(UIAlertAction(title: "취소", style: .cancel, handler: nil))
+        alertController.addAction(UIAlertAction(title: "확인", style: .destructive, handler: { (_) in
             self.userWithDrawal()
             DataTelecom.shared.user = nil
             print(DataTelecom.shared.user ?? "데이터 없음!")
-        }
-        alertController.addAction(cancel)
-        alertController.addAction(ok)
-        
+        }))
         self.present(alertController, animated: true, completion: nil)
     }
     // MARK: 로그아웃
@@ -50,15 +53,12 @@ class MyPageViewController: UIViewController {
     // 싱글톤에 저장된 유저정보 지움
     @IBAction func signOut(_ sender: UIButton) {
         let alertController = UIAlertController(title: "알림", message: "로그아웃 하시겠습니까?", preferredStyle: .actionSheet)
-        let cancel = UIAlertAction(title: "취소", style: .cancel, handler: nil)
-        let ok = UIAlertAction(title: "확인", style: .destructive) { (_) in
+        alertController.addAction(UIAlertAction(title: "취소", style: .cancel, handler: nil))
+        alertController.addAction(UIAlertAction(title: "확인", style: .destructive, handler: { (_) in
             self.userSignOut()
             DataTelecom.shared.user = nil
             print(DataTelecom.shared.user ?? "데이터 없음!")
-        }
-        alertController.addAction(cancel)
-        alertController.addAction(ok)
-        
+        }))
         self.present(alertController, animated: true, completion: nil)
     }
     
@@ -81,8 +81,8 @@ class MyPageViewController: UIViewController {
         self.img_profile.clipsToBounds = true
         self.img_profile.layer.cornerRadius = self.img_profile.frame.width/2
         self.email.text = DataTelecom.shared.user?.email
-//        let back = UIImage(named: "no_image.jpg")
-//        self.img_profile.setImage(back?.withRenderingMode(.alwaysOriginal), for: .normal)
+        //        let back = UIImage(named: "no_image.jpg")
+        //        self.img_profile.setImage(back?.withRenderingMode(.alwaysOriginal), for: .normal)
         
         if let path = DataTelecom.shared.user?.img_profile {
             if let imageData = try? Data(contentsOf: URL(string: path)!) {
@@ -100,7 +100,7 @@ class MyPageViewController: UIViewController {
 }
 
 extension MyPageViewController {
- 
+    
     
     func userWithDrawal(){
         guard let token = UserDefaults.standard.string(forKey: "token") else { return }

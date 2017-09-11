@@ -1,19 +1,18 @@
 //
-//  BookMarkTableViewCell.swift
+//  RecipeDetailTableViewCell.swift
 //  PickyCookBook
 //
-//  Created by jaeseong on 2017. 9. 5..
+//  Created by jaeseong on 2017. 9. 7..
 //  Copyright © 2017년 jaeseong. All rights reserved.
 //
 
 import UIKit
 
-class BookMarkTableViewCell: UITableViewCell {
+class RecipeDetailTableViewCell: UITableViewCell {
 
-    @IBOutlet var title: UILabel!
-    @IBOutlet var memo: UILabel!
-    @IBOutlet var like_count: UILabel!
-    @IBOutlet var rate_sum: UILabel!
+    @IBOutlet var content: UILabel!
+    @IBOutlet var nickname: UILabel!
+    
     
     override func awakeFromNib() {
         super.awakeFromNib()

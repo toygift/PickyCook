@@ -14,5 +14,6 @@ struct Recipe_Review {
     let user: Int
     var content: String
     var img_review: String
+    var nickname: String
 
 }

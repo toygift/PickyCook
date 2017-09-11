@@ -35,23 +35,15 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
     
     @IBAction func pictureSelect(_ sender: UIButton) {
         
-        let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-        let photo = UIAlertAction(title: "포토라이브러리", style: .default) { (_) in
+        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        alertController.addAction(UIAlertAction(title: "포토라이브러리", style: .default, handler: { (_) in
             self.media(.photoLibrary, flag: false, editing: true)
-            //self.media(.photoLibrary, flag: false, editing: true)
-        }
-        let carema = UIAlertAction(title: "카메라", style: .default) { (_) in
+        }))
+        alertController.addAction(UIAlertAction(title: "카메라", style: .default, handler: { (_) in
             self.media(.camera, flag: true, editing: false)
-            //self.media(.camera, flag: true, editing: false)
-        }
-        let cancel = UIAlertAction(title: "취소", style: .cancel, handler: nil)
-        
-        alert.addAction(cancel)
-        alert.addAction(photo)
-        alert.addAction(carema)
-        
-        self.present(alert, animated: true, completion: nil)
-        self.pictureConfirm.setBackgroundImage(captureImage, for: .normal)
+        }))
+        alertController.addAction(UIAlertAction(title: "취소", style: .cancel, handler: nil))
+        self.present(alertController, animated: true, completion: nil)
     }
     
     @IBAction func signUpButton(_ sender: UIButton) {
@@ -68,7 +60,9 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
         
         signUp(email: email, nickname: nickname, password: password, passwordConfirm: passwordConfirm, content: content, img_profile: captureImage)
         
-        
+    }
+    @IBAction func signUpCancel(_ sender: UIButton) {
+        self.dismiss(animated: true, completion: nil)
     }
 
     // MARK: Textfield Delegate
@@ -109,7 +103,7 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
         passwordTextField.delegate = self
         passwordConfirmTextField.delegate = self
         contentTextField.delegate = self
-        
+        //DataTelecom.shared.allRecipeList()
     }
 
     override func didReceiveMemoryWarning() {
@@ -225,9 +219,8 @@ extension SignUpViewController {
                             print("UserDefaults Set UserPK  :   ", UserDefaults.standard.string(forKey: "userpk") ?? "데이터없음")
                             guard let nextViewController = self.storyboard?.instantiateViewController(withIdentifier: "TABBAR") as? MainTabBar else { return }
                             self.present(nextViewController, animated: true, completion: { 
-                                DispatchQueue.main.async {
                                     DataTelecom.shared.myPageUserData()
-                                }
+                                
                                 
                             })
                         }

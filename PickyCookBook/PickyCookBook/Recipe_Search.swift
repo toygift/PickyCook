@@ -1,20 +1,20 @@
 //
-//  Recipe_Bookmark.swift
+//  Recipe_Search.swift
 //  PickyCookBook
 //
-//  Created by jaeseong on 2017. 9. 6..
+//  Created by jaeseong on 2017. 9. 9..
 //  Copyright © 2017년 jaeseong. All rights reserved.
 //
 
 import Foundation
 
-struct Recipe_Bookmark {
+struct Recipe_Search {
     let pk: Int
     let user: Int
-    let recipe: Int
     var title: String
-    var memo: String
     var img_recipe: String
-    var like_count: Int
-    var rate_sum: Double
+    var ingredient: String
+    let description: String
+    var cal_sum: Int
+    var tag: String
 }
