@@ -12,24 +12,67 @@ import SwiftyJSON
 import Toaster
 import FBSDKLoginKit
 import FBSDKCoreKit
+import LocalAuthentication
 
 class SignInViewController: UIViewController, UITextFieldDelegate, UINavigationControllerDelegate, FBSDKLoginButtonDelegate {
 
+    let touchID = TouchID()
+    
     // MARK: OUTLET 및 Properties
     // 
     @IBOutlet var emailTextField: UITextField!
     @IBOutlet var passwordTextField: UITextField!
     @IBOutlet var buttonSignIn: UIButton!
     
+    // MARK : SignIn
+    //
+    //
     @IBAction func signInButton(_ sender: UIButton) {
         guard let email = emailTextField.text else { return }
         guard let password = passwordTextField.text else { return }
         self.signIn(email: email, password: password)
+        UIApplication.shared.isNetworkActivityIndicatorVisible = true
+    }
+    
+    // MARK : TouchID
+    //
+    //
+    @IBAction func touchIdSignIn(_ sender: UIButton) {
+        touchID.authUser() { ms7 in
+            if let messages = ms7 {
+//                let alert = UIAlertController(title: "에러", message: messages, preferredStyle: .alert)
+//                alert.addAction(UIAlertAction(title: "확인", style: .default, handler: nil))
+//                self.present(alert, animated: true, completion: nil)  -> 왜  여기서 크래쉬가 나는거지..????
+                Toast(text: messages).show()
+            } else {
+                let tokenValue = TokenAuth()
+                let a = tokenValue.load(serviceName, account: "id")
+                let b = tokenValue.load(serviceName, account: "password")
+                if a != nil && b != nil {
+                    guard let nextViewController = self.storyboard?.instantiateViewController(withIdentifier: "TABBAR") as? MainTabBar else { return }
+                    self.present(nextViewController, animated: true, completion: {
+                        DataTelecom.shared.myPageUserData()
+                        UIApplication.shared.isNetworkActivityIndicatorVisible = false
+                    })
+                    
+                } else {
+//                    let alert = UIAlertController(title: "에러", message: "메롱", preferredStyle: .alert)
+//                    alert.addAction(UIAlertAction(title: "확인", style: .default, handler: nil))
+//                    self.present(alert, animated: true, completion: nil)
+                    Toast(text: "최초 가입 및 로그아웃시 다시 한번 ID/PW로 로그인해야합니다", delay: 0.0, duration: Delay.long).show()
+                    
+                }
+            }
+        }
     }
     
     // MARK: Facebook signin
+    //
+    //
     @IBAction func signInFacebook(_ sender: UIButton){
-      sender.addTarget(self, action: #selector(handleCostomFBlogin), for: .touchUpInside)
+        
+        sender.addTarget(self, action: #selector(handleCostomFBlogin), for: .touchUpInside)
+        UIApplication.shared.isNetworkActivityIndicatorVisible = true
     }
     func handleCostomFBlogin() {
         FBSDKLoginManager().logIn(withReadPermissions: ["email", "public_profile"], from: self) { (result, err) in
@@ -125,34 +168,56 @@ extension SignInViewController {
                 
                 if !json["empty_email"].stringValue.isEmpty {
                     Toast(text: "email을 입력하세요.").show()
-                    break
+                    UIApplication.shared.isNetworkActivityIndicatorVisible = false
+                    
                 } else if !json["empty_password"].stringValue.isEmpty {
                     Toast(text: "password를 입력하세요.").show()
-                    break
+                    UIApplication.shared.isNetworkActivityIndicatorVisible = false
+                    
                 } else if !json["empty_error"].stringValue.isEmpty {
                     Toast(text: "email과 password를 입력하세요.").show()
-                    break
+                    UIApplication.shared.isNetworkActivityIndicatorVisible = false
+                    
                 } else if !json["login_error"].stringValue.isEmpty {
                     Toast(text: "email 또는 password가 맞지 않습니다.").show()
-                    break
+                    UIApplication.shared.isNetworkActivityIndicatorVisible = false
+                    
                 } else {
                     
-                    let userToken = json["token"].stringValue
-                    let userPK = json["pk"].intValue
+                    let accessToken = json["token"].stringValue
+                    let userpk = json["pk"].stringValue
                     
-                    UserDefaults.standard.set(userToken, forKey: "token")
-                    print("UserDefaults Set Token   :   ", UserDefaults.standard.string(forKey: "token") ?? "데이터없음")
-                    UserDefaults.standard.set(userPK, forKey: "userpk")
-                    print("UserDefaults Set UserPK  :   ", UserDefaults.standard.string(forKey: "userpk") ?? "데이터없음")
+                    
+                    let tokenValue = TokenAuth()
+                    tokenValue.save(serviceName, account: "accessToken", value: accessToken)
+                    tokenValue.save(serviceName, account: "userpk", value: "\(userpk)")
+                    
+                    guard let email = self.emailTextField.text else { return }
+                    guard let password = self.passwordTextField.text else { return }
+                    /********************************************************************************************/
+                    //        이거.페북 로그인에도 구현해야 되는데..페북로그인..다 하고 나서........
+                    /********************************************************************************************/
+                    tokenValue.save(serviceName, account: "id", value: email)
+                    tokenValue.save(serviceName, account: "password", value: password)
+                    
+                    /********************************************************************************************/
+                    
+//                    UserDefaults.standard.set(userToken, forKey: "token")
+//                    print("UserDefaults Set Token   :   ", UserDefaults.standard.string(forKey: "token") ?? "데이터없음")
+//                    UserDefaults.standard.set(userpk, forKey: "userpk")
+//                    print("UserDefaults Set UserPK  :   ", UserDefaults.standard.string(forKey: "userpk") ?? "데이터없음")
 
                     DataTelecom.shared.myPageUserData()
                     
                     guard let nextViewController = self.storyboard?.instantiateViewController(withIdentifier: "TABBAR") as? MainTabBar else { return }
-                    self.present(nextViewController, animated: true, completion: nil)
+                    self.present(nextViewController, animated: true, completion: { 
+                        UIApplication.shared.isNetworkActivityIndicatorVisible = false
+                    })
                 }
                 
             case .failure(let error):
                 print(error)
+                UIApplication.shared.isNetworkActivityIndicatorVisible = false
             }
         }
     }
@@ -160,9 +225,10 @@ extension SignInViewController {
     //
     //
     func faceBookSignin(token: String){
-        let url = "http://pickycookbook.co.kr/api/member/facebook-login/"
+        //페이스북 토큰도 키체인에 저장해야 하나..?
+        //
         let parameters: Parameters = ["token":token]
-        let call = Alamofire.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default)
+        let call = Alamofire.request(rootDomain + "/member/facebook-login/", method: .post, parameters: parameters, encoding: JSONEncoding.default)
         
         call.responseJSON { (response) in
             
@@ -173,25 +239,38 @@ extension SignInViewController {
                 print("=================================================================")
                 print("======================    FacebookSignIn    =====================")
                 print("=================================================================")
-                let userToken = json["token"].stringValue
-                let userPK = json["pk"].intValue
-                UserDefaults.standard.set(userToken, forKey: "token")
-                print("UserDefaults Set Token   :   ", UserDefaults.standard.string(forKey: "token") ?? "데이터없음")
                 
-                UserDefaults.standard.set(userPK, forKey: "userpk")
-                print("UserDefaults Set UserPK  :   ", UserDefaults.standard.string(forKey: "userpk") ?? "데이터없음")
-                // UserDefaults 에 토큰 저장
+//                UserDefaults.standard.set(userToken, forKey: "token")
+//                print("UserDefaults Set Token   :   ", UserDefaults.standard.string(forKey: "token") ?? "데이터없음")
+                let accessToken = json["token"].stringValue
+                let userpk = json["pk"].intValue
+                
+                let tokenValue = TokenAuth()
+                tokenValue.save(serviceName, account: "accessToken", value: accessToken)
+                tokenValue.save(serviceName, account: "userpk", value: "\(userpk)")
+                
+                
+//                UserDefaults.standard.set(userpk, forKey: "userpk")
+//                print("UserDefaults Set UserPK  :   ", UserDefaults.standard.string(forKey: "userpk") ?? "데이터없음")
+//                // UserDefaults 에 토큰 저장
                 
                 
                 guard let nextViewController = self.storyboard?.instantiateViewController(withIdentifier: "TABBAR") as? MainTabBar else { return }
-                self.present(nextViewController, animated: true, completion: nil)
+                self.present(nextViewController, animated: true, completion: {
+                  UIApplication.shared.isNetworkActivityIndicatorVisible = false
+                })
+                    
                 
             case .failure(let error):
                 Toast(text: "네트워크에러").show()
+                UIApplication.shared.isNetworkActivityIndicatorVisible = false
                 print(error)
             }
         }
     }
+}
 
-
+extension SignInViewController {
+    
+   
 }

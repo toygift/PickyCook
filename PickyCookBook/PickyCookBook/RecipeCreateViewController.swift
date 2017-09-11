@@ -23,8 +23,45 @@ class RecipeCreateViewController: UIViewController, UITextFieldDelegate, UIImage
     @IBOutlet var descriptionTextField: UITextField!
     @IBOutlet var ingredientTextField: UITextField!
     @IBOutlet var tagTextField: UITextField!
-    @IBOutlet var img_recipe: UIButton!
-    @IBAction func pictureSelect(_ sender: UIButton) {
+    @IBOutlet var img_recipe: UIImageView!
+    
+    @IBAction func createRecipe(_ sender: UIButton){
+        guard let title = titleTextField.text else { return }
+        guard let description = descriptionTextField.text else { return }
+        guard let ingredient = ingredientTextField.text else { return }
+        guard let tag = tagTextField.text else { return }
+        guard let img_recipe = captureImage else { return }
+        
+        createRecipe(title: title, description: description, ingredient: ingredient, tag: tag, img_recipe: img_recipe)
+        UIApplication.shared.isNetworkActivityIndicatorVisible = true
+        titleTextField.text = ""
+        descriptionTextField.text = ""
+        ingredientTextField.text = ""
+        tagTextField.text = ""
+        self.img_recipe.image = UIImage(named: "no_im.png")
+    }
+    
+    // MARK: Life Cycle
+    //
+    //
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        self.img_recipe.layer.cornerRadius = self.img_recipe.frame.width / 2
+        self.img_recipe.layer.masksToBounds = true
+        let gesture = UITapGestureRecognizer(target: self, action: #selector(tappedProfile(_:)))
+        self.img_recipe.addGestureRecognizer(gesture)
+        
+        titleTextField.delegate = self
+        descriptionTextField.delegate = self
+        ingredientTextField.delegate = self
+        tagTextField.delegate = self
+        self.img_recipe.image = UIImage(named: "no_im.png")
+        // Do any additional setup after loading the view.
+    }
+    
+    @objc func tappedProfile(_ sender: Any){
+    
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         alertController.addAction(UIAlertAction(title: "포토라이브러리", style: .default, handler: { (_) in
             self.media(.photoLibrary, flag: false, editing: true)
@@ -34,35 +71,6 @@ class RecipeCreateViewController: UIViewController, UITextFieldDelegate, UIImage
         }))
         alertController.addAction(UIAlertAction(title: "취소", style: .cancel, handler: nil))
         self.present(alertController, animated: true, completion: nil)
-    }
-    @IBAction func createRecipe(_ sender: UIButton){
-        guard let title = titleTextField.text else { return }
-        guard let description = descriptionTextField.text else { return }
-        guard let ingredient = ingredientTextField.text else { return }
-        guard let tag = tagTextField.text else { return }
-        guard let img_recipe = captureImage else { return }
-        
-        createRecipe(title: title, description: description, ingredient: ingredient, tag: tag, img_recipe: img_recipe)
-        
-        titleTextField.text = ""
-        descriptionTextField.text = ""
-        ingredientTextField.text = ""
-        tagTextField.text = ""
-        self.img_recipe.setBackgroundImage(no_image?.withRenderingMode(.alwaysOriginal), for: .normal)
-    }
-    
-    // MARK: Life Cycle
-    //
-    //
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        titleTextField.delegate = self
-        descriptionTextField.delegate = self
-        ingredientTextField.delegate = self
-        tagTextField.delegate = self
-        self.img_recipe.setBackgroundImage(no_image?.withRenderingMode(.alwaysOriginal), for: .normal)
-        // Do any additional setup after loading the view.
     }
     override func viewDidDisappear(_ animated: Bool) {
         
@@ -99,13 +107,14 @@ extension RecipeCreateViewController {
     
     func createRecipe(title: String, description: String, ingredient: String, tag: String, img_recipe: UIImage) {
         
-        guard let token = UserDefaults.standard.string(forKey: "token") else { return }
-        
-        
-        let url = "http://pickycookbook.co.kr/api/recipe/create/"
+//        guard let token = UserDefaults.standard.string(forKey: "token") else { return }
+//        let headers: HTTPHeaders = ["Authorization":"token \(token)"]
+        let url = rootDomain + "recipe/create/"
         let parameters : [String:Any] = ["title":title, "description":description, "ingredient":ingredient,"tag":tag, "img_recipe":img_recipe]
-        let headers: HTTPHeaders = ["Authorization":"token \(token)"]
+
         
+        let tokenValue = TokenAuth()
+        guard let headers = tokenValue.getAuthHeaders() else { return }
         
         Alamofire.upload(multipartFormData: { (multipartFormData) in
             
@@ -133,10 +142,13 @@ extension RecipeCreateViewController {
                         let recipepk = JSON(value)["pk"].intValue
                         if !(json["title_error"].stringValue.isEmpty) {
                             Toast(text: "제목을 입력하세요").show()
+                            UIApplication.shared.isNetworkActivityIndicatorVisible = false
                         } else if !(json["description_error"].stringValue.isEmpty) {
                             Toast(text: "설명을 입력하세요").show()
+                            UIApplication.shared.isNetworkActivityIndicatorVisible = false
                         } else if !(json["ingredient_error"].stringValue.isEmpty) {
                             Toast(text: "재료를 입력하세요").show()
+                            UIApplication.shared.isNetworkActivityIndicatorVisible = false
                         } else {
                             print("피케이값을 알려줘라",recipepk)
                             
@@ -145,50 +157,24 @@ extension RecipeCreateViewController {
                             }
                             nextViewController.recipepk_r = recipepk
                             guard let nextViewControllers = self.storyboard?.instantiateViewController(withIdentifier: "HOME") as? HomeViewController else { return }
-                            nextViewControllers.select = false
+                            nextViewControllers.select = true
+                            //nextViewControllers.mycreateRecipe()
                             self.navigationController?.pushViewController(nextViewController, animated: true)
+                            
                         }
-                        
+                        UIApplication.shared.isNetworkActivityIndicatorVisible = false
                     case .failure(let error):
                         print(error)
+                        UIApplication.shared.isNetworkActivityIndicatorVisible = false
                     }
-                    print("리스폰스스스스스: ",response)
                     
                 })
                 
             case .failure(let encodingError):
                 print(encodingError)
                 Toast(text: "네트워크에러").show()
+                UIApplication.shared.isNetworkActivityIndicatorVisible = false
             }
         }
     }
-    //    func recipeCreate(){
-    //        print("====================================================================")
-    //        print("========================mycreateRecipe()============================")
-    //        print("====================================================================")
-    //        guard let token = UserDefaults.standard.string(forKey: "token") else { return }
-    //        let parameters: Parameters =
-    //        let headers: HTTPHeaders = ["Authorization":"token \(token)"]
-    //
-    //        let call = Alamofire.request(rootDomain + "recipe/create/", method: .post, headers: headers)
-    //
-    //        print("========================mycreateRecipe()============================")
-    //        call.responseJSON { (response) in
-    //            switch response.result {
-    //            case .success(let value):
-    //                print("========================mycreateRecipe()============================")
-    //                let json = JSON(value)
-    //
-    //                self.recipes = DataCentre.shared.allRecipeList(response: json) // AllRecipe
-    //                //print("Recipes   :   ", self.recipes?.count ?? "데이터없음")
-    //                DispatchQueue.main.async {
-    //                    self.tableView.reloadData()
-    //                }
-    //            case .failure(let error):
-    //                print(error)
-    //
-    //            }
-    //        }
-    //    }
-    
 }

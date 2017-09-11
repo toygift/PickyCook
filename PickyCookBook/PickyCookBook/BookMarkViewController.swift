@@ -67,7 +67,7 @@ class BookMarkViewController: UIViewController, UITableViewDelegate, UITableView
             tableView.deleteRows(at: [indexPath], with: .fade)
             
             self.bookmarkListDelete(recipepks: recipepk!, selectAlamo: true)
-            
+            UIApplication.shared.isNetworkActivityIndicatorVisible = true
             
         }
         let patch = UITableViewRowAction(style: .default, title: "수정") { (action, indexPath) in
@@ -77,7 +77,7 @@ class BookMarkViewController: UIViewController, UITableViewDelegate, UITableView
                 textfield.placeholder = "수정할 메모를 입력하세요"
             })
             alertController.addAction((UIAlertAction(title: "확인", style: .default, handler: { (action) in
-                
+                UIApplication.shared.isNetworkActivityIndicatorVisible = true
                 if let title = alertController.textFields?[0].text {
                     if title.isEmpty == false {
                         self.recipe_bookmark?[indexPath.row].memo = title
@@ -104,6 +104,7 @@ class BookMarkViewController: UIViewController, UITableViewDelegate, UITableView
     override func viewDidLoad() {
         super.viewDidLoad()
         self.bookmarkList()
+        UIApplication.shared.isNetworkActivityIndicatorVisible = true
         
     }
     override func viewWillAppear(_ animated: Bool) {
@@ -127,8 +128,11 @@ extension BookMarkViewController {
         print("====================================================================")
         print("==========================bookmarkList()============================")
         print("====================================================================")
-        guard let token = UserDefaults.standard.string(forKey: "token") else { return }
-        let headers: HTTPHeaders = ["Authorization":"token \(token)"]
+//        guard let token = UserDefaults.standard.string(forKey: "token") else { return }
+//        let headers: HTTPHeaders = ["Authorization":"token \(token)"]
+
+        let tokenValue = TokenAuth()
+        guard let headers = tokenValue.getAuthHeaders() else { return }
         
         let call = Alamofire.request(rootDomain + "recipe/bookmark/", method: .get, headers: headers)
         
@@ -142,8 +146,10 @@ extension BookMarkViewController {
                 DispatchQueue.main.async {
                     self.tableView.reloadData()
                 }
+                UIApplication.shared.isNetworkActivityIndicatorVisible = false
             case .failure(let error):
                 print(error)
+                UIApplication.shared.isNetworkActivityIndicatorVisible = false
                 
             }
         }
@@ -152,8 +158,11 @@ extension BookMarkViewController {
         print("====================================================================")
         print("====================bookmarkListDelete()============================")
         print("====================================================================")
-        guard let token = UserDefaults.standard.string(forKey: "token") else { return }
-        let headers: HTTPHeaders = ["Authorization":"token \(token)"]
+//        guard let token = UserDefaults.standard.string(forKey: "token") else { return }
+//        let headers: HTTPHeaders = ["Authorization":"token \(token)"]
+        let tokenValue = TokenAuth()
+        guard let headers = tokenValue.getAuthHeaders() else { return }
+        
         let call: DataRequest?
         if selectAlamo == true {
             call = Alamofire.request(rootDomain + "recipe/bookmark/\(recipepks)/", method: .delete, headers: headers)
@@ -173,8 +182,10 @@ extension BookMarkViewController {
 //                DispatchQueue.main.async {
 //                    self.tableView.reloadData()
 //                }
+                UIApplication.shared.isNetworkActivityIndicatorVisible = false
             case .failure(let error):
                 print(error)
+                UIApplication.shared.isNetworkActivityIndicatorVisible = false
                 
             }
         }

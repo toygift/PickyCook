@@ -12,11 +12,63 @@ import Toaster
 import Alamofire
 import SwiftyJSON
 
-class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, UITextFieldDelegate, UINavigationControllerDelegate {
+class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, UITextFieldDelegate, UINavigationControllerDelegate, UITableViewDelegate, UITableViewDataSource {
 
     
     // MARK: OUTLET & Properties
     //
+    
+    @IBOutlet var tableView: UITableView!
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 5
+    }
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell")!
+        let tfFrame = CGRect(x: 20, y: 0, width: cell.bounds.width - 20, height: 37)
+        switch indexPath.row {
+        case 0:
+            self.emailTextField = UITextField(frame: tfFrame)
+            self.emailTextField.placeholder = "이메일"
+            self.emailTextField.borderStyle = .none
+            self.emailTextField.autocapitalizationType = .none
+            self.emailTextField.font = UIFont.systemFont(ofSize: 14)
+            cell.addSubview(self.emailTextField)
+        case 1:
+            self.nicknameTextField = UITextField(frame: tfFrame)
+            self.nicknameTextField.placeholder = "닉네임"
+            self.nicknameTextField.borderStyle = .none
+            self.nicknameTextField.autocapitalizationType = .none
+            self.nicknameTextField.font = UIFont.systemFont(ofSize: 14)
+            cell.addSubview(self.nicknameTextField)
+        case 2:
+            self.passwordTextField = UITextField(frame: tfFrame)
+            self.passwordTextField.placeholder = "패스워드"
+            self.passwordTextField.borderStyle = .none
+            self.passwordTextField.autocapitalizationType = .none
+            self.passwordTextField.font = UIFont.systemFont(ofSize: 14)
+            cell.addSubview(self.passwordTextField)
+        case 3:
+            self.passwordConfirmTextField = UITextField(frame: tfFrame)
+            self.passwordConfirmTextField.placeholder = "패스워드 확인"
+            self.passwordConfirmTextField.borderStyle = .none
+            self.passwordConfirmTextField.autocapitalizationType = .none
+            self.passwordConfirmTextField.font = UIFont.systeFont(ofSize: 14)
+            cell.addSubview(self.passwordConfirmTextField)
+        case 4:
+            self.contentTextField = UITextField(frame: tfFrame)
+            self.contentTextField.placeholder = "자기소개"
+            self.contentTextField.borderStyle = .none
+            
+            self.contentTextField.font = UIFont.systemFont(ofSize: 14)
+            cell.addSubview(self.contentTextField)
+        default:
+            ()
+        }
+        return cell
+    }
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 40
+    }
     
     @IBOutlet var emailTextField: UITextField!
     @IBOutlet var nicknameTextField: UITextField!
@@ -25,7 +77,7 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
     @IBOutlet var contentTextField: UITextField!
     
     @IBOutlet var buttonConfirm: UIButton!
-    @IBOutlet var pictureConfirm: UIButton!
+    @IBOutlet var pictureConfirm: UIImageView!
     
     
     let imagePicker: UIImagePickerController = UIImagePickerController()
@@ -59,6 +111,7 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
         }
         
         signUp(email: email, nickname: nickname, password: password, passwordConfirm: passwordConfirm, content: content, img_profile: captureImage)
+        UIApplication.shared.isNetworkActivityIndicatorVisible = true
         
     }
     @IBAction func signUpCancel(_ sender: UIButton) {
@@ -97,6 +150,12 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
     // 라이프사이클 관리
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.pictureConfirm.layer.cornerRadius = self.pictureConfirm.frame.width / 2
+        self.pictureConfirm.layer.masksToBounds = true
+        let gesture = UITapGestureRecognizer(target: self, action: #selector(tappedProfile(_:)))
+        self.pictureConfirm.addGestureRecognizer(gesture)
+        
         emailTextField.becomeFirstResponder()
         emailTextField.delegate = self
         nicknameTextField.delegate = self
@@ -105,63 +164,23 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
         contentTextField.delegate = self
         //DataTelecom.shared.allRecipeList()
     }
-
+    @objc func tappedProfile(_ sender: Any){
+        
+        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        alertController.addAction(UIAlertAction(title: "포토라이브러리", style: .default, handler: { (_) in
+            self.media(.photoLibrary, flag: false, editing: true)
+        }))
+        alertController.addAction(UIAlertAction(title: "카메라", style: .default, handler: { (_) in
+            self.media(.camera, flag: true, editing: false)
+        }))
+        alertController.addAction(UIAlertAction(title: "취소", style: .cancel, handler: nil))
+        self.present(alertController, animated: true, completion: nil)
+    }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
 }
-
-//extension SignUpViewController {
-//    func media(_ type: UIImagePickerControllerSourceType, flag: Bool, editing: Bool){
-//        if (UIImagePickerController.isSourceTypeAvailable(type)) {
-//            flagImageSave = flag
-//            imagePicker.delegate = self
-//            imagePicker.sourceType = type
-//            imagePicker.mediaTypes = [kUTTypeImage as String]
-//            imagePicker.allowsEditing = editing
-//            
-//            present(imagePicker, animated: true, completion: nil)
-//        } else {
-//            if type == .photoLibrary{
-//                Toast(text: "포토라이브러리에 접근할수 없음").show()
-//            } else {
-//                Toast(text: "카메라에 접근할수 없음").show()
-//            }
-//        }
-//    }
-//    
-//    // MARK: 사진, 비디오, 포토라이브러리 선택 끝났을때
-//    //
-//    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
-//        
-//        let mediaType = info[UIImagePickerControllerMediaType] as! NSString
-//        
-//        if mediaType.isEqual(to: kUTTypeImage as NSString as String){
-//            captureImage = info[UIImagePickerControllerOriginalImage] as! UIImage
-//            if flagImageSave {
-//                UIImageWriteToSavedPhotosAlbum(captureImage, self, nil, nil)
-//            }
-//            //capture image(이미지 저장된것 처리)
-//        }
-//            // 비디오 처리(사용하진 않음)
-//        else if mediaType.isEqual(to: kUTTypeMovie as NSString as String) {
-//            if flagImageSave {
-//                videoURL = (info[UIImagePickerControllerMediaURL] as! URL)
-//                
-//                UISaveVideoAtPathToSavedPhotosAlbum(videoURL.relativePath, self, nil, nil)
-//            }
-//        }
-//        //self.pictureConfirm.setBackgroundImage(captureImage, for: .normal)
-//        self.dismiss(animated: true, completion: nil)
-//    }
-//    
-//    // MARK: 사진, 비디오 취소시
-//    //
-//    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
-//        self.dismiss(animated: true, completion: nil)
-//    }
-//}
 
 extension SignUpViewController {
     // MARK: SignUp Func
@@ -195,37 +214,52 @@ extension SignUpViewController {
                         
                         if !json["email_empty"].stringValue.isEmpty {
                             Toast(text: "email을 입력해주세요").show()
+                            UIApplication.shared.isNetworkActivityIndicatorVisible = false
                         } else if !json["empty_password1"].stringValue.isEmpty {
                             Toast(text: "password를 입력해주세요").show()
+                            UIApplication.shared.isNetworkActivityIndicatorVisible = false
                         } else if !json["empty_password2"].stringValue.isEmpty {
                             Toast(text: "password가 다릅니다").show()
+                            UIApplication.shared.isNetworkActivityIndicatorVisible = false
                         } else if !json["email_invalid"].stringValue.isEmpty {
                             Toast(text: "유효한 email을 입력하세요").show()
+                            UIApplication.shared.isNetworkActivityIndicatorVisible = false
                         } else if !json["passwords_not_match"].stringValue.isEmpty {
                             Toast(text: "입력된 패스워드가 일치하지 않습니다").show()
+                            UIApplication.shared.isNetworkActivityIndicatorVisible = false
                         } else if !json["too_short_password"].stringValue.isEmpty {
                             Toast(text: "패드워드는 최소 4글자 이상이어야 합니다").show()
+                            UIApplication.shared.isNetworkActivityIndicatorVisible = false
                         } else if !json["email_error"].stringValue.isEmpty {
                             Toast(text: "사용중인 email입니다.").show()
+                            UIApplication.shared.isNetworkActivityIndicatorVisible = false
                         } else if !json["nickname_error"].stringValue.isEmpty {
                             Toast(text: "사용중인 nickname입니다.").show()
+                            UIApplication.shared.isNetworkActivityIndicatorVisible = false
                         } else {
-                            let userToken = json["token"].stringValue
-                            let userPK = json["pk"].intValue
+                            let accessToken = json["token"].stringValue
+                            let userpk = json["pk"].intValue
                             
-                            UserDefaults.standard.set(userToken, forKey: "token")
-                            print("UserDefaults Set Token   :   ", UserDefaults.standard.string(forKey: "token") ?? "데이터없음")
-                            UserDefaults.standard.set(userPK, forKey: "userpk")
-                            print("UserDefaults Set UserPK  :   ", UserDefaults.standard.string(forKey: "userpk") ?? "데이터없음")
+//                            UserDefaults.standard.set(userToken, forKey: "token")
+//                            print("UserDefaults Set Token   :   ", UserDefaults.standard.string(forKey: "token") ?? "데이터없음")
+                            let tokenValue = TokenAuth()
+                            tokenValue.save(serviceName, account: "accessToken", value: accessToken)
+                            tokenValue.save(serviceName, account: "userpk", value: "\(userpk)")
+
+//                            UserDefaults.standard.set(userpk, forKey: "userpk")
+//                            print("UserDefaults Set UserPK  :   ", UserDefaults.standard.string(forKey: "userpk") ?? "데이터없음")
                             guard let nextViewController = self.storyboard?.instantiateViewController(withIdentifier: "TABBAR") as? MainTabBar else { return }
-                            self.present(nextViewController, animated: true, completion: { 
-                                    DataTelecom.shared.myPageUserData()
+                            self.present(nextViewController, animated: true, completion: {
+                                
+                                DataTelecom.shared.myPageUserData()
+                                UIApplication.shared.isNetworkActivityIndicatorVisible = false
                                 
                                 
                             })
                         }
                     case .failure(let error):
                         print(error)
+                        UIApplication.shared.isNetworkActivityIndicatorVisible = false
                     }
                     
                 })

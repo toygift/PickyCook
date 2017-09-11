@@ -53,7 +53,7 @@ extension SignUpViewController {
             }
         }
         self.dismiss(animated: true) { 
-            self.pictureConfirm.setImage(self.captureImage.withRenderingMode(.alwaysOriginal), for: .normal)
+            self.pictureConfirm.image = self.captureImage
         }
     }
     
