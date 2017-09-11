@@ -14,6 +14,12 @@ import Toaster
 
 let rootDomain: String = "http://pickycookbook.co.kr/api/"
 
+public enum Detail {
+    case MAIN
+    case MYPAGE
+    case SEARCH
+}
+
 class DataCentre {
     
     static let shared: DataCentre = DataCentre()
@@ -131,5 +137,19 @@ class DataCentre {
         }
         return step
     }
-
+    func recipeSearchList(response json: JSON) -> [Recipe_Search] {
+        let search: [Recipe_Search] = json.arrayValue.map { (jsonmap) -> Recipe_Search in
+            let value = Recipe_Search(pk: jsonmap["pk"].intValue,
+                                      user: jsonmap["user"].intValue,
+                                      title: jsonmap["title"].stringValue,
+                                      img_recipe: jsonmap["img_recipe"].stringValue,
+                                      ingredient: jsonmap["ingredient"].stringValue,
+                                      description: jsonmap["description"].stringValue,
+                                      cal_sum: jsonmap["cam_sum"].intValue,
+                                      tag: jsonmap["tag"].stringValue)
+            return value
+        }
+        return search
+    }
+    
 }

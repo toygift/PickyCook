@@ -20,3 +20,7 @@ struct Recipe {
     var tag: String
 
 }
+
+struct RecipeCreate {
+    
+}

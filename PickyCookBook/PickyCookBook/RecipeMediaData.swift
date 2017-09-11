@@ -1,8 +1,8 @@
 //
-//  MediaData.swift
+//  RecipeMediaData.swift
 //  PickyCookBook
 //
-//  Created by jaeseong on 2017. 9. 5..
+//  Created by jaeseong on 2017. 9. 8..
 //  Copyright © 2017년 jaeseong. All rights reserved.
 //
 
@@ -11,7 +11,8 @@ import UIKit
 import MobileCoreServices
 import Toaster
 
-extension SignUpViewController {
+extension RecipeCreateViewController {
+    
 
     func media(_ type: UIImagePickerControllerSourceType, flag: Bool, editing: Bool){
         if (UIImagePickerController.isSourceTypeAvailable(type)) {
@@ -52,8 +53,8 @@ extension SignUpViewController {
                 UISaveVideoAtPathToSavedPhotosAlbum(videoURL.relativePath, self, nil, nil)
             }
         }
-        self.dismiss(animated: true) { 
-            self.pictureConfirm.setImage(self.captureImage.withRenderingMode(.alwaysOriginal), for: .normal)
+        self.dismiss(animated: true) {
+            self.img_recipe.setImage(self.captureImage.withRenderingMode(.alwaysOriginal), for: .normal)
         }
     }
     

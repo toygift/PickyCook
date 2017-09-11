@@ -16,7 +16,7 @@ class BookMarkViewController: UIViewController, UITableViewDelegate, UITableView
 
     @IBOutlet var tableView: UITableView!
     
-    
+    var title_A: String = ""
     
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -57,6 +57,47 @@ class BookMarkViewController: UIViewController, UITableViewDelegate, UITableView
 //    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
 //        return UITableViewAutomaticDimension
 //    }
+    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        let delete = UITableViewRowAction(style: .destructive, title: "삭제") { (action, indexPath) in
+            
+
+            let recipepk = self.recipe_bookmark?[indexPath.row].recipe
+            print("레시피 PK :                  ",recipepk ?? "no")
+            self.recipe_bookmark?.remove(at: indexPath.row)
+            tableView.deleteRows(at: [indexPath], with: .fade)
+            
+            self.bookmarkListDelete(recipepks: recipepk!, selectAlamo: true)
+            
+            
+        }
+        let patch = UITableViewRowAction(style: .default, title: "수정") { (action, indexPath) in
+            let recipepk = self.recipe_bookmark?[indexPath.row].recipe
+            let alertController = UIAlertController(title: "메모수정", message: nil, preferredStyle: .alert)
+            alertController.addTextField(configurationHandler: { (textfield) in
+                textfield.placeholder = "수정할 메모를 입력하세요"
+            })
+            alertController.addAction((UIAlertAction(title: "확인", style: .default, handler: { (action) in
+                
+                if let title = alertController.textFields?[0].text {
+                    if title.isEmpty == false {
+                        self.recipe_bookmark?[indexPath.row].memo = title
+                        self.title_A = title
+                        self.bookmarkListDelete(recipepks: recipepk!, selectAlamo: false)
+                        self.tableView.reloadData()
+                    } else {
+                        
+                    }
+                }
+            })))
+            alertController.addAction(UIAlertAction(title: "취소", style: .cancel, handler: nil))
+            self.present(alertController, animated: true, completion: nil)
+            print("레시피 PK :                  ",recipepk ?? "no")
+        }
+        patch.backgroundColor = UIColor.lightGray
+    
+        return [delete, patch]
+    }
+  
     // MARK: Life Cycle
     //
     //
@@ -101,6 +142,37 @@ extension BookMarkViewController {
                 DispatchQueue.main.async {
                     self.tableView.reloadData()
                 }
+            case .failure(let error):
+                print(error)
+                
+            }
+        }
+    }
+    func bookmarkListDelete(recipepks: Int, selectAlamo: Bool){
+        print("====================================================================")
+        print("====================bookmarkListDelete()============================")
+        print("====================================================================")
+        guard let token = UserDefaults.standard.string(forKey: "token") else { return }
+        let headers: HTTPHeaders = ["Authorization":"token \(token)"]
+        let call: DataRequest?
+        if selectAlamo == true {
+            call = Alamofire.request(rootDomain + "recipe/bookmark/\(recipepks)/", method: .delete, headers: headers)
+            
+        } else {
+            let parameters: Parameters = ["memo": self.title_A]
+            call = Alamofire.request(rootDomain + "recipe/bookmark/\(recipepks)/", method: .patch, parameters: parameters, headers: headers)
+            
+        }
+        
+        call?.responseJSON { (response) in
+            switch response.result {
+            case .success(let value):
+                let json = JSON(value)
+                print(json)
+                //refresh가 필요없음...
+//                DispatchQueue.main.async {
+//                    self.tableView.reloadData()
+//                }
             case .failure(let error):
                 print(error)
                 

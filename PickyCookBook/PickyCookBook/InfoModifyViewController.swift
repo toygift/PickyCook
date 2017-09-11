@@ -32,26 +32,15 @@ class InfoModifyViewController: UIViewController, UITextFieldDelegate, UIImagePi
     
     
     @IBAction func selectPicture(_ sender: UIButton){
-        let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-        let photo = UIAlertAction(title: "포토라이브러리", style: .default) { (_) in
+        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        alertController.addAction(UIAlertAction(title: "포토라이브러리", style: .default, handler: { (_) in
             self.media(.photoLibrary, flag: false, editing: true)
-            //            DataTelecom.shared.myPageUserData()
-            //self.media(.photoLibrary, flag: false, editing: true)
-        }
-        let carema = UIAlertAction(title: "카메라", style: .default) { (_) in
+        }))
+        alertController.addAction(UIAlertAction(title: "카메라", style: .default, handler: { (_) in
             self.media(.camera, flag: true, editing: false)
-            //            DataTelecom.shared.myPageUserData()
-            //self.media(.camera, flag: true, editing: false)
-        }
-        let cancel = UIAlertAction(title: "취소", style: .cancel, handler: nil)
-        
-        alert.addAction(cancel)
-        alert.addAction(photo)
-        alert.addAction(carema)
-        
-        self.present(alert, animated: true, completion: nil)
-        //        self.fetchUserPhoto(img_profile: captureImage)
-        //        DataTelecom.shared.myPageUserData()
+        }))
+        alertController.addAction(UIAlertAction(title: "취소", style: .cancel, handler: nil))
+        self.present(alertController, animated: true, completion: nil)
     }
     
     @IBAction func modifyComplete(_ sender: UIButton){
@@ -217,13 +206,16 @@ class InfoModifyViewController: UIViewController, UITextFieldDelegate, UIImagePi
         self.email.text = DataTelecom.shared.user?.email
         self.nickname.text = DataTelecom.shared.user?.nickname
         
-        if let path = DataTelecom.shared.user?.img_profile {
-            if let imageData = try? Data(contentsOf: URL(string: path)!) {
-                let back = UIImage(data: imageData)
-                self.img_profile.setImage(back?.withRenderingMode(.alwaysOriginal), for: .normal)
-                
+        DispatchQueue.main.async {
+            if let path = DataTelecom.shared.user?.img_profile {
+                if let imageData = try? Data(contentsOf: URL(string: path)!) {
+                    let back = UIImage(data: imageData)
+                    self.img_profile.setImage(back?.withRenderingMode(.alwaysOriginal), for: .normal)
+                    
+                }
             }
         }
+        
         
         modifyNickname.delegate = self
         modifyContent.delegate = self
