@@ -55,7 +55,7 @@ class RecipeDetailViewController: UIViewController, UITableViewDelegate, UITable
             cell?.stepLabel.text = String(describing: self.recipe_step[indexPath.row].step)
             cell?.descriptionLabel.text = self.recipe_step[indexPath.row].description
             cell?.timerLabel.text = String(describing: self.recipe_step[indexPath.row].timer)
-            cell?.recipePK = recipepk_r
+            
             //cell?.recipeCommentList(recipePk: self.recipepk_r)
             DispatchQueue.main.async {
                 let path = self.recipe_step[indexPath.row].img_step
@@ -89,7 +89,19 @@ class RecipeDetailViewController: UIViewController, UITableViewDelegate, UITable
             return 150
         }
     }
-    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        print("----------------------------------didsecect-----------------------------------")
+        if segment.selectedSegmentIndex == 0 {
+            guard let nextViewController = storyboard?.instantiateViewController(withIdentifier: "RECIPECOMMENT") as? RecipeStepViewController else { return }
+            
+            nextViewController.recipepk = recipepk_r
+            nextViewController.commentpk = self.recipe_step[indexPath.row].pk
+            self.navigationController?.pushViewController(nextViewController, animated: true)
+        }
+        
+        
+        
+    }
     // MARK: Life Cycle
     //
     //

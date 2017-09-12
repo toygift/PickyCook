@@ -1,16 +1,16 @@
 //
-//  StepCommnetTableViewCell.swift
+//  RecipeCommentTableViewCell.swift
 //  PickyCookBook
 //
-//  Created by jaeseong on 2017. 9. 12..
+//  Created by jaeseong on 2017. 9. 13..
 //  Copyright © 2017년 jaeseong. All rights reserved.
 //
 
 import UIKit
 
-class StepCommnetTableViewCell: UITableViewCell {
+class RecipeCommentTableViewCell: UITableViewCell {
 
-    @IBOutlet var comment: UILabel!
+    @IBOutlet var content: UILabel!
     
     override func awakeFromNib() {
         super.awakeFromNib()

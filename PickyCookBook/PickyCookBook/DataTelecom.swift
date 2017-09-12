@@ -69,7 +69,7 @@ class DataTelecom {
             switch response.result {
             case .success(let value):
                 let json = JSON(value)
-                
+                print(json)
                 
 //                self.recipe_comment = DataCentre.shared.commentList(response: json["recipes"][0]["comments"]) // Comment
                 //self.recipe_step = DataCentre.shared.recipeStepList(response: json["recipes"]) //Step
