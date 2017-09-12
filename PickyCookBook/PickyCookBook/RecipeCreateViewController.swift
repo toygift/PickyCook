@@ -26,6 +26,25 @@ class RecipeCreateViewController: UIViewController, UITextFieldDelegate, UIImage
     @IBOutlet var img_recipe: UIImageView!
     
     @IBAction func createRecipe(_ sender: UIButton){
+        print("확인클릭")
+        
+        if titleTextField.text == "" {
+            Toast(text: "제목을 입력해주세요").show()
+            return
+        } else if descriptionTextField.text == "" {
+            Toast(text: "레시피 설명을 입력해주세요").show()
+            return
+        } else if ingredientTextField.text == "" {
+            Toast(text: "재료를 입력해주세요").show()
+            return
+        } else if tagTextField.text == "" {
+            Toast(text: "테그를 입력해주세요").show()
+            return
+        } else if captureImage.images == nil {
+            Toast(text: "메인사진은 필수입니다").show()
+            return
+        }
+        
         guard let title = titleTextField.text else { return }
         guard let description = descriptionTextField.text else { return }
         guard let ingredient = ingredientTextField.text else { return }

@@ -20,6 +20,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     
     @IBOutlet var tableView: UITableView!
+    
     var recipes: [Recipe]?
     var myrecipes: [Recipe]?
     var select: Bool = false

@@ -18,9 +18,9 @@ class DataTelecom {
     var user: User?
     var recipe: Recipe?
     
-    var recipe_review: [Recipe_Review]?
-    var recipe_comment: [Recipe_Comment]?
-    var recipe_step: [Recipe_Step]?
+    //var recipe_review: [Recipe_Review]?
+//    var recipe_comment: [Recipe_Comment]?
+    //var recipe_step: [Recipe_Step]?
         // MARK: 데이터 가져오기
     // 서버에서 데이터 가져와서 저장함
     // SignIn시에 user에 데이터 저장함
@@ -70,14 +70,14 @@ class DataTelecom {
             case .success(let value):
                 let json = JSON(value)
                 
-                self.recipe = DataCentre.shared.recipeList(response: json) // Recipe
-                self.recipe_comment = DataCentre.shared.commentList(response: json["recipes"][0]["comments"]) // Comment
-                self.recipe_step = DataCentre.shared.recipeStepList(response: json["recipes"]) //Step
+                
+//                self.recipe_comment = DataCentre.shared.commentList(response: json["recipes"][0]["comments"]) // Comment
+                //self.recipe_step = DataCentre.shared.recipeStepList(response: json["recipes"]) //Step
                 print("recipe",self.recipe ?? "데이터없음")
                 print("============================================")
-                print("recipe_comment",self.recipe_comment ?? "데이터없음")
+//                print("recipe_comment",self.recipe_comment ?? "데이터없음")
                 print("============================================")
-                print("recipe_step",self.recipe_step ?? "데이터없음")
+               // print("recipe_step",self.recipe_step ?? "데이터없음")
                 print("============================================")
                 
             case .failure(let error):

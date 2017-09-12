@@ -14,11 +14,7 @@ import Toaster
 
 let rootDomain: String = "http://pickycookbook.co.kr/api/"
 let serviceName: String = "com.toygift.PickyCookBook"
-public enum Detail {
-    case MAIN
-    case MYPAGE
-    case SEARCH
-}
+
 
 class DataCentre {
     
@@ -77,7 +73,6 @@ class DataCentre {
     //
     func commentList(response json: JSON) -> [Recipe_Comment] {
         let comment: [Recipe_Comment] = json.arrayValue.map { (jsonmap) -> Recipe_Comment in
-            
             let value = Recipe_Comment(pk: jsonmap["pk"].intValue,
                                        recipe_step: jsonmap["recipe_step"].intValue,
                                        user: jsonmap["user"].intValue,

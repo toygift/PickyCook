@@ -52,7 +52,7 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
             self.passwordConfirmTextField.placeholder = "패스워드 확인"
             self.passwordConfirmTextField.borderStyle = .none
             self.passwordConfirmTextField.autocapitalizationType = .none
-            self.passwordConfirmTextField.font = UIFont.systeFont(ofSize: 14)
+            self.passwordConfirmTextField.font = UIFont.systemFont(ofSize: 14)
             cell.addSubview(self.passwordConfirmTextField)
         case 4:
             self.contentTextField = UITextField(frame: tfFrame)
