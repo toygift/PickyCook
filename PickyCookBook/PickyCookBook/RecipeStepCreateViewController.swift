@@ -39,13 +39,27 @@ class RecipeStepCreateViewController: UIViewController, UITextFieldDelegate, UII
         self.present(alertController, animated: true, completion: nil)
     }
     @IBAction func recipeStepComplete(_ sender: UIButton) {
+        
+        if descriptionTextField.text == "" {
+            Toast(text: "설명을 입력해주세요").show()
+            return
+        } else if timer.text == "" {
+            Toast(text: "시간을 입력해주세요").show()
+            return
+        } else if is_timer == nil {
+            Toast(text: "타이머 유/무 선택해주세요").show()
+            return
+        } else if captureImage.images == nil {
+            Toast(text: "이미지를 선택해주세요").show()
+            return
+        }
         guard let desc = descriptionTextField.text else { return }
         guard let timer = Int(timer.text!) else { return }
         guard let recipepk = recipepk_r else { return }
         guard let is_timer = is_timer else { return }
+        guard let image = captureImage else { return }
+        recipeStepCreate(recipepk: recipepk, description: desc, is_timer: is_timer, timer: timer, img_step: image)
         
-        recipeStepCreate(recipepk: recipepk, description: desc, is_timer: is_timer, timer: timer, img_step: captureImage)
-        UIApplication.shared.isNetworkActivityIndicatorVisible = true
     }
     
     @IBAction func completeStep(_ sender: UIButton) {
@@ -90,7 +104,7 @@ class RecipeStepCreateViewController: UIViewController, UITextFieldDelegate, UII
     
 }
 extension RecipeStepCreateViewController {
-    func recipeStepCreate(recipepk: Int, description: String, is_timer: Bool, timer: Int, img_step:UIImage){
+    func recipeStepCreate(recipepk: Int, description: String, is_timer: Bool, timer: Int, img_step: UIImage){
 //        guard let token = UserDefaults.standard.string(forKey: "token") else { return }
         
         let url = rootDomain + "recipe/step/create/"
@@ -101,7 +115,7 @@ extension RecipeStepCreateViewController {
         guard let headers = tokenValue.getAuthHeaders() else { return }
         
         Alamofire.upload(multipartFormData: { (multipartFormData) in
-            
+            UIApplication.shared.isNetworkActivityIndicatorVisible = true
             
             for (key, value) in parameters {
                 

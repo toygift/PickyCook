@@ -8,6 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		111A82F55A50F4497FC2381A /* Pods_PickyCookBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B3629AAED91DFC939D8AC746 /* Pods_PickyCookBook.framework */; };
+		3F065AD11F67C3B900B75106 /* RecipeStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F065AD01F67C3B900B75106 /* RecipeStepViewController.swift */; };
+		3F065AD31F67EC2700B75106 /* ss.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 3F065AD21F67EC2700B75106 /* ss.jpg */; };
+		3F065AD51F67F37C00B75106 /* StepTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F065AD41F67F37C00B75106 /* StepTableViewCell.swift */; };
+		3F5458E41F6899DA00E3FFD7 /* RecipeCommentTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F5458E31F6899DA00E3FFD7 /* RecipeCommentTableViewCell.swift */; };
 		3F63F4351F6286F30005D4E5 /* no_im.png in Resources */ = {isa = PBXBuildFile; fileRef = 3F63F4341F6286F30005D4E5 /* no_im.png */; };
 		3F656F161F62554A00A8B66D /* RecipeCreateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F656F151F62554A00A8B66D /* RecipeCreateViewController.swift */; };
 		3F656F181F62559700A8B66D /* RecipeStepCreateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F656F171F62559700A8B66D /* RecipeStepCreateViewController.swift */; };
@@ -46,6 +50,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		3F065AD01F67C3B900B75106 /* RecipeStepViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecipeStepViewController.swift; sourceTree = "<group>"; };
+		3F065AD21F67EC2700B75106 /* ss.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = ss.jpg; sourceTree = "<group>"; };
+		3F065AD41F67F37C00B75106 /* StepTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StepTableViewCell.swift; sourceTree = "<group>"; };
+		3F5458E31F6899DA00E3FFD7 /* RecipeCommentTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecipeCommentTableViewCell.swift; sourceTree = "<group>"; };
 		3F63F4341F6286F30005D4E5 /* no_im.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = no_im.png; sourceTree = "<group>"; };
 		3F656F151F62554A00A8B66D /* RecipeCreateViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecipeCreateViewController.swift; sourceTree = "<group>"; };
 		3F656F171F62559700A8B66D /* RecipeStepCreateViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecipeStepCreateViewController.swift; sourceTree = "<group>"; };
@@ -143,6 +151,7 @@
 		3F7971421F59F2510074C3DF /* XCODE */ = {
 			isa = PBXGroup;
 			children = (
+				3F065AD21F67EC2700B75106 /* ss.jpg */,
 				3F63F4341F6286F30005D4E5 /* no_im.png */,
 				3F79716A1F5D194A0074C3DF /* no_image.jpg */,
 				3F7971371F59F23D0074C3DF /* Assets.xcassets */,
@@ -213,6 +222,8 @@
 		3F7971581F59F3910074C3DF /* RECIPE_STEP */ = {
 			isa = PBXGroup;
 			children = (
+				3F065AD01F67C3B900B75106 /* RecipeStepViewController.swift */,
+				3F065AD41F67F37C00B75106 /* StepTableViewCell.swift */,
 			);
 			name = RECIPE_STEP;
 			sourceTree = "<group>";
@@ -220,6 +231,7 @@
 		3F7971591F59F39E0074C3DF /* RECIPE_COMMENT */ = {
 			isa = PBXGroup;
 			children = (
+				3F5458E31F6899DA00E3FFD7 /* RecipeCommentTableViewCell.swift */,
 			);
 			name = RECIPE_COMMENT;
 			sourceTree = "<group>";
@@ -348,6 +360,7 @@
 				3F79713B1F59F23D0074C3DF /* LaunchScreen.storyboard in Resources */,
 				3F7971381F59F23D0074C3DF /* Assets.xcassets in Resources */,
 				3F63F4351F6286F30005D4E5 /* no_im.png in Resources */,
+				3F065AD31F67EC2700B75106 /* ss.jpg in Resources */,
 				3F79716B1F5D194A0074C3DF /* no_image.jpg in Resources */,
 				3F7971361F59F23D0074C3DF /* Main.storyboard in Resources */,
 			);
@@ -417,13 +430,16 @@
 				3F656F1C1F625D0D00A8B66D /* RecipeMediaData.swift in Sources */,
 				3F81D0321F66B6F400D256EC /* TouchID.swift in Sources */,
 				3F656F161F62554A00A8B66D /* RecipeCreateViewController.swift in Sources */,
+				3F065AD11F67C3B900B75106 /* RecipeStepViewController.swift in Sources */,
 				3F7971441F59F2CF0074C3DF /* User.swift in Sources */,
 				3F7971311F59F23D0074C3DF /* AppDelegate.swift in Sources */,
 				3FB32EB81F60E51600C4B9FC /* AllRecipeTableViewCell.swift in Sources */,
+				3F5458E41F6899DA00E3FFD7 /* RecipeCommentTableViewCell.swift in Sources */,
 				3FC6017F1F6052C600931909 /* Temp.swift in Sources */,
 				3F9E28E51F60306200B661D2 /* Recipe_Bookmark.swift in Sources */,
 				3F79714C1F59F3130074C3DF /* Recipe_Review.swift in Sources */,
 				3F9E28DD1F5EAEAB00B661D2 /* BookMarkTableViewCell.swift in Sources */,
+				3F065AD51F67F37C00B75106 /* StepTableViewCell.swift in Sources */,
 				3F656F181F62559700A8B66D /* RecipeStepCreateViewController.swift in Sources */,
 				3F81D0281F631FB900D256EC /* RecipeSearchViewController.swift in Sources */,
 				3F81D02A1F631FD200D256EC /* RecipeSearchTableViewCell.swift in Sources */,
