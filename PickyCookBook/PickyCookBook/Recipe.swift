@@ -21,6 +21,3 @@ struct Recipe {
 
 }
 
-struct RecipeCreate {
-    
-}

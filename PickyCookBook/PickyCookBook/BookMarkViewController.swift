@@ -12,7 +12,7 @@ import SwiftyJSON
 
 class BookMarkViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
-    var recipe_bookmark: [Recipe_Bookmark]?
+    var recipe_bookmark: [Recipe_Bookmark] = []
 
     @IBOutlet var tableView: UITableView!
     
@@ -20,18 +20,22 @@ class BookMarkViewController: UIViewController, UITableViewDelegate, UITableView
     
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return (self.recipe_bookmark?.count ?? 1)!
+        return self.recipe_bookmark.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "BOOKMARKREUSE") as? BookMarkTableViewCell
-        let count_like = self.recipe_bookmark?[indexPath.row].like_count
-        let sum_rate = self.recipe_bookmark?[indexPath.row].rate_sum
         
-        cell?.title.text = self.recipe_bookmark?[indexPath.row].title
-        cell?.memo.text = self.recipe_bookmark?[indexPath.row].memo
-        cell?.like_count.text = "좋아요 " + "\(count_like ?? 1)"
-        cell?.rate_sum.text = "평점 " + "\(sum_rate ?? 1)"
+        let bookmarkRecipes: Recipe_Bookmark = recipe_bookmark[indexPath.row]
+        cell?.bookmarkRecipe = bookmarkRecipes
+        
+//        let count_like = self.recipe_bookmark[indexPath.row].like_count
+//        let sum_rate = self.recipe_bookmark[indexPath.row].rate_sum
+//        
+//        cell?.title.text = self.recipe_bookmark[indexPath.row].title
+//        cell?.memo.text = self.recipe_bookmark[indexPath.row].memo
+//        cell?.like_count.text = "좋아요 " + "\(count_like)"
+//        cell?.rate_sum.text = "평점 " + "\(sum_rate)"
         
         return cell!
     }
@@ -39,10 +43,10 @@ class BookMarkViewController: UIViewController, UITableViewDelegate, UITableView
         guard let nextViewController = self.storyboard?.instantiateViewController(withIdentifier: "RECIPEDETAIL") as? RecipeDetailViewController else {
             return
         }
-        let recipePk = self.recipe_bookmark?[indexPath.row].recipe
+        let recipePk = self.recipe_bookmark[indexPath.row].recipe
         print("====================================================================================================================================================")
         print("====================================================================================================================================================")
-        print("recipePk  :  ",recipePk ?? "NO")
+        print("recipePk  :  ",recipePk)
         print("====================================================================================================================================================")
         print("====================================================================================================================================================")
         print("====================================================================================================================================================")
@@ -61,17 +65,17 @@ class BookMarkViewController: UIViewController, UITableViewDelegate, UITableView
         let delete = UITableViewRowAction(style: .destructive, title: "삭제") { (action, indexPath) in
             
 
-            let recipepk = self.recipe_bookmark?[indexPath.row].recipe
-            print("레시피 PK :                  ",recipepk ?? "no")
-            self.recipe_bookmark?.remove(at: indexPath.row)
+            let recipepk = self.recipe_bookmark[indexPath.row].recipe
+            print("레시피 PK :                  ",recipepk)
+            self.recipe_bookmark.remove(at: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .fade)
             
-            self.bookmarkListDelete(recipepks: recipepk!, selectAlamo: true)
+            self.bookmarkListDelete(recipepks: recipepk, selectAlamo: true)
             UIApplication.shared.isNetworkActivityIndicatorVisible = true
             
         }
         let patch = UITableViewRowAction(style: .default, title: "수정") { (action, indexPath) in
-            let recipepk = self.recipe_bookmark?[indexPath.row].recipe
+            let recipepk = self.recipe_bookmark[indexPath.row].recipe
             let alertController = UIAlertController(title: "메모수정", message: nil, preferredStyle: .alert)
             alertController.addTextField(configurationHandler: { (textfield) in
                 textfield.placeholder = "수정할 메모를 입력하세요"
@@ -80,9 +84,9 @@ class BookMarkViewController: UIViewController, UITableViewDelegate, UITableView
                 UIApplication.shared.isNetworkActivityIndicatorVisible = true
                 if let title = alertController.textFields?[0].text {
                     if title.isEmpty == false {
-                        self.recipe_bookmark?[indexPath.row].memo = title
+                        self.recipe_bookmark[indexPath.row].memo = title
                         self.title_A = title
-                        self.bookmarkListDelete(recipepks: recipepk!, selectAlamo: false)
+                        self.bookmarkListDelete(recipepks: recipepk, selectAlamo: false, memo: title)
                         self.tableView.reloadData()
                     } else {
                         
@@ -91,7 +95,7 @@ class BookMarkViewController: UIViewController, UITableViewDelegate, UITableView
             })))
             alertController.addAction(UIAlertAction(title: "취소", style: .cancel, handler: nil))
             self.present(alertController, animated: true, completion: nil)
-            print("레시피 PK :                  ",recipepk ?? "no")
+            print("레시피 PK :                  ",recipepk)
         }
         patch.backgroundColor = UIColor.lightGray
     
@@ -142,7 +146,7 @@ extension BookMarkViewController {
                 let json = JSON(value)
 
                 self.recipe_bookmark = DataCentre.shared.recipeBookmarkList(response: json)
-                print("유저프린트   :   ",self.recipe_bookmark ?? "데이터없음")
+                print("북마크   :   ",self.recipe_bookmark)
                 DispatchQueue.main.async {
                     self.tableView.reloadData()
                 }
@@ -154,7 +158,7 @@ extension BookMarkViewController {
             }
         }
     }
-    func bookmarkListDelete(recipepks: Int, selectAlamo: Bool){
+    func bookmarkListDelete(recipepks: Int, selectAlamo: Bool, memo: String = ""){
         print("====================================================================")
         print("====================bookmarkListDelete()============================")
         print("====================================================================")
@@ -168,7 +172,7 @@ extension BookMarkViewController {
             call = Alamofire.request(rootDomain + "recipe/bookmark/\(recipepks)/", method: .delete, headers: headers)
             
         } else {
-            let parameters: Parameters = ["memo": self.title_A]
+            let parameters: Parameters = ["memo": memo]
             call = Alamofire.request(rootDomain + "recipe/bookmark/\(recipepks)/", method: .patch, parameters: parameters, headers: headers)
             
         }
@@ -177,11 +181,11 @@ extension BookMarkViewController {
             switch response.result {
             case .success(let value):
                 let json = JSON(value)
-                print(json)
+                print("삭제완료 : ",json)
                 //refresh가 필요없음...
-//                DispatchQueue.main.async {
-//                    self.tableView.reloadData()
-//                }
+                DispatchQueue.main.async {
+                    self.tableView.reloadData()
+                }
                 UIApplication.shared.isNetworkActivityIndicatorVisible = false
             case .failure(let error):
                 print(error)

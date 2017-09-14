@@ -185,6 +185,7 @@ extension SignInViewController {
                 } else {
                     
                     let accessToken = json["token"].stringValue
+                    print(accessToken)
                     let userpk = json["pk"].stringValue
                     
                     

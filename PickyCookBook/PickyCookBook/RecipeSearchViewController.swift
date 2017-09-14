@@ -13,17 +13,17 @@ import Toaster
 
 class RecipeSearchViewController: UIViewController, UISearchBarDelegate, UITableViewDelegate, UITableViewDataSource {
     
-    @IBOutlet var recipe_search: UISearchBar!
+    @IBOutlet var searchBar: UISearchBar!
     
-    var searchRecipe: [Recipe_Search]?
+    var recipe_search: [Recipe_Search] = []
     
     
     @IBOutlet var tableView: UITableView!
     override func viewDidLoad() {
         super.viewDidLoad()
-        recipe_search.delegate = self
+        searchBar.delegate = self
         tableView.delegate = self
-        recipe_search.placeholder = "검색할 재료를 입력하세요"
+        searchBar.placeholder = "검색할 재료를 입력하세요"
         //recipe_search.isSearchResultsButtonSelected = true
     }
     
@@ -35,60 +35,45 @@ class RecipeSearchViewController: UIViewController, UISearchBarDelegate, UITable
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         
-        guard let searchText = recipe_search.text else { return }
+        guard let searchText = searchBar.text else { return }
         recipeSearch(recipeSearch: searchText)
-        recipe_search.resignFirstResponder()
-        recipe_search.showsCancelButton = false
-        recipe_search.endEditing(true)
+        searchBar.resignFirstResponder()
+        searchBar.showsCancelButton = false
+        searchBar.endEditing(true)
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
         
     }
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        recipe_search.showsCancelButton = false
-        recipe_search.text = ""
-        recipe_search.endEditing(true)
+        searchBar.showsCancelButton = false
+        searchBar.text = ""
+        searchBar.endEditing(true)
     }
     func searchBar(_ searchBar: UISearchBar, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         return true
     }
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
-        recipe_search.showsCancelButton = true
+        searchBar.showsCancelButton = true
     }
     func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
         //disablesAutomaticKeyboardDismissal = true
     }
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        recipe_search.resignFirstResponder()
-        recipe_search.endEditing(true)
+        searchBar.resignFirstResponder()
+        searchBar.endEditing(true)
 //        tableView.touchesBegan(touches, with: recipe_search.endEditing(true))
     }
     // MARK: TableView
     //
     //
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if searchRecipe?.count == nil {
-            return 1
-        } else {
-            return (searchRecipe?.count)!
-        }
+       return recipe_search.count
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "SEARCH", for: indexPath) as? RecipeSearchTableViewCell
-        //let sum_cal = self.searchRecipe?[indexPath.row].cal_sum
         
-        cell?.title.text = self.searchRecipe?[indexPath.row].title
-        cell?.descriptions.text = self.searchRecipe?[indexPath.row].description
-        cell?.ingredient.text = self.searchRecipe?[indexPath.row].ingredient
-        cell?.tags.text = self.searchRecipe?[indexPath.row].tag
-        
-        
-        DispatchQueue.main.async {
-            if let path = self.searchRecipe?[indexPath.row].img_recipe{
-                if let image = try? Data(contentsOf: URL(string: path)!) {
-                    cell?.img_recipe.image = UIImage(data: image)
-                }
-            }
-        }
+        let searchRecipes: Recipe_Search = recipe_search[indexPath.row]
+        cell?.searchRecipe = searchRecipes
+ 
         return cell!
     }
     
@@ -96,9 +81,9 @@ class RecipeSearchViewController: UIViewController, UISearchBarDelegate, UITable
         guard let nextViewController = self.storyboard?.instantiateViewController(withIdentifier: "RECIPEDETAIL") as? RecipeDetailViewController else {
             return
         }
-        let recipePk = self.searchRecipe?[indexPath.row].pk
+        let recipePk = self.recipe_search[indexPath.row].pk
         nextViewController.recipepk_r = recipePk
-        print("recipePk  :  ",recipePk ?? "NO")
+        print("recipePk  :  ",recipePk)
         
         
         self.navigationController?.pushViewController(nextViewController, animated: true)
@@ -122,7 +107,7 @@ extension RecipeSearchViewController {
             case .success(let value):
                 let json = JSON(value)
                 print(json)
-                self.searchRecipe = DataCentre.shared.recipeSearchList(response: json["results"])
+                self.recipe_search = DataCentre.shared.recipeSearchList(response: json["results"])
                 DispatchQueue.main.async {
                     self.tableView.reloadData()
                 }

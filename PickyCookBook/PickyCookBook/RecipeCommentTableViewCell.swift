@@ -11,16 +11,10 @@ import UIKit
 class RecipeCommentTableViewCell: UITableViewCell {
 
     @IBOutlet var content: UILabel!
+
+    var commentRecipe: PickyCookBook.Recipe_Comment? { didSet { updateUI()}}
     
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        // Initialization code
+    private func updateUI() {
+        content.text = commentRecipe?.content
     }
-
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
-    }
-
 }
