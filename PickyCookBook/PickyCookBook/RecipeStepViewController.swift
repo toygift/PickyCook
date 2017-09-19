@@ -10,13 +10,14 @@ import UIKit
 import Alamofire
 import SwiftyJSON
 import Toaster
+import SnapKit
 
 class RecipeStepViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
     var recipepk: Int?
     var commentpk: Int?
     var recipe_comment: [Recipe_Comment] = []
-    var heightArray: NSMutableArray = []
+//    var heightArray: NSMutableArray = []
     
     @IBOutlet var tableView: UITableView!
     
@@ -24,7 +25,7 @@ class RecipeStepViewController: UIViewController, UITableViewDelegate, UITableVi
         super.viewDidLoad()
         self.navigationItem.title = "레시피스텝코멘트"
         //Gggggg
-        
+        autoLayout()
         
         recipeCommentList(recipePk: self.recipepk!)
         tableView.rowHeight = UITableViewAutomaticDimension
@@ -102,6 +103,16 @@ extension RecipeStepViewController {
                 
                 
             }
+        }
+    }
+}
+extension RecipeStepViewController {
+    func autoLayout(){
+        tableView.snp.makeConstraints { (make) in
+            make.top.equalTo(topLayoutGuide.snp.bottom)
+            make.left.equalTo(view)
+            make.right.equalTo(view)
+            make.bottom.equalTo(bottomLayoutGuide.snp.top)
         }
     }
 }

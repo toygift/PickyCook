@@ -11,7 +11,7 @@ import UIKit
 class StarViewController: UIViewController, FloatRatingViewDelegate {
 
     let statRating = FloatRatingView()
-    var star: String = ""
+    var star: Float = 0.0
     override func viewDidLoad() {
         super.viewDidLoad()
         self.statRating.emptyImage = UIImage(named: "star2")
@@ -31,7 +31,7 @@ class StarViewController: UIViewController, FloatRatingViewDelegate {
         self.preferredContentSize = CGSize(width: self.statRating.frame.width, height: self.statRating.frame.height+10)
     }
     func floatRatingView(_ ratingView: FloatRatingView, didUpdate rating: Float) {
-        self.star = NSString(format: "%.2f", self.statRating.rating) as String
-        print(self.star)
+        self.star = self.statRating.rating
+        print("메인  :  ",self.star)
     }
 }

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SnapKit
 
 class RecipeCommentTableViewCell: UITableViewCell {
 
@@ -16,5 +17,21 @@ class RecipeCommentTableViewCell: UITableViewCell {
     
     private func updateUI() {
         content.text = commentRecipe?.content
+    }
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        print("____________________________________________________________")
+        autoLayout()
+    }
+}
+
+extension RecipeCommentTableViewCell {
+    func autoLayout() {
+        content.snp.makeConstraints { (make) in
+            make.top.equalTo(self.contentView).inset(10)
+            make.left.equalTo(self.contentView).inset(10)
+            make.right.equalTo(self.contentView).inset(10)
+            make.bottom.equalTo(self.contentView).inset(10)
+        }
     }
 }

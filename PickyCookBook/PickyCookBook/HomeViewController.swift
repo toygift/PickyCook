@@ -10,7 +10,9 @@ import UIKit
 import Alamofire
 import SwiftyJSON
 import Toaster
-
+import SnapKit
+import Social
+import MobileCoreServices
 
 class HomeViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
@@ -27,7 +29,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     //
     //
     
-   
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         var returnValue: Int = 0
         if select == false {
@@ -43,8 +45,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         if self.select == false {
             let allRecipes: Recipe = recipes[indexPath.row]
-             cell?.allRecipe = allRecipes
-            
+            cell?.allRecipe = allRecipes
             
         } else  {
             let myRecipes: Recipe = myrecipes[indexPath.row]
@@ -105,11 +106,25 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
             self.present(alertController, animated: true, completion: nil)
             print("레시피 PK :                  ",recipepk)
         }
-        bookmark.backgroundColor = UIColor.lightGray
         
-        return [bookmark]
+        
+        let shareAction = UITableViewRowAction(style: UITableViewRowActionStyle.default, title: "보내기") { (action, indexPath) in
+            let defaultText = "PickyCookBook에서 공유하는 레시피 입니다   \n" + self.recipes[indexPath.row].title
+            
+            let imageData = try? Data(contentsOf: URL(string: self.recipes[indexPath.row].img_recipe)!)
+            let activityController = UIActivityViewController(activityItems: [defaultText, imageData!], applicationActivities: nil)
+            self.present(activityController, animated: true, completion: nil)
+            
+        }
+
+        bookmark.backgroundColor = UIColor.lightGray
+        shareAction.backgroundColor = UIColor(colorLiteralRed: 48.0/255.0, green: 173.0/255.0, blue: 99.0/255.0, alpha: 1.0)
+        
+        return [shareAction, bookmark]
     }
-    
+    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+        return UITableViewAutomaticDimension
+    }
     
     // MARK: Life Cycle
     //
@@ -117,25 +132,26 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     override func viewDidLoad() {
         super.viewDidLoad()
         self.customViewLoadAppear()
+        autoLayout()
+        self.navigationItem.title = "레시피"
+        tableView.rowHeight = UITableViewAutomaticDimension
         
-        
-    
     }
     
     override func viewWillAppear(_ animated: Bool) {
         print("HOMEviewWillAppear")
-        self.customViewLoadAppear()
+        //self.customViewLoadAppear()
     }
     // MARK: view Load and Appear
     func customViewLoadAppear(){
         if select == false {
             UIApplication.shared.isNetworkActivityIndicatorVisible = true
-//            self.navigationItem.title = "레시피"
+            //            self.navigationItem.title = "레시피"
             self.allRecipeList()
             print("select : false", select)
         } else if select == true {
             UIApplication.shared.isNetworkActivityIndicatorVisible = true
-//            self.navigationItem.title = "My레시피"
+            //            self.navigationItem.title = "My레시피"
             self.mycreateRecipe()
             print("select : true", select)
             
@@ -263,3 +279,15 @@ extension HomeViewController {
         }
     }
 }
+
+extension HomeViewController {
+    func autoLayout(){
+        tableView.snp.makeConstraints { (make) in
+            make.top.equalTo(topLayoutGuide.snp.bottom)
+            make.left.equalTo(view)
+            make.right.equalTo(view)
+            make.bottom.equalTo(bottomLayoutGuide.snp.top)
+        }
+    }
+}
+

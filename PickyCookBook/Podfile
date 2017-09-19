@@ -10,6 +10,8 @@ target 'PickyCookBook' do
   pod 'FBSDKShareKit'
   pod 'FBSDKLoginKit'
   pod 'Toaster'
+  pod 'SnapKit', '~> 3.2.0'
+
   # Pods for PickyCookBook
 
 end

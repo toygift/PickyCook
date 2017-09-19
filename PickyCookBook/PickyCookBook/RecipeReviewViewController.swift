@@ -9,6 +9,7 @@
 import UIKit
 import Alamofire
 import SwiftyJSON
+import SnapKit
 
 class RecipeReviewViewController: UIViewController , UITableViewDelegate, UITableViewDataSource{
 
@@ -37,11 +38,13 @@ class RecipeReviewViewController: UIViewController , UITableViewDelegate, UITabl
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        autoLayout()
         self.recipeReviewList(recipePk: recipepk!)
         tableView.rowHeight = UITableViewAutomaticDimension
-        
+        tableView.reloadData()
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
         self.navigationItem.title = "레시피리뷰"
+        
     }
 
     
@@ -78,6 +81,16 @@ extension RecipeReviewViewController {
                 UIApplication.shared.isNetworkActivityIndicatorVisible = false
                 
             }
+        }
+    }
+}
+extension RecipeReviewViewController {
+    func autoLayout(){
+        tableView.snp.makeConstraints { (make) in
+            make.top.equalTo(topLayoutGuide.snp.bottom)
+            make.left.equalTo(view)
+            make.right.equalTo(view)
+            make.bottom.equalTo(bottomLayoutGuide.snp.top)
         }
     }
 }

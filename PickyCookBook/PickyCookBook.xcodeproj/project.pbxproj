@@ -32,6 +32,7 @@
 		3F7971691F5D12F30074C3DF /* MainTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F7971681F5D12F30074C3DF /* MainTabBar.swift */; };
 		3F79716B1F5D194A0074C3DF /* no_image.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 3F79716A1F5D194A0074C3DF /* no_image.jpg */; };
 		3F79716D1F5D1BA40074C3DF /* MyPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F79716C1F5D1BA40074C3DF /* MyPageViewController.swift */; };
+		3F7CFEC61F7186AC001CB538 /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F7CFEC51F7186AC001CB538 /* Social.framework */; };
 		3F81D0281F631FB900D256EC /* RecipeSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F81D0271F631FB900D256EC /* RecipeSearchViewController.swift */; };
 		3F81D02A1F631FD200D256EC /* RecipeSearchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F81D0291F631FD200D256EC /* RecipeSearchTableViewCell.swift */; };
 		3F81D02C1F63289300D256EC /* Recipe_Search.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F81D02B1F63289300D256EC /* Recipe_Search.swift */; };
@@ -79,6 +80,7 @@
 		3F7971681F5D12F30074C3DF /* MainTabBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainTabBar.swift; sourceTree = "<group>"; };
 		3F79716A1F5D194A0074C3DF /* no_image.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = no_image.jpg; sourceTree = "<group>"; };
 		3F79716C1F5D1BA40074C3DF /* MyPageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyPageViewController.swift; sourceTree = "<group>"; };
+		3F7CFEC51F7186AC001CB538 /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
 		3F81D0271F631FB900D256EC /* RecipeSearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecipeSearchViewController.swift; sourceTree = "<group>"; };
 		3F81D0291F631FD200D256EC /* RecipeSearchTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecipeSearchTableViewCell.swift; sourceTree = "<group>"; };
 		3F81D02B1F63289300D256EC /* Recipe_Search.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Recipe_Search.swift; sourceTree = "<group>"; };
@@ -107,6 +109,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3F7CFEC61F7186AC001CB538 /* Social.framework in Frameworks */,
 				111A82F55A50F4497FC2381A /* Pods_PickyCookBook.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -225,7 +228,6 @@
 		3F7971581F59F3910074C3DF /* RECIPE_STEP */ = {
 			isa = PBXGroup;
 			children = (
-				3F065AD01F67C3B900B75106 /* RecipeStepViewController.swift */,
 				3F065AD41F67F37C00B75106 /* StepTableViewCell.swift */,
 			);
 			name = RECIPE_STEP;
@@ -234,6 +236,7 @@
 		3F7971591F59F39E0074C3DF /* RECIPE_COMMENT */ = {
 			isa = PBXGroup;
 			children = (
+				3F065AD01F67C3B900B75106 /* RecipeStepViewController.swift */,
 				3F5458E31F6899DA00E3FFD7 /* RecipeCommentTableViewCell.swift */,
 			);
 			name = RECIPE_COMMENT;
@@ -306,6 +309,7 @@
 		BB923D6A378316711CA6ACB7 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				3F7CFEC51F7186AC001CB538 /* Social.framework */,
 				B3629AAED91DFC939D8AC746 /* Pods_PickyCookBook.framework */,
 			);
 			name = Frameworks;

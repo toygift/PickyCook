@@ -10,6 +10,7 @@ import UIKit
 import Alamofire
 import SwiftyJSON
 import Toaster
+import SnapKit
 
 
 class StepTableViewCell: UITableViewCell {
@@ -20,7 +21,48 @@ class StepTableViewCell: UITableViewCell {
     @IBOutlet var descriptionLabel: UILabel!
     @IBOutlet var img_step: UIImageView!
     @IBOutlet var timerLabel: UILabel!
-
+    
+    var seconds: Int = 0
+    var timer = Timer()
+    
+    var isTimerRunning = false
+    var resumeTapped = false
+    
+    @IBAction func startTimer(_ sender: UIButton) {
+        if isTimerRunning == false {
+            runTimer()
+        }
+        
+    }
+    func runTimer() {
+        timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: (#selector(StepTableViewCell.updateTimer)), userInfo: nil, repeats: true)
+        isTimerRunning = true
+    }
+    func updateTimer() {
+        if seconds < 1 {
+            timer.invalidate()
+        } else {
+            seconds -= 1
+            timerLabel.text = timeString(time: TimeInterval(seconds))
+        }
+        
+    }
+    @IBAction func pauseTimer(_ sender: UIButton) {
+        if self.resumeTapped == false {
+            timer.invalidate()
+            isTimerRunning = false
+            self.resumeTapped = true
+        } else {
+            runTimer()
+            self.resumeTapped = false
+            isTimerRunning = true
+        }
+    }
+    func timeString(time: TimeInterval) -> String {
+        let minutes = Int(time) / 60 % 60
+        let seconds = Int(time) % 60
+        return String(format: "%02i:%02i", minutes, seconds)
+    }
     
     private func updateUI() {
         let stepNumber = stepRecipe?.step
@@ -28,6 +70,7 @@ class StepTableViewCell: UITableViewCell {
         
         stepLabel.text = "스텝번호 " + "\(stepNumber ?? 1)"
         descriptionLabel.text = stepRecipe?.description
+        self.seconds = (stepRecipe?.timer)!
         timerLabel.text = "소요시간 " + "\(stepTimer ?? 1)"
         
         //cell?.recipeCommentList(recipePk: self.recipepk_r)

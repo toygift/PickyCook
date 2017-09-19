@@ -12,6 +12,7 @@ PODS:
     - FBSDKCoreKit
   - FBSDKShareKit (4.25.0):
     - FBSDKCoreKit
+  - SnapKit (3.2.0)
   - SwiftyJSON (3.1.4)
   - Toaster (2.0.4)
 
@@ -20,6 +21,7 @@ DEPENDENCIES:
   - FBSDKCoreKit
   - FBSDKLoginKit
   - FBSDKShareKit
+  - SnapKit (~> 3.2.0)
   - SwiftyJSON
   - Toaster
 
@@ -29,9 +31,10 @@ SPEC CHECKSUMS:
   FBSDKCoreKit: 53e3f4bfb64e80c5f229dd30ae33ff57fbbbd2d1
   FBSDKLoginKit: f628c09684dae9c17f071cf90b014e886f5093ea
   FBSDKShareKit: aea699d3cac749af08e360f4e949b82ffa8813f5
+  SnapKit: 1ca44df72cfa543218d177cb8aab029d10d86ea7
   SwiftyJSON: c2842d878f95482ffceec5709abc3d05680c0220
   Toaster: f13031c636ef065281bc11857be9a16c7659e04f
 
-PODFILE CHECKSUM: b1400488d1e1a9ff9daff7b9ead925510918389c
+PODFILE CHECKSUM: 5c08f2898ab5e5ea198ac70229b6a23698b4be65
 
 COCOAPODS: 1.2.1

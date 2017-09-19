@@ -7,9 +7,12 @@
 //
 
 import UIKit
+import SnapKit
 
 class RecipeSearchTableViewCell: UITableViewCell {
 
+    @IBOutlet var stackView: UIStackView!
+    
     @IBOutlet var img_recipe: UIImageView!
     @IBOutlet var title: UILabel!
     @IBOutlet var descriptions: UILabel!
@@ -17,7 +20,10 @@ class RecipeSearchTableViewCell: UITableViewCell {
     @IBOutlet var tags: UILabel!
     
     var searchRecipe: PickyCookBook.Recipe_Search? { didSet { updateUI()}}
-    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        autoLayout()
+    }
     private func updateUI() {
         title.text = searchRecipe?.title
         descriptions.text = searchRecipe?.description
@@ -34,6 +40,22 @@ class RecipeSearchTableViewCell: UITableViewCell {
                 })
                 task.resume()
             }
+        }
+    }
+}
+extension RecipeSearchTableViewCell {
+    func autoLayout(){
+        img_recipe.snp.makeConstraints { (make) in
+            make.top.equalTo(self.contentView).inset(10)
+            make.left.equalTo(self.contentView).inset(10)
+            make.right.equalTo(stackView).inset(10)
+            make.bottom.equalTo(self.contentView).inset(10)
+        }
+        stackView.snp.makeConstraints { (make) in
+            make.top.equalTo(self.contentView).inset(10)
+//            make.left.equalTo(self.contentView).inset(10)
+            make.right.equalTo(self.contentView).inset(10)
+            make.bottom.equalTo(self.contentView).inset(10)
         }
     }
 }

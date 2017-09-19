@@ -9,6 +9,7 @@
 import UIKit
 import Alamofire
 import SwiftyJSON
+import SnapKit
 
 class BookMarkViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
@@ -107,8 +108,10 @@ class BookMarkViewController: UIViewController, UITableViewDelegate, UITableView
     //
     override func viewDidLoad() {
         super.viewDidLoad()
+        autoLayout()
         self.bookmarkList()
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
+        
         
     }
     override func viewWillAppear(_ animated: Bool) {
@@ -195,4 +198,15 @@ extension BookMarkViewController {
         }
     }
 
+}
+
+extension BookMarkViewController {
+    func autoLayout(){
+        tableView.snp.makeConstraints { (make) in
+            make.top.equalTo(topLayoutGuide.snp.bottom)
+            make.left.equalTo(view)
+            make.right.equalTo(view)
+            make.bottom.equalTo(bottomLayoutGuide.snp.top)
+        }
+    }
 }

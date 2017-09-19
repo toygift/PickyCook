@@ -151,8 +151,6 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.pictureConfirm.layer.cornerRadius = self.pictureConfirm.frame.width / 2
-        self.pictureConfirm.layer.masksToBounds = true
         let gesture = UITapGestureRecognizer(target: self, action: #selector(tappedProfile(_:)))
         self.pictureConfirm.addGestureRecognizer(gesture)
         

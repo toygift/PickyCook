@@ -76,8 +76,7 @@ class MyPageViewController: UIViewController {
         print("================================================================")
         //여기서 사진등등 띄우니 수정후에 안뜨는 문제발생
         //그래서 viewWillAppear에서 띄움
-        self.img_profile.layer.cornerRadius = self.img_profile.frame.width / 2
-        self.img_profile.layer.masksToBounds = true
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -90,14 +89,18 @@ class MyPageViewController: UIViewController {
         self.email.text = DataTelecom.shared.user?.email
         //        let back = UIImage(named: "no_image.jpg")
         //        self.img_profile.setImage(back?.withRenderingMode(.alwaysOriginal), for: .normal)
-        DispatchQueue.main.async {
-            if let path = DataTelecom.shared.user?.img_profile {
-                if let imageData = try? Data(contentsOf: URL(string: path)!) {
-                    self.img_profile.image = UIImage(data: imageData)
-                }
+        DispatchQueue.global().async {
+            guard let path = DataTelecom.shared.user?.img_profile else { return }
+            if let imageURL = URL(string: path) {
+                let task = URLSession.shared.dataTask(with: imageURL, completionHandler: { (data, response, error) in
+                    guard let putImage = data else { return }
+                    DispatchQueue.main.async {
+                        self.img_profile.image = UIImage(data: putImage)
+                    }
+                })
+                task.resume()
             }
         }
-        
     }
     
     override func didReceiveMemoryWarning() {

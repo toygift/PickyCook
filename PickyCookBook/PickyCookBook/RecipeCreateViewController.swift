@@ -66,8 +66,7 @@ class RecipeCreateViewController: UIViewController, UITextFieldDelegate, UIImage
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.img_recipe.layer.cornerRadius = self.img_recipe.frame.width / 2
-        self.img_recipe.layer.masksToBounds = true
+       
         let gesture = UITapGestureRecognizer(target: self, action: #selector(tappedProfile(_:)))
         self.img_recipe.addGestureRecognizer(gesture)
         
