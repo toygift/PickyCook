@@ -10,7 +10,6 @@ import UIKit
 import Alamofire
 import SwiftyJSON
 import Toaster
-import SnapKit
 import Social
 import MobileCoreServices
 
@@ -109,6 +108,9 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         
         let shareAction = UITableViewRowAction(style: UITableViewRowActionStyle.default, title: "보내기") { (action, indexPath) in
+            
+            
+            
             let defaultText = "PickyCookBook에서 공유하는 레시피 입니다   \n" + self.recipes[indexPath.row].title
             
             let imageData = try? Data(contentsOf: URL(string: self.recipes[indexPath.row].img_recipe)!)
@@ -118,7 +120,8 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         }
 
         bookmark.backgroundColor = UIColor.lightGray
-        shareAction.backgroundColor = UIColor(colorLiteralRed: 48.0/255.0, green: 173.0/255.0, blue: 99.0/255.0, alpha: 1.0)
+        
+        shareAction.backgroundColor = UIColor.brown
         
         return [shareAction, bookmark]
     }
@@ -132,7 +135,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     override func viewDidLoad() {
         super.viewDidLoad()
         self.customViewLoadAppear()
-        autoLayout()
+        
         self.navigationItem.title = "레시피"
         tableView.rowHeight = UITableViewAutomaticDimension
         
@@ -280,14 +283,5 @@ extension HomeViewController {
     }
 }
 
-extension HomeViewController {
-    func autoLayout(){
-        tableView.snp.makeConstraints { (make) in
-            make.top.equalTo(topLayoutGuide.snp.bottom)
-            make.left.equalTo(view)
-            make.right.equalTo(view)
-            make.bottom.equalTo(bottomLayoutGuide.snp.top)
-        }
-    }
-}
+
 

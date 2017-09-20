@@ -7,15 +7,10 @@
 //
 
 import UIKit
-import SnapKit
+
 
 class BookMarkTableViewCell: UITableViewCell {
 
-    @IBOutlet var stackView: UIStackView!
-    @IBOutlet var stackViewMiddle: UIStackView!
-    @IBOutlet var stackViewBottom: UIStackView!
-    
-    
     @IBOutlet var title: UILabel!
     @IBOutlet var memo: UILabel!
     @IBOutlet var like_count: UILabel!
@@ -23,7 +18,7 @@ class BookMarkTableViewCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        autoLayout()
+        
     }
     var bookmarkRecipe: PickyCookBook.Recipe_Bookmark? { didSet { updateUI()}}
     
@@ -39,9 +34,4 @@ class BookMarkTableViewCell: UITableViewCell {
     }
 
 }
-extension BookMarkTableViewCell {
-    func autoLayout() {
-        
-        
-    }
-}
+

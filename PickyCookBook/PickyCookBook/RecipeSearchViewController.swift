@@ -14,16 +14,18 @@ import Toaster
 class RecipeSearchViewController: UIViewController, UISearchBarDelegate, UITableViewDelegate, UITableViewDataSource {
     
     @IBOutlet var searchBar: UISearchBar!
+    @IBOutlet var tableView: UITableView!
+    
     
     var recipe_search: [Recipe_Search] = []
     
     
-    @IBOutlet var tableView: UITableView!
     override func viewDidLoad() {
         super.viewDidLoad()
         searchBar.delegate = self
         tableView.delegate = self
         searchBar.placeholder = "검색할 재료를 입력하세요"
+        tableView.rowHeight = UITableViewAutomaticDimension
         //recipe_search.isSearchResultsButtonSelected = true
     }
     
@@ -89,6 +91,38 @@ class RecipeSearchViewController: UIViewController, UISearchBarDelegate, UITable
         self.navigationController?.pushViewController(nextViewController, animated: true)
     }
 
+    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+        return UITableViewAutomaticDimension
+    }
+    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        
+        let bookmark = UITableViewRowAction(style: .default, title: "북마크") { (action, indexPath) in
+            let recipepk = self.recipe_search[indexPath.row].pk
+            print("ppkpkpkpkpkpkpkpkpkpkpkpkpk     ",recipepk)
+            
+            let alertController = UIAlertController(title: "북마크", message: "메모를작성해주세요", preferredStyle: .alert)
+            alertController.addTextField(configurationHandler: { (textfield) in
+                textfield.placeholder = "메모를 입력하세요"
+            })
+            alertController.addAction((UIAlertAction(title: "확인", style: .default, handler: { (action) in
+                if let title = alertController.textFields?[0].text {
+                    if title.isEmpty == false {
+                        
+                        self.bookmarkRecipe(recipepks: recipepk, memo: title)
+                        UIApplication.shared.isNetworkActivityIndicatorVisible = true
+                        self.tableView.reloadData()
+                    } else {
+                        
+                    }
+                }
+            })))
+            alertController.addAction(UIAlertAction(title: "취소", style: .cancel, handler: nil))
+            self.present(alertController, animated: true, completion: nil)
+            print("레시피 PK :                  ",recipepk)
+        }
+        bookmark.backgroundColor = UIColor.lightGray
+        return [bookmark]
+    }
     
 }
 extension RecipeSearchViewController {
@@ -108,6 +142,46 @@ extension RecipeSearchViewController {
                 let json = JSON(value)
                 print(json)
                 self.recipe_search = DataCentre.shared.recipeSearchList(response: json["results"])
+                DispatchQueue.main.async {
+                    self.tableView.reloadData()
+                }
+                UIApplication.shared.isNetworkActivityIndicatorVisible = false
+            case .failure(let error):
+                print(error)
+                UIApplication.shared.isNetworkActivityIndicatorVisible = false
+                
+            }
+        }
+    }
+    func bookmarkRecipe(recipepks: Int, memo: String){
+        print("====================================================================")
+        print("========================bookmarkRecipe()============================")
+        print("====================================================================")
+        //        guard let token = UserDefaults.standard.string(forKey: "token") else { return }
+        //        //        let userPK = UserDefaults.standard.object(forKey: "userpk") as! Int
+        //        let headers: HTTPHeaders = ["Authorization":"token \(token)"]
+        let tokenValue = TokenAuth()
+        guard let headers = tokenValue.getAuthHeaders() else { return }
+        
+        let parameters: Parameters = ["memo":memo]
+        let call = Alamofire.request(rootDomain + "recipe/bookmark/\(recipepks)/", method: .post, parameters: parameters, headers: headers)
+        
+        print("========================bookmarkRecipe()============================")
+        call.responseJSON { (response) in
+            switch response.result {
+            case .success(let value):
+                print("========================bookmarkRecipe()============================")
+                let json = JSON(value)
+                print(json)
+                if !(json["memo"].stringValue.isEmpty) == true {
+                    Toast(text: "북마크 되었습니다").show()
+                    UIApplication.shared.isNetworkActivityIndicatorVisible = false
+                } else if !(json["detail"].stringValue.isEmpty) == true {
+                    Toast(text: "이미 북마크 되었습니다").show()
+                    UIApplication.shared.isNetworkActivityIndicatorVisible = false
+                }
+                //                self.myrecipes = DataCentre.shared.allRecipeList(response: json) // AllRecipe
+                //                //print("Recipes   :   ", self.recipes?.count ?? "데이터없음")
                 DispatchQueue.main.async {
                     self.tableView.reloadData()
                 }

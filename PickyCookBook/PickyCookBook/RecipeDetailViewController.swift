@@ -36,9 +36,7 @@ class RecipeDetailViewController: UIViewController, UITableViewDelegate, UITable
             let desc = i.description
             dict.append(image!)
             dict.append(desc)
-            dict.append("     ")
-            
-            
+   
         }
        
         
