@@ -33,7 +33,14 @@ class SignInViewController: UIViewController, UITextFieldDelegate, UINavigationC
         self.signIn(email: email, password: password)
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
     }
-    
+    @IBAction func cancel(_ sender: UIButton) {
+        self.dismiss(animated: true) {
+            
+        }
+        guard let nextViewController = self.storyboard?.instantiateViewController(withIdentifier: "HOME") as? HomeViewController else { return }
+        print("메롱메롱")
+        self.present(nextViewController, animated: true, completion: nil)
+    }
     // MARK : TouchID
     //
     //
@@ -210,9 +217,14 @@ extension SignInViewController {
 
                     DataTelecom.shared.myPageUserData()
                     
-                    guard let nextViewController = self.storyboard?.instantiateViewController(withIdentifier: "TABBAR") as? MainTabBar else { return }
-                    self.present(nextViewController, animated: true, completion: { 
-                        UIApplication.shared.isNetworkActivityIndicatorVisible = false
+//                    guard let nextViewController = self.storyboard?.instantiateViewController(withIdentifier: "TABBAR") as? MainTabBar else { return }
+//                    self.present(nextViewController, animated: true, completion: {
+//                        UIApplication.shared.isNetworkActivityIndicatorVisible = false
+//                    })
+                    
+                    self.dismiss(animated: true, completion: { 
+//                        let nextViewController = self.storyboard?.instantiateViewController(withIdentifier: "BOOKMARK") as? BookMarkViewController
+//                        nextViewController?.bookmarkList()
                     })
                 }
                 

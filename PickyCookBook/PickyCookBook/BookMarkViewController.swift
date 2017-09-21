@@ -112,18 +112,23 @@ class BookMarkViewController: UIViewController, UITableViewDelegate, UITableView
     //
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.bookmarkList()
+//        self.bookmarkList()
         tableView.rowHeight = UITableViewAutomaticDimension
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
-        
+        print("북마크 viewDidLoad")
     }
     override func viewWillAppear(_ animated: Bool) {
-        print("viewWillAppear")
+        print("북마크 viewWillAppear")
         self.bookmarkList()
         DispatchQueue.main.async {
             self.tableView.reloadData()
         }
     }
+    override func viewDidAppear(_ animated: Bool) {
+        self.bookmarkList()
+        print("북마크 viewDidAppear")
+    }
+
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -153,7 +158,7 @@ extension BookMarkViewController {
                 let json = JSON(value)
 
                 self.recipe_bookmark = DataCentre.shared.recipeBookmarkList(response: json)
-                print("북마크   :   ",self.recipe_bookmark)
+                //print("북마크   :   ",self.recipe_bookmark)
                 DispatchQueue.main.async {
                     self.tableView.reloadData()
                 }
