@@ -14,16 +14,24 @@ import FBSDKLoginKit
 import FBSDKCoreKit
 import LocalAuthentication
 
+@objc
+protocol SignInViewControllerDelegate: class {
+    func loginDidDismiss(login: SignInViewController)
+}
+
 class SignInViewController: UIViewController, UITextFieldDelegate, UINavigationControllerDelegate, FBSDKLoginButtonDelegate {
 
+    weak var signIndelegate: SignInViewControllerDelegate?
+    
     let touchID = TouchID()
+    
     
     // MARK: OUTLET 및 Properties
     // 
     @IBOutlet var emailTextField: UITextField!
     @IBOutlet var passwordTextField: UITextField!
     @IBOutlet var buttonSignIn: UIButton!
-    
+    @IBOutlet var cancel: UIButton!
     // MARK : SignIn
     //
     //
@@ -34,13 +42,15 @@ class SignInViewController: UIViewController, UITextFieldDelegate, UINavigationC
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
     }
     @IBAction func cancel(_ sender: UIButton) {
-        self.dismiss(animated: true) {
-            
-        }
-        guard let nextViewController = self.storyboard?.instantiateViewController(withIdentifier: "HOME") as? HomeViewController else { return }
-        print("메롱메롱")
-        self.present(nextViewController, animated: true, completion: nil)
+        cancelDelegate()
+        print(self.signIndelegate)
+        print("캔슬버튼 클릭")
+
     }
+    func cancelDelegate() {
+        self.signIndelegate?.loginDidDismiss(login: self)
+    }
+    
     // MARK : TouchID
     //
     //
@@ -149,9 +159,11 @@ class SignInViewController: UIViewController, UITextFieldDelegate, UINavigationC
         emailTextField.delegate = self
         passwordTextField.delegate = self
         emailTextField.becomeFirstResponder()
+        
         //DataTelecom.shared.allRecipeList()
     }
 
+ 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -215,17 +227,19 @@ extension SignInViewController {
 //                    UserDefaults.standard.set(userpk, forKey: "userpk")
 //                    print("UserDefaults Set UserPK  :   ", UserDefaults.standard.string(forKey: "userpk") ?? "데이터없음")
 
-                    DataTelecom.shared.myPageUserData()
+                    
                     
 //                    guard let nextViewController = self.storyboard?.instantiateViewController(withIdentifier: "TABBAR") as? MainTabBar else { return }
 //                    self.present(nextViewController, animated: true, completion: {
 //                        UIApplication.shared.isNetworkActivityIndicatorVisible = false
 //                    })
                     
-                    self.dismiss(animated: true, completion: { 
-//                        let nextViewController = self.storyboard?.instantiateViewController(withIdentifier: "BOOKMARK") as? BookMarkViewController
-//                        nextViewController?.bookmarkList()
-                    })
+                    if let viewController = self.storyboard?.instantiateViewController(withIdentifier: "TABBAR") {
+                        UIApplication.shared.keyWindow?.rootViewController = viewController
+                        DataTelecom.shared.myPageUserData()
+                        UIApplication.shared.isNetworkActivityIndicatorVisible = false
+                        self.dismiss(animated: true, completion: nil)
+                    }
                 }
                 
             case .failure(let error):

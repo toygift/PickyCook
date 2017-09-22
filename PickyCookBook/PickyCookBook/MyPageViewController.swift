@@ -160,8 +160,14 @@ extension MyPageViewController {
                 print(json)
                 if !json["result"].stringValue.isEmpty {
                     Toast(text: "로그아웃되었습니다").show()
-                    guard let nextViewController = self.storyboard?.instantiateViewController(withIdentifier: "TABBAR") as? MainTabBar else { return }
-                    self.present(nextViewController, animated: true, completion: nil)
+                    if let viewController = self.storyboard?.instantiateViewController(withIdentifier: "TABBAR") {
+                        UIApplication.shared.keyWindow?.rootViewController = viewController
+                        UIApplication.shared.isNetworkActivityIndicatorVisible = false
+                        self.dismiss(animated: true, completion: nil)
+                    }
+//                    guard let nextViewController = self.storyboard?.instantiateViewController(withIdentifier: "TABBAR") as? MainTabBar else { return }
+//                    self.present(nextViewController, animated: true, completion: nil)
+                    
                 }
                 tokenValue.delete(serviceName, account: "accessToken")
                 tokenValue.delete(serviceName, account: "userpk")

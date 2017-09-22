@@ -13,6 +13,7 @@ import SnapKit
 
 class RecipeReviewViewController: UIViewController , UITableViewDelegate, UITableViewDataSource{
 
+    lazy var refreshControl = UIRefreshControl()
     var recipepk: Int?
     var recipe_review: [Recipe_Review] = []
     @IBOutlet var tableView: UITableView!
@@ -40,13 +41,22 @@ class RecipeReviewViewController: UIViewController , UITableViewDelegate, UITabl
         super.viewDidLoad()
         autoLayout()
         self.recipeReviewList(recipePk: recipepk!)
+        
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.reloadData()
+        
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
         self.navigationItem.title = "레시피리뷰"
         
+        self.refreshControl.attributedTitle = NSAttributedString(string: "잡아당기면 리프레쉬")
+        self.refreshControl.addTarget(self, action: #selector(HomeViewController.refresh), for: UIControlEvents.valueChanged)
+        self.refreshControl.tintColor = UIColor.darkGray
+        self.tableView.addSubview(refreshControl)
     }
 
+    func refresh() {
+        self.recipeReviewList(recipePk: recipepk!)
+    }
     
 
 
@@ -74,7 +84,7 @@ extension RecipeReviewViewController {
                     self.tableView.reloadData()
                 }
                 
-                
+                self.refreshControl.endRefreshing()
                 UIApplication.shared.isNetworkActivityIndicatorVisible = false
             case .failure(let error):
                 print(error)

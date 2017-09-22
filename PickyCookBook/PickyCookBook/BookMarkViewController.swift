@@ -13,11 +13,14 @@ import SwiftyJSON
 
 class BookMarkViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
+    lazy var refreshControl = UIRefreshControl()
     var recipe_bookmark: [Recipe_Bookmark] = []
-
+    let tokenValue = TokenAuth()
+    var accessToken: String?
+    var title_A: String = ""
+    
     @IBOutlet var tableView: UITableView!
     
-    var title_A: String = ""
     
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -110,22 +113,54 @@ class BookMarkViewController: UIViewController, UITableViewDelegate, UITableView
     // MARK: Life Cycle
     //
     //
+ 
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-//        self.bookmarkList()
-        tableView.rowHeight = UITableViewAutomaticDimension
-        UIApplication.shared.isNetworkActivityIndicatorVisible = true
-        print("북마크 viewDidLoad")
+        print("************************************************************************************************************************")
+        print("************************************     BookMarkViewController     ****************************************************")
+        print("************************************   override func viewDidLoad()  ****************************************************")
+        print("************************************************************************************************************************")
+        self.bookmarkList()
+        self.refreshControl.attributedTitle = NSAttributedString(string: "잡아당기면 리프레쉬")
+        self.refreshControl.addTarget(self, action: #selector(HomeViewController.refresh), for: UIControlEvents.valueChanged)
+        self.refreshControl.tintColor = UIColor.darkGray
+        self.tableView.addSubview(refreshControl)
+
+        
     }
+    func refresh() {
+        self.bookmarkList()
+    }
+        
     override func viewWillAppear(_ animated: Bool) {
         print("북마크 viewWillAppear")
-        self.bookmarkList()
-        DispatchQueue.main.async {
-            self.tableView.reloadData()
-        }
+        print("************************************************************************************************************************")
+        print("************************************     BookMarkViewController     ****************************************************")
+        print("************************************   override func viewWillAppear ****************************************************")
+        print("************************************************************************************************************************")
+        
+        
+//        if tokenValue.load(serviceName, account: "accessToken") == nil {
+//            guard let nextViewcontroller = storyboard?.instantiateViewController(withIdentifier: "SIGNIN") else { return }
+//            self.present(nextViewcontroller, animated: true, completion: nil)
+//        } else {
+//            self.bookmarkList()
+//            tableView.rowHeight = UITableViewAutomaticDimension
+//            UIApplication.shared.isNetworkActivityIndicatorVisible = true
+//            print("북마크 viewDidLoad")
+//        }
+//        self.bookmarkList()
+//        DispatchQueue.main.async {
+//            self.tableView.reloadData()
+//        }
     }
     override func viewDidAppear(_ animated: Bool) {
-        self.bookmarkList()
+//        self.bookmarkList()
+        print("************************************************************************************************************************")
+        print("************************************     BookMarkViewController     ****************************************************")
+        print("************************************   override func viewDidAppear  ****************************************************")
+        print("************************************************************************************************************************")
         print("북마크 viewDidAppear")
     }
 
@@ -147,7 +182,7 @@ extension BookMarkViewController {
 //        guard let token = UserDefaults.standard.string(forKey: "token") else { return }
 //        let headers: HTTPHeaders = ["Authorization":"token \(token)"]
 
-        let tokenValue = TokenAuth()
+//        let tokenValue = TokenAuth()
         guard let headers = tokenValue.getAuthHeaders() else { return }
         
         let call = Alamofire.request(rootDomain + "recipe/bookmark/", method: .get, headers: headers)
@@ -162,6 +197,7 @@ extension BookMarkViewController {
                 DispatchQueue.main.async {
                     self.tableView.reloadData()
                 }
+                self.refreshControl.endRefreshing()
                 UIApplication.shared.isNetworkActivityIndicatorVisible = false
             case .failure(let error):
                 print(error)
@@ -176,7 +212,7 @@ extension BookMarkViewController {
         print("====================================================================")
 //        guard let token = UserDefaults.standard.string(forKey: "token") else { return }
 //        let headers: HTTPHeaders = ["Authorization":"token \(token)"]
-        let tokenValue = TokenAuth()
+//        let tokenValue = TokenAuth()
         guard let headers = tokenValue.getAuthHeaders() else { return }
         
         let call: DataRequest?

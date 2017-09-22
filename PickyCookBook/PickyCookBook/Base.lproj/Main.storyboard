@@ -133,6 +133,7 @@
                     <navigationItem key="navigationItem" id="ONN-dt-SAC"/>
                     <connections>
                         <outlet property="buttonSignIn" destination="r7u-km-BZu" id="ovN-Kc-EQV"/>
+                        <outlet property="cancel" destination="JeJ-ew-alx" id="56H-TY-oB6"/>
                         <outlet property="emailTextField" destination="q2y-6m-jG2" id="VUa-gY-7NU"/>
                         <outlet property="passwordTextField" destination="vQs-pT-f7U" id="b4S-kt-SO4"/>
                     </connections>

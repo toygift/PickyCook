@@ -17,7 +17,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     
     @IBOutlet var tableView: UITableView!
-    
+    lazy var refreshControl = UIRefreshControl()
     var recipes: [Recipe] = []
     var myrecipes: [Recipe] = []
     var select: Bool = false
@@ -135,9 +135,16 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     override func viewDidLoad() {
         super.viewDidLoad()
         self.customViewLoadAppear()
-        
+        self.refreshControl.attributedTitle = NSAttributedString(string: "잡아당기면 리프레쉬")
+        self.refreshControl.addTarget(self, action: #selector(HomeViewController.refresh), for: UIControlEvents.valueChanged)
+        self.refreshControl.tintColor = UIColor.darkGray
+        self.tableView.addSubview(refreshControl)
         self.navigationItem.title = "레시피"
         tableView.rowHeight = UITableViewAutomaticDimension
+        
+    }
+    func refresh(){
+        self.customViewLoadAppear()
         
     }
     
@@ -197,6 +204,7 @@ extension HomeViewController {
                 DispatchQueue.main.async {
                     self.tableView.reloadData()
                 }
+                self.refreshControl.endRefreshing()
                 UIApplication.shared.isNetworkActivityIndicatorVisible = false
             case .failure(let error):
                 print(error)
