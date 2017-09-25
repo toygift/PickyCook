@@ -23,6 +23,12 @@ class RecipeStepViewController: UIViewController, UITableViewDelegate, UITableVi
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        if #available(iOS 11.0, *) {
+            navigationController?.navigationBar.prefersLargeTitles = true
+            
+        } else {
+            
+        }
         self.navigationItem.title = "레시피스텝코멘트"
         //Gggggg
         autoLayout()

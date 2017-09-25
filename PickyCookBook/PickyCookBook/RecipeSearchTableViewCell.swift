@@ -15,7 +15,7 @@ class RecipeSearchTableViewCell: UITableViewCell {
     @IBOutlet var descriptions: UILabel!
     @IBOutlet var ingredient: UILabel!
     @IBOutlet var tags: UILabel!
-    
+//    var searchRecipe: PickyCookBook.Recipe_Search? { didSet { updateUI()}}
     var searchRecipe: PickyCookBook.Recipe_Search? { didSet { updateUI()}}
     override func awakeFromNib() {
         super.awakeFromNib()

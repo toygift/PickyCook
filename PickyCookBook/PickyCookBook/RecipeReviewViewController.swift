@@ -39,6 +39,12 @@ class RecipeReviewViewController: UIViewController , UITableViewDelegate, UITabl
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        if #available(iOS 11.0, *) {
+            navigationController?.navigationBar.prefersLargeTitles = true
+            
+        } else {
+            
+        }
         autoLayout()
         self.recipeReviewList(recipePk: recipepk!)
         
@@ -51,7 +57,8 @@ class RecipeReviewViewController: UIViewController , UITableViewDelegate, UITabl
         self.refreshControl.attributedTitle = NSAttributedString(string: "잡아당기면 리프레쉬")
         self.refreshControl.addTarget(self, action: #selector(HomeViewController.refresh), for: UIControlEvents.valueChanged)
         self.refreshControl.tintColor = UIColor.darkGray
-        self.tableView.addSubview(refreshControl)
+        tableView.refreshControl = refreshControl
+
     }
 
     func refresh() {

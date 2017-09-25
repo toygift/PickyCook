@@ -21,6 +21,12 @@ class BookMarkViewController: UIViewController, UITableViewDelegate, UITableView
     
     @IBOutlet var tableView: UITableView!
     
+//    func signInDidComplete(signIn: SignInViewController) {
+//        print("프로토콜 로그인성공 메소드 호출됨")
+//        signIn.dismiss(animated: true) {
+//            self.bookmarkList()
+//        }
+//    }
     
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -35,11 +41,24 @@ class BookMarkViewController: UIViewController, UITableViewDelegate, UITableView
         
 //        let count_like = self.recipe_bookmark[indexPath.row].like_count
 //        let sum_rate = self.recipe_bookmark[indexPath.row].rate_sum
-//        
+//
 //        cell?.title.text = self.recipe_bookmark[indexPath.row].title
 //        cell?.memo.text = self.recipe_bookmark[indexPath.row].memo
 //        cell?.like_count.text = "좋아요 " + "\(count_like)"
 //        cell?.rate_sum.text = "평점 " + "\(sum_rate)"
+//        DispatchQueue.global().async {
+//            let path = self.recipe_bookmark[indexPath.row].img_recipe
+//            if let imageURL = URL(string: path) {
+//                let task = URLSession.shared.dataTask(with: imageURL, completionHandler: { (data, response, error) in
+//                    guard let putImage = data else { return }
+//                    DispatchQueue.main.async {
+//                        cell?.img_recipe.image = UIImage(data: putImage)
+//                    }
+//                })
+//                task.resume()
+//            }
+//        }
+    
         
         return cell!
     }
@@ -117,6 +136,12 @@ class BookMarkViewController: UIViewController, UITableViewDelegate, UITableView
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        if #available(iOS 11.0, *) {
+            navigationController?.navigationBar.prefersLargeTitles = true
+            
+        } else {
+            
+        }
         print("************************************************************************************************************************")
         print("************************************     BookMarkViewController     ****************************************************")
         print("************************************   override func viewDidLoad()  ****************************************************")
@@ -125,7 +150,8 @@ class BookMarkViewController: UIViewController, UITableViewDelegate, UITableView
         self.refreshControl.attributedTitle = NSAttributedString(string: "잡아당기면 리프레쉬")
         self.refreshControl.addTarget(self, action: #selector(HomeViewController.refresh), for: UIControlEvents.valueChanged)
         self.refreshControl.tintColor = UIColor.darkGray
-        self.tableView.addSubview(refreshControl)
+        tableView.refreshControl = refreshControl
+
 
         
     }
@@ -162,6 +188,8 @@ class BookMarkViewController: UIViewController, UITableViewDelegate, UITableView
         print("************************************   override func viewDidAppear  ****************************************************")
         print("************************************************************************************************************************")
         print("북마크 viewDidAppear")
+        self.bookmarkList()
+        self.tableView.reloadData()
     }
 
     override func didReceiveMemoryWarning() {
@@ -193,7 +221,7 @@ extension BookMarkViewController {
                 let json = JSON(value)
 
                 self.recipe_bookmark = DataCentre.shared.recipeBookmarkList(response: json)
-                //print("북마크   :   ",self.recipe_bookmark)
+                print("북마크   :   ",self.recipe_bookmark)
                 DispatchQueue.main.async {
                     self.tableView.reloadData()
                 }

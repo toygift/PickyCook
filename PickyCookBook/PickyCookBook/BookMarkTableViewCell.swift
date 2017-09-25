@@ -15,7 +15,8 @@ class BookMarkTableViewCell: UITableViewCell {
     @IBOutlet var memo: UILabel!
     @IBOutlet var like_count: UILabel!
     @IBOutlet var rate_sum: UILabel!
-    
+    @IBOutlet var img_recipe: UIImageView!
+   
     override func awakeFromNib() {
         super.awakeFromNib()
         
@@ -31,6 +32,18 @@ class BookMarkTableViewCell: UITableViewCell {
         like_count.text = "좋아요 " + "\(count_like ?? 1)"
         rate_sum.text = "평점 " + "\(sum_rate ?? 1)"
         
+        DispatchQueue.global().async {
+            guard let path = self.bookmarkRecipe?.img_recipe else { return }
+            if let imageURL = URL(string: path) {
+                let task = URLSession.shared.dataTask(with: imageURL, completionHandler: { (data, response, error) in
+                    guard let putImage = data else { return }
+                    DispatchQueue.main.async {
+                        self.img_recipe.image = UIImage(data: putImage)
+                    }
+                })
+                task.resume()
+            }
+        }
     }
 
 }

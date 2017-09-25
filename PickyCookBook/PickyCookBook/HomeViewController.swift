@@ -13,8 +13,7 @@ import Toaster
 import Social
 import MobileCoreServices
 
-class HomeViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
-    
+class HomeViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate {
     
     @IBOutlet var tableView: UITableView!
     lazy var refreshControl = UIRefreshControl()
@@ -22,12 +21,64 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     var myrecipes: [Recipe] = []
     var select: Bool = false
     
+    // MARK: Life Cycle
+    //
+    //
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        self.customViewLoadAppear()
+        if #available(iOS 11.0, *) {
+            navigationController?.navigationBar.prefersLargeTitles = true
+        } else {
+            
+        }
+        refreshControl = UIRefreshControl()
+        self.refreshControl.attributedTitle = NSAttributedString(string: "잡아당기면 리프레쉬")
+        self.refreshControl.addTarget(self, action: #selector(HomeViewController.refresh), for: UIControlEvents.valueChanged)
+        self.refreshControl.tintColor = UIColor.darkGray
+        
+        
+        tableView.rowHeight = UITableViewAutomaticDimension
+        
+        tableView.refreshControl = refreshControl
+    }
+    func refresh(){
+        self.customViewLoadAppear()
+        
+    }
     
     
+    override func viewDidAppear(_ animated: Bool) {
+        if #available(iOS 11.0, *) {
+            navigationItem.largeTitleDisplayMode = .always
+        } else {
+            // Fallback on earlier versions
+        }
+    }
+    override func viewWillAppear(_ animated: Bool) {
+        print("HOMEviewWillAppear")
+        //self.customViewLoadAppear()
+        
+    }
+    // MARK: view Load and Appear
+    func customViewLoadAppear(){
+        if select == false {
+            UIApplication.shared.isNetworkActivityIndicatorVisible = true
+            self.navigationItem.title = "레시피"
+            self.allRecipeList()
+            print("select : false", select)
+        } else if select == true {
+            UIApplication.shared.isNetworkActivityIndicatorVisible = true
+            self.navigationItem.title = "My레시피"
+            self.mycreateRecipe()
+            print("select : true", select)
+            
+        }
+        
+    }
     // MARK : TableView
     //
     //
-    
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         var returnValue: Int = 0
@@ -111,14 +162,14 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
             
             
             
-            let defaultText = "PickyCookBook에서 공유하는 레시피 입니다   \n" + self.recipes[indexPath.row].title
+            let defaultText = "PickyCookBook에서 공유하는 레시피 입니다   \n" + self.recipes[indexPath.row].title!
             
             let imageData = try? Data(contentsOf: URL(string: self.recipes[indexPath.row].img_recipe)!)
             let activityController = UIActivityViewController(activityItems: [defaultText, imageData!], applicationActivities: nil)
             self.present(activityController, animated: true, completion: nil)
             
         }
-
+        
         bookmark.backgroundColor = UIColor.lightGray
         
         shareAction.backgroundColor = UIColor.brown
@@ -129,53 +180,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         return UITableViewAutomaticDimension
     }
     
-    // MARK: Life Cycle
-    //
-    //
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        self.customViewLoadAppear()
-        self.refreshControl.attributedTitle = NSAttributedString(string: "잡아당기면 리프레쉬")
-        self.refreshControl.addTarget(self, action: #selector(HomeViewController.refresh), for: UIControlEvents.valueChanged)
-        self.refreshControl.tintColor = UIColor.darkGray
-        self.tableView.addSubview(refreshControl)
-        self.navigationItem.title = "레시피"
-        tableView.rowHeight = UITableViewAutomaticDimension
-        
-    }
-    func refresh(){
-        self.customViewLoadAppear()
-        
-    }
     
-    override func viewWillAppear(_ animated: Bool) {
-        print("HOMEviewWillAppear")
-        //self.customViewLoadAppear()
-    }
-    // MARK: view Load and Appear
-    func customViewLoadAppear(){
-        if select == false {
-            UIApplication.shared.isNetworkActivityIndicatorVisible = true
-            //            self.navigationItem.title = "레시피"
-            self.allRecipeList()
-            print("select : false", select)
-        } else if select == true {
-            UIApplication.shared.isNetworkActivityIndicatorVisible = true
-            //            self.navigationItem.title = "My레시피"
-            self.mycreateRecipe()
-            print("select : true", select)
-            
-        }
-        
-    }
-    
-    override func viewDidDisappear(_ animated: Bool) {
-        
-    }
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        
-    }
 }
 extension HomeViewController {
     // MARK: 전체레시피 함수
@@ -204,8 +209,9 @@ extension HomeViewController {
                 DispatchQueue.main.async {
                     self.tableView.reloadData()
                 }
-                self.refreshControl.endRefreshing()
+                
                 UIApplication.shared.isNetworkActivityIndicatorVisible = false
+                self.refreshControl.endRefreshing()
             case .failure(let error):
                 print(error)
                 UIApplication.shared.isNetworkActivityIndicatorVisible = false
@@ -241,6 +247,7 @@ extension HomeViewController {
                 DispatchQueue.main.async {
                     self.tableView.reloadData()
                 }
+                self.refreshControl.endRefreshing()
                 UIApplication.shared.isNetworkActivityIndicatorVisible = false
             case .failure(let error):
                 print(error)

@@ -1,8 +1,8 @@
 //
-//  RecipeStepCreateViewController.swift
+//  RecipeStepTableViewController.swift
 //  PickyCookBook
 //
-//  Created by jaeseong on 2017. 9. 8..
+//  Created by jaeseong on 2017. 9. 25..
 //  Copyright © 2017년 jaeseong. All rights reserved.
 //
 
@@ -12,7 +12,8 @@ import SwiftyJSON
 import Toaster
 import MobileCoreServices
 
-class RecipeStepCreateViewController: UIViewController, UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+class RecipeStepTableViewController: UITableViewController, UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+
     
     var recipepk_r: Int!
     let imagePicker: UIImagePickerController = UIImagePickerController()
@@ -22,44 +23,33 @@ class RecipeStepCreateViewController: UIViewController, UITextFieldDelegate, UII
     var is_timer: Bool!
     
     @IBOutlet var descriptionTextField: UITextField!
-    @IBOutlet var img_step: UIButton!
     @IBOutlet var timer: UITextField!
     @IBAction func is_timerOn(_ sender: UISwitch) {
         is_timer = sender.isOn
     }
-    @IBAction func pictureSelect(_ sender: UIButton) {
-        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-        alertController.addAction(UIAlertAction(title: "포토라이브러리", style: .default, handler: { (_) in
-            self.media(.photoLibrary, flag: false, editing: true)
-        }))
-        alertController.addAction(UIAlertAction(title: "카메라", style: .default, handler: { (_) in
-            self.media(.camera, flag: true, editing: false)
-        }))
-        alertController.addAction(UIAlertAction(title: "취소", style: .cancel, handler: nil))
-        self.present(alertController, animated: true, completion: nil)
-    }
+    @IBOutlet var img_recipe: UIImageView!
     @IBAction func recipeStepComplete(_ sender: UIButton) {
         
         if descriptionTextField.text == "" {
             Toast(text: "설명을 입력해주세요").show()
-            return
+            
         } else if timer.text == "" {
             Toast(text: "시간을 입력해주세요").show()
-            return
+            
         } else if is_timer == nil {
             Toast(text: "타이머 유/무 선택해주세요").show()
-            return
-        } else if captureImage == nil {
-            Toast(text: "이미지를 선택해주세요").show()
-            return
         }
+//        } else if captureImage == nil {
+//            Toast(text: "이미지를 선택해주세요").show()
+//
+//        }
         guard let desc = descriptionTextField.text else { return }
         guard let timer = Int(timer.text!) else { return }
         guard let recipepk = recipepk_r else { return }
         guard let is_timer = is_timer else { return }
         guard let image = captureImage else { return }
         recipeStepCreate(recipepk: recipepk, description: desc, is_timer: is_timer, timer: timer, img_step: image)
-        
+        print("눌려라 오바오바오바")
     }
     
     @IBAction func completeStep(_ sender: UIButton) {
@@ -70,24 +60,41 @@ class RecipeStepCreateViewController: UIViewController, UITextFieldDelegate, UII
         }))
         
         self.present(alert, animated: true, completion: {
-          UIApplication.shared.isNetworkActivityIndicatorVisible = true
+            UIApplication.shared.isNetworkActivityIndicatorVisible = true
         })
         
     }
-    // MARK: Life Cycle
-    //
-    //
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        print("뷰디드로드드드드드드")
         if #available(iOS 11.0, *) {
             navigationController?.navigationBar.prefersLargeTitles = true
-            
+            navigationItem.title = "레시피 스텝 입력"
         } else {
             
         }
         descriptionTextField.delegate = self
         timer.delegate = self
-        // Do any additional setup after loading the view.
+//        let gesture = UITapGestureRecognizer(target: self, action: #selector(tappedProfile(_:)))
+//        self.img_recipe.addGestureRecognizer(gesture)
+    }
+    override func viewWillAppear(_ animated: Bool) {
+        print("뷰윌어피어어어어어")
+        let gesture = UITapGestureRecognizer(target: self, action: #selector(tappedProfile(_:)))
+        self.img_recipe.addGestureRecognizer(gesture)
+    }
+    @objc func tappedProfile(_ sender: Any){
+        
+        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        alertController.addAction(UIAlertAction(title: "포토라이브러리", style: .default, handler: { (_) in
+            self.media(.photoLibrary, flag: false, editing: true)
+        }))
+        alertController.addAction(UIAlertAction(title: "카메라", style: .default, handler: { (_) in
+            self.media(.camera, flag: true, editing: false)
+        }))
+        alertController.addAction(UIAlertAction(title: "취소", style: .cancel, handler: nil))
+        self.present(alertController, animated: true, completion: nil)
     }
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         descriptionTextField.resignFirstResponder()
@@ -102,26 +109,37 @@ class RecipeStepCreateViewController: UIViewController, UITextFieldDelegate, UII
         
         return true
     }
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    // MARK: - Table view data source
+
+    override func numberOfSections(in tableView: UITableView) -> Int {
+        // #warning Incomplete implementation, return the number of sections
+        return 5
     }
-    
-}
-extension RecipeStepCreateViewController {
-    func recipeStepCreate(recipepk: Int, description: String, is_timer: Bool, timer: Int, img_step: UIImage){
-//        guard let token = UserDefaults.standard.string(forKey: "token") else { return }
+
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        switch section {
+        case 0,1,2,3,4:
+            return 1
+        default:
+            return 1
+        }
         
+    }
+
+}
+extension RecipeStepTableViewController {
+    func recipeStepCreate(recipepk: Int, description: String, is_timer: Bool, timer: Int, img_step: UIImage){
+        //        guard let token = UserDefaults.standard.string(forKey: "token") else { return }
+        print("알라모파이어!:!:!:!:?")
         let url = rootDomain + "recipe/step/create/"
         let parameters : [String:Any] = ["recipe":recipepk, "description": description, "is_timer":is_timer, "timer":timer*60, "img_step":img_step]
-//        let headers: HTTPHeaders = ["Authorization":"token \(token)"]
+        //        let headers: HTTPHeaders = ["Authorization":"token \(token)"]
         
         let tokenValue = TokenAuth()
         guard let headers = tokenValue.getAuthHeaders() else { return }
         
         Alamofire.upload(multipartFormData: { (multipartFormData) in
-            UIApplication.shared.isNetworkActivityIndicatorVisible = true
+            
             
             for (key, value) in parameters {
                 
@@ -146,7 +164,7 @@ extension RecipeStepCreateViewController {
                     switch response.result {
                     case .success(let value):
                         let json = JSON(value)
-                        
+                        print("왜 안되지???",json)
                         if !(json["title_error"].stringValue.isEmpty) {
                             Toast(text: "제목을 입력하세요").show()
                             UIApplication.shared.isNetworkActivityIndicatorVisible = false
@@ -157,8 +175,9 @@ extension RecipeStepCreateViewController {
                             Toast(text: "재료를 입력하세요").show()
                             UIApplication.shared.isNetworkActivityIndicatorVisible = false
                         } else {
-                            guard let nextViewController = self.storyboard?.instantiateViewController(withIdentifier: "RECIPESTEP") else { return }
+                            guard let nextViewController = self.storyboard?.instantiateViewController(withIdentifier: "RECIPESTEPS") as? RecipeStepTableViewController else { return }
                             self.navigationController?.pushViewController(nextViewController, animated: true)
+//                            self.present(nextViewController, animated: true, completion: nil)
                             self.captureImage = nil
                         }
                         UIApplication.shared.isNetworkActivityIndicatorVisible = false
@@ -166,7 +185,7 @@ extension RecipeStepCreateViewController {
                         print(error)
                         UIApplication.shared.isNetworkActivityIndicatorVisible = false
                     }
-              
+                    
                 })
                 
             case .failure(let encodingError):
@@ -177,11 +196,7 @@ extension RecipeStepCreateViewController {
         
     }
 }
-
-// func
-//
-
-extension RecipeStepCreateViewController {
+extension RecipeStepTableViewController {
     
     // MARK: 포토라이브러리, 카메라
     //
@@ -229,7 +244,7 @@ extension RecipeStepCreateViewController {
             print("something is worng")
         }
         self.dismiss(animated: true) {
-            self.img_step.setImage(self.captureImage.withRenderingMode(.alwaysOriginal), for: .normal)
+            self.img_recipe.image = self.captureImage
         }
         
     }

@@ -14,9 +14,14 @@ import FBSDKLoginKit
 import FBSDKCoreKit
 import LocalAuthentication
 
+
+// MARK: 로그인관련 프로토콜
+//
+//
 @objc
 protocol SignInViewControllerDelegate: class {
-    func loginDidDismiss(login: SignInViewController)
+    func signInDidDismiss(signIn: SignInViewController)
+    func signInCompleteDismiss(signIn: SignInViewController)
 }
 
 class SignInViewController: UIViewController, UITextFieldDelegate, UINavigationControllerDelegate, FBSDKLoginButtonDelegate {
@@ -42,13 +47,10 @@ class SignInViewController: UIViewController, UITextFieldDelegate, UINavigationC
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
     }
     @IBAction func cancel(_ sender: UIButton) {
-        cancelDelegate()
-        print(self.signIndelegate)
+        self.signIndelegate?.signInDidDismiss(signIn: self)
+        
         print("캔슬버튼 클릭")
 
-    }
-    func cancelDelegate() {
-        self.signIndelegate?.loginDidDismiss(login: self)
     }
     
     // MARK : TouchID
@@ -221,25 +223,13 @@ extension SignInViewController {
                     tokenValue.save(serviceName, account: "password", value: password)
                     
                     /********************************************************************************************/
-                    
-//                    UserDefaults.standard.set(userToken, forKey: "token")
-//                    print("UserDefaults Set Token   :   ", UserDefaults.standard.string(forKey: "token") ?? "데이터없음")
-//                    UserDefaults.standard.set(userpk, forKey: "userpk")
-//                    print("UserDefaults Set UserPK  :   ", UserDefaults.standard.string(forKey: "userpk") ?? "데이터없음")
+                    // SignInViewControllerDelegate
+                    //
+                    //
+                    self.signIndelegate?.signInCompleteDismiss(signIn: self)
 
                     
                     
-//                    guard let nextViewController = self.storyboard?.instantiateViewController(withIdentifier: "TABBAR") as? MainTabBar else { return }
-//                    self.present(nextViewController, animated: true, completion: {
-//                        UIApplication.shared.isNetworkActivityIndicatorVisible = false
-//                    })
-                    
-                    if let viewController = self.storyboard?.instantiateViewController(withIdentifier: "TABBAR") {
-                        UIApplication.shared.keyWindow?.rootViewController = viewController
-                        DataTelecom.shared.myPageUserData()
-                        UIApplication.shared.isNetworkActivityIndicatorVisible = false
-                        self.dismiss(animated: true, completion: nil)
-                    }
                 }
                 
             case .failure(let error):

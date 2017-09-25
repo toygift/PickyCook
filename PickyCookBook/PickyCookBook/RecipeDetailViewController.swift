@@ -125,6 +125,16 @@ class RecipeDetailViewController: UIViewController, UITableViewDelegate, UITable
     //
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        if #available(iOS 11.0, *) {
+            navigationController?.navigationBar.prefersLargeTitles = true
+            
+            } else {
+            self.navigationItem.title = "레시피스텝"
+            
+        }
+        self.navigationItem.title = "레시피스텝"
+
         self.recipeDetailList(recipePk: self.recipepk_r)
 //        tableView.estimatedRowHeight = tableView.rowHeight
         tableView.rowHeight = UITableViewAutomaticDimension
@@ -132,7 +142,7 @@ class RecipeDetailViewController: UIViewController, UITableViewDelegate, UITable
         self.navigationController?.interactivePopGestureRecognizer?.isEnabled = true
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
         print("------------------------------------------------------------viewDidLoad---------------------------------------------------------")
-        self.navigationItem.title = "레시피스텝"
+        
         
         
     }

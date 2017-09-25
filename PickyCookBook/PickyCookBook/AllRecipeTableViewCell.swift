@@ -7,11 +7,9 @@
 //
 
 import UIKit
-import SnapKit
+
 
 class AllRecipeTableViewCell: UITableViewCell {
-    
-    @IBOutlet var stackView: UIStackView!
     
     @IBOutlet var img_recipe: UIImageView!
     @IBOutlet var title: UILabel!
@@ -19,10 +17,10 @@ class AllRecipeTableViewCell: UITableViewCell {
     @IBOutlet var tags: UILabel!
     @IBOutlet var like_count: UILabel!
     @IBOutlet var rate_sum: UILabel!
-    //    @IBOutlet var cellview: UIView!
+    
     override func awakeFromNib() {
         super.awakeFromNib()
-//        autoLayout()
+
         
     }
     var allRecipe: PickyCookBook.Recipe? { didSet { updateAllUI()}}
@@ -76,13 +74,3 @@ class AllRecipeTableViewCell: UITableViewCell {
     }
 }
 
-//extension AllRecipeTableViewCell {
-//    func autoLayout(){
-//        stackView.snp.makeConstraints { (make) in
-//            make.top.equalTo(self.contentView).inset(10)
-//            make.left.equalTo(self.contentView).inset(10)
-//            make.right.equalTo(self.contentView).inset(10)
-//            make.bottom.equalTo(self.contentView).inset(10)
-//        }
-//    }
-//}
