@@ -22,6 +22,7 @@ class RecipeStepTableViewController: UITableViewController, UITextFieldDelegate,
     var videoURL: URL!
     var is_timer: Bool!
     
+    
     @IBOutlet var descriptionTextField: UITextField!
     @IBOutlet var timer: UITextField!
     @IBAction func is_timerOn(_ sender: UISwitch) {
@@ -29,27 +30,35 @@ class RecipeStepTableViewController: UITableViewController, UITextFieldDelegate,
     }
     @IBOutlet var img_recipe: UIImageView!
     @IBAction func recipeStepComplete(_ sender: UIButton) {
-        
+        print("눌려라 오바오바오바")
         if descriptionTextField.text == "" {
             Toast(text: "설명을 입력해주세요").show()
             
         } else if timer.text == "" {
             Toast(text: "시간을 입력해주세요").show()
-            
         } else if is_timer == nil {
             Toast(text: "타이머 유/무 선택해주세요").show()
+        } else if captureImage == nil {
+            Toast(text: "이미지를 선택해주세요").show()
         }
-//        } else if captureImage == nil {
-//            Toast(text: "이미지를 선택해주세요").show()
-//
-//        }
-        guard let desc = descriptionTextField.text else { return }
-        guard let timer = Int(timer.text!) else { return }
-        guard let recipepk = recipepk_r else { return }
-        guard let is_timer = is_timer else { return }
-        guard let image = captureImage else { return }
+        guard let desc = descriptionTextField.text else {
+            print("1")
+            return }
+        guard let timer = Int(timer.text!) else {
+            print("2")
+            return }
+        guard let recipepk = recipepk_r else {
+            print("3")
+            return }
+        guard let is_timer = is_timer else {
+            print("4")
+            return }
+        guard let image = captureImage else {
+            print("5")
+            return }
         recipeStepCreate(recipepk: recipepk, description: desc, is_timer: is_timer, timer: timer, img_step: image)
-        print("눌려라 오바오바오바")
+        
+        
     }
     
     @IBAction func completeStep(_ sender: UIButton) {
@@ -76,13 +85,13 @@ class RecipeStepTableViewController: UITableViewController, UITextFieldDelegate,
         }
         descriptionTextField.delegate = self
         timer.delegate = self
-//        let gesture = UITapGestureRecognizer(target: self, action: #selector(tappedProfile(_:)))
-//        self.img_recipe.addGestureRecognizer(gesture)
+        let gesture = UITapGestureRecognizer(target: self, action: #selector(tappedProfile(_:)))
+        self.img_recipe.addGestureRecognizer(gesture)
     }
     override func viewWillAppear(_ animated: Bool) {
         print("뷰윌어피어어어어어")
-        let gesture = UITapGestureRecognizer(target: self, action: #selector(tappedProfile(_:)))
-        self.img_recipe.addGestureRecognizer(gesture)
+//        let gesture = UITapGestureRecognizer(target: self, action: #selector(tappedProfile(_:)))
+//        self.img_recipe.addGestureRecognizer(gesture)
     }
     @objc func tappedProfile(_ sender: Any){
         
@@ -176,9 +185,9 @@ extension RecipeStepTableViewController {
                             UIApplication.shared.isNetworkActivityIndicatorVisible = false
                         } else {
                             guard let nextViewController = self.storyboard?.instantiateViewController(withIdentifier: "RECIPESTEPS") as? RecipeStepTableViewController else { return }
+                            nextViewController.recipepk_r = self.recipepk_r
                             self.navigationController?.pushViewController(nextViewController, animated: true)
-//                            self.present(nextViewController, animated: true, completion: nil)
-                            self.captureImage = nil
+
                         }
                         UIApplication.shared.isNetworkActivityIndicatorVisible = false
                     case .failure(let error):
