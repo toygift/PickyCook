@@ -32,6 +32,7 @@
 		3F7971691F5D12F30074C3DF /* MainTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F7971681F5D12F30074C3DF /* MainTabBar.swift */; };
 		3F79716B1F5D194A0074C3DF /* no_image.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 3F79716A1F5D194A0074C3DF /* no_image.jpg */; };
 		3F79716D1F5D1BA40074C3DF /* MyPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F79716C1F5D1BA40074C3DF /* MyPageViewController.swift */; };
+		3F7A9B0E1F7A6B8F005FC69E /* TimerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F7A9B0D1F7A6B8F005FC69E /* TimerViewController.swift */; };
 		3F7CFEC61F7186AC001CB538 /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F7CFEC51F7186AC001CB538 /* Social.framework */; };
 		3F81D0281F631FB900D256EC /* RecipeSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F81D0271F631FB900D256EC /* RecipeSearchViewController.swift */; };
 		3F81D02A1F631FD200D256EC /* RecipeSearchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F81D0291F631FD200D256EC /* RecipeSearchTableViewCell.swift */; };
@@ -85,6 +86,7 @@
 		3F7971681F5D12F30074C3DF /* MainTabBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainTabBar.swift; sourceTree = "<group>"; };
 		3F79716A1F5D194A0074C3DF /* no_image.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = no_image.jpg; sourceTree = "<group>"; };
 		3F79716C1F5D1BA40074C3DF /* MyPageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyPageViewController.swift; sourceTree = "<group>"; };
+		3F7A9B0D1F7A6B8F005FC69E /* TimerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerViewController.swift; sourceTree = "<group>"; };
 		3F7CFEC51F7186AC001CB538 /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
 		3F81D0271F631FB900D256EC /* RecipeSearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecipeSearchViewController.swift; sourceTree = "<group>"; };
 		3F81D0291F631FD200D256EC /* RecipeSearchTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecipeSearchTableViewCell.swift; sourceTree = "<group>"; };
@@ -186,6 +188,7 @@
 			isa = PBXGroup;
 			children = (
 				3FAAF8A71F69DE35002DA72B /* StarViewController.swift */,
+				3F7A9B0D1F7A6B8F005FC69E /* TimerViewController.swift */,
 				3FAAF8A81F69DE35002DA72B /* FloatRatingView.swift */,
 				3F7971431F59F2CF0074C3DF /* User.swift */,
 				3F7971451F59F2FB0074C3DF /* Recipe.swift */,
@@ -426,9 +429,26 @@
 			files = (
 			);
 			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-PickyCookBook/Pods-PickyCookBook-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
+				"${BUILT_PRODUCTS_DIR}/Bolts/Bolts.framework",
+				"${BUILT_PRODUCTS_DIR}/FBSDKCoreKit/FBSDKCoreKit.framework",
+				"${BUILT_PRODUCTS_DIR}/FBSDKLoginKit/FBSDKLoginKit.framework",
+				"${BUILT_PRODUCTS_DIR}/FBSDKShareKit/FBSDKShareKit.framework",
+				"${BUILT_PRODUCTS_DIR}/SnapKit/SnapKit.framework",
+				"${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework",
+				"${BUILT_PRODUCTS_DIR}/Toaster/Toaster.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Bolts.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBSDKCoreKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBSDKLoginKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBSDKShareKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SnapKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyJSON.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Toaster.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -441,13 +461,16 @@
 			files = (
 			);
 			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
 			);
 			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-PickyCookBook-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -467,6 +490,7 @@
 				3F656F1C1F625D0D00A8B66D /* RecipeMediaData.swift in Sources */,
 				3F81D0321F66B6F400D256EC /* TouchID.swift in Sources */,
 				3F90BB8E1F79406B00B18EAE /* RecipeStepTableViewController.swift in Sources */,
+				3F7A9B0E1F7A6B8F005FC69E /* TimerViewController.swift in Sources */,
 				3F656F161F62554A00A8B66D /* RecipeCreateViewController.swift in Sources */,
 				3F065AD11F67C3B900B75106 /* RecipeStepViewController.swift in Sources */,
 				3F7971441F59F2CF0074C3DF /* User.swift in Sources */,

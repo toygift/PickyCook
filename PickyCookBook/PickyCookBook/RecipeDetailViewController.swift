@@ -11,8 +11,9 @@ import Alamofire
 import SwiftyJSON
 
 
-class RecipeDetailViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UIGestureRecognizerDelegate {
-    
+
+
+class RecipeDetailViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UIGestureRecognizerDelegate, StepTableViewCellDelegate {
     
     var recipe_step: [Recipe_Step] = []
     
@@ -26,6 +27,18 @@ class RecipeDetailViewController: UIViewController, UITableViewDelegate, UITable
         nextViewController.recipepk = recipepk_r
         self.navigationController?.pushViewController(nextViewController, animated: true)
     }
+    
+    
+    // MARK : StepTableViewCellDelegate
+    //
+    //
+    func timerSetModal(timer: Int) {
+        guard let nextViewController = storyboard?.instantiateViewController(withIdentifier: "TIMER") as? TimerViewController else { return }
+        nextViewController.seconds = timer
+        self.present(nextViewController, animated: true, completion: nil)
+        
+    }
+    
     @IBAction func like(_ sender: UIButton) {
         // 좋아요
         
@@ -39,15 +52,12 @@ class RecipeDetailViewController: UIViewController, UITableViewDelegate, UITable
    
         }
        
-        
-        
         print(dict)
         
         let acti = UIActivityViewController(activityItems: dict, applicationActivities: nil)
         self.present(acti, animated: true, completion: nil)
         
         }
-    
     
     @IBAction func rate(_ sender: UIButton) {
         let contentVC = StarViewController()
@@ -69,9 +79,7 @@ class RecipeDetailViewController: UIViewController, UITableViewDelegate, UITable
         }
  
     }
-    
-    
-    
+ 
     @IBAction func reviewWrite(_ sender: UIButton){
         //리뷰쓰기
     }
@@ -89,14 +97,12 @@ class RecipeDetailViewController: UIViewController, UITableViewDelegate, UITable
     
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
-        
-        
+
         let stepRecipes: Recipe_Step = recipe_step[indexPath.row]
         let cell = tableView.dequeueReusableCell(withIdentifier: "STEPCELL") as? StepTableViewCell
         
         cell?.stepRecipe = stepRecipes
-        
+        cell?.stepTableViewCellDelegate = self
         return cell!
         
     }

@@ -10,28 +10,30 @@ import UIKit
 
 class StarViewController: UIViewController, FloatRatingViewDelegate {
 
-    let statRating = FloatRatingView()
+    let starRating = FloatRatingView()
     var star: Float = 0.0
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.statRating.emptyImage = UIImage(named: "star2")
-        self.statRating.fullImage = UIImage(named: "star")
-        self.statRating.delegate = self
-        self.statRating.contentMode = UIViewContentMode.scaleAspectFit
-        self.statRating.maxRating = 5
-        self.statRating.minRating = 0
-        self.statRating.rating = 2.5
+        self.starRating.emptyImage = UIImage(named: "star2")
+        self.starRating.fullImage = UIImage(named: "star")
+        self.starRating.delegate = self
+        self.starRating.contentMode = UIViewContentMode.scaleAspectFit
+        self.starRating.maxRating = 5
+        self.starRating.minRating = 0
+        self.starRating.rating = 2.5
         //self.statRating.editable = true
-        self.statRating.halfRatings = true
+        self.starRating.halfRatings = true
         //self.statRating.floatRatings = false
         
-        self.statRating.frame = CGRect(x: 0, y: 0, width: 170, height: 30)
-        self.view.addSubview(self.statRating)
+        self.starRating.frame = CGRect(x: 0, y: 0, width: 170, height: 30)
+        self.view.addSubview(self.starRating)
         
-        self.preferredContentSize = CGSize(width: self.statRating.frame.width, height: self.statRating.frame.height+10)
+        self.preferredContentSize = CGSize(width: self.starRating.frame.width, height: self.starRating.frame.height+10)
     }
     func floatRatingView(_ ratingView: FloatRatingView, didUpdate rating: Float) {
-        self.star = self.statRating.rating
+        self.star = self.starRating.rating
         print("메인  :  ",self.star)
     }
 }
+
+

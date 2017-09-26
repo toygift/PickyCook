@@ -10,29 +10,46 @@ import UIKit
 import Alamofire
 import SwiftyJSON
 import Toaster
-import SnapKit
 
+
+protocol StepTableViewCellDelegate {
+    func timerSetModal(timer: Int)
+}
 
 class StepTableViewCell: UITableViewCell {
-
+    
+    var stepTableViewCellDelegate: StepTableViewCellDelegate?
+    
     var stepRecipe: PickyCookBook.Recipe_Step? { didSet { updateUI()}}
     
     @IBOutlet var stepLabel: UILabel!
     @IBOutlet var descriptionLabel: UILabel!
     @IBOutlet var img_step: UIImageView!
-    @IBOutlet var timerLabel: UILabel!
-    
+//    @IBOutlet var timerLabel: UILabel!
+//    @IBAction func timerViewControllerGo(_ sender: UIButton){
+//        let stroyboard = UIStoryboard()
+//        let view = UIViewController()
+//        guard let nextViewcontroller = stroyboard.instantiateViewController(withIdentifier: "TIMER") as? TimerViewController else { return }
+//        nextViewcontroller.seconds = (stepRecipe?.timer)!
+//        view.present(nextViewcontroller, animated: true, completion: nil)
+//    }
     var seconds: Int = 0
     var timer = Timer()
     
     var isTimerRunning = false
     var resumeTapped = false
     
+
+    
+    @IBAction func timerGo(_ sender: UIButton) {
+        self.stepTableViewCellDelegate?.timerSetModal(timer: (stepRecipe?.timer)!)
+     
+    }
+    
     @IBAction func startTimer(_ sender: UIButton) {
         if isTimerRunning == false {
             runTimer()
         }
-        
     }
     func runTimer() {
         timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: (#selector(StepTableViewCell.updateTimer)), userInfo: nil, repeats: true)
@@ -43,7 +60,7 @@ class StepTableViewCell: UITableViewCell {
             timer.invalidate()
         } else {
             seconds -= 1
-            timerLabel.text = timeString(time: TimeInterval(seconds))
+//            timerLabel.text = timeString(time: TimeInterval(seconds))
         }
         
     }
@@ -66,12 +83,12 @@ class StepTableViewCell: UITableViewCell {
     
     private func updateUI() {
         let stepNumber = stepRecipe?.step
-        let stepTimer = stepRecipe?.timer
+//        let stepTimer = stepRecipe?.timer
         
         stepLabel.text = "스텝번호 " + "\(stepNumber ?? 1)"
         descriptionLabel.text = stepRecipe?.description
         self.seconds = (stepRecipe?.timer)!
-        timerLabel.text = "소요시간 " + "\(stepTimer ?? 1)"
+//        timerLabel.text = "소요시간 " + "\(stepTimer ?? 1)"
         
         //cell?.recipeCommentList(recipePk: self.recipepk_r)
         DispatchQueue.global().async {

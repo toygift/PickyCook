@@ -20,51 +20,30 @@ class RecipeStepTableViewController: UITableViewController, UITextFieldDelegate,
     var flagImageSave = false
     var captureImage: UIImage!
     var videoURL: URL!
-    var is_timer: Bool!
+    var is_timer = true
     
     
     @IBOutlet var descriptionTextField: UITextField!
     @IBOutlet var timer: UITextField!
     @IBAction func is_timerOn(_ sender: UISwitch) {
         is_timer = sender.isOn
+        print(is_timer)
     }
     @IBOutlet var img_recipe: UIImageView!
     @IBAction func recipeStepComplete(_ sender: UIButton) {
         print("눌려라 오바오바오바")
-        if descriptionTextField.text == "" {
-            Toast(text: "설명을 입력해주세요").show()
-            
-        } else if timer.text == "" {
-            Toast(text: "시간을 입력해주세요").show()
-        } else if is_timer == nil {
-            Toast(text: "타이머 유/무 선택해주세요").show()
-        } else if captureImage == nil {
-            Toast(text: "이미지를 선택해주세요").show()
-        }
-        guard let desc = descriptionTextField.text else {
-            print("1")
-            return }
-        guard let timer = Int(timer.text!) else {
-            print("2")
-            return }
-        guard let recipepk = recipepk_r else {
-            print("3")
-            return }
-        guard let is_timer = is_timer else {
-            print("4")
-            return }
-        guard let image = captureImage else {
-            print("5")
-            return }
-        recipeStepCreate(recipepk: recipepk, description: desc, is_timer: is_timer, timer: timer, img_step: image)
         
-        
+        upDateStep()
     }
     
     @IBAction func completeStep(_ sender: UIButton) {
-        let alert = UIAlertController(title: "완료", message: "완료하시겠습니까?", preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "취소", style: .cancel, handler: nil))
-        alert.addAction(UIAlertAction(title: "확인", style: .default, handler: { (_) in
+        let alert = UIAlertController(title: "완료하시겠습니까?", message: nil, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "취소", style: .destructive, handler: nil))
+        alert.addAction(UIAlertAction(title: "저장후 완료", style: .default, handler: { (_) in
+            self.upDateStep()
+            self.navigationController?.popViewController(animated: true)
+        }))
+        alert.addAction(UIAlertAction(title: "완료", style: .default, handler: { (_) in
             self.navigationController?.popViewController(animated: true)
         }))
         
@@ -73,10 +52,29 @@ class RecipeStepTableViewController: UITableViewController, UITextFieldDelegate,
         })
         
     }
-    
+    func upDateStep() {
+        if descriptionTextField.text == "" {
+            Toast(text: "설명을 입력해주세요").show()
+        } else if timer.text == "" {
+            Toast(text: "시간을 입력해주세요").show()
+        } else if is_timer {
+            Toast(text: "타이머 유/무 선택해주세요").show()
+        } else if captureImage == nil {
+            Toast(text: "이미지를 선택해주세요").show()
+        }
+        guard let desc = descriptionTextField.text else { return }
+        guard let timer = Int(timer.text!) else { return }
+        guard let recipepk = recipepk_r else { return }
+        //        guard let  is_timer = is_timer else { return }
+        guard let image = captureImage else { return }
+        recipeStepCreate(recipepk: recipepk, description: desc, is_timer: is_timer, timer: timer, img_step: image)
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("뷰디드로드드드드드드")
+        print("================================================================")
+        print("====================RecipeStepTableViewController===============")
+        print("===========================viewDidLoad==========================")
+        print("================================================================")
         if #available(iOS 11.0, *) {
             navigationController?.navigationBar.prefersLargeTitles = true
             navigationItem.title = "레시피 스텝 입력"
@@ -112,7 +110,7 @@ class RecipeStepTableViewController: UITableViewController, UITextFieldDelegate,
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         if(textField.isEqual(self.descriptionTextField)) {
             self.timer.becomeFirstResponder()
-        }else {
+        }else if (textField.isEqual(self.timer))  {
             self.view.endEditing(true)
         }
         

@@ -29,19 +29,14 @@ class RecipeCreateTableViewController: UITableViewController, UITextFieldDelegat
         
         if titleTextField.text == "" {
             Toast(text: "제목을 입력해주세요").show()
-            
         } else if descriptionTextField.text == "" {
             Toast(text: "레시피 설명을 입력해주세요").show()
-            
         } else if ingredientTextField.text == "" {
             Toast(text: "재료를 입력해주세요").show()
-            
         } else if tagTextField.text == "" {
             Toast(text: "테그를 입력해주세요").show()
-            
         } else if captureImage == nil {
             Toast(text: "메인사진은 필수입니다").show()
-            
         }
         
         guard let title = titleTextField.text else { return }
@@ -102,7 +97,7 @@ class RecipeCreateTableViewController: UITableViewController, UITextFieldDelegat
             self.ingredientTextField.becomeFirstResponder()
         } else if(textField.isEqual(self.ingredientTextField)){
             self.tagTextField.becomeFirstResponder()
-        } else {
+        } else if (textField.isEqual(self.tagTextField)) {
             self.view.endEditing(true)
         }
         
