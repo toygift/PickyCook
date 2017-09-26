@@ -11,7 +11,7 @@ import UIKit
 import MobileCoreServices
 import Toaster
 
-extension RecipeCreateTableViewController {
+extension RecipeCreateViewController {
     
 
     func media(_ type: UIImagePickerControllerSourceType, flag: Bool, editing: Bool){

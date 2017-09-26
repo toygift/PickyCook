@@ -11,7 +11,7 @@ import Foundation
 struct Recipe {
     let pk: Int
     let user: Int
-    var title: String?
+    var title: String
     var img_recipe: String
     var ingredient: String
     let description: String
@@ -21,3 +21,6 @@ struct Recipe {
 
 }
 
+struct RecipeCreate {
+    
+}

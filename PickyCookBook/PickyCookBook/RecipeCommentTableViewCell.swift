@@ -7,31 +7,20 @@
 //
 
 import UIKit
-import SnapKit
 
 class RecipeCommentTableViewCell: UITableViewCell {
 
     @IBOutlet var content: UILabel!
-
-    var commentRecipe: PickyCookBook.Recipe_Comment? { didSet { updateUI()}}
     
-    private func updateUI() {
-        content.text = commentRecipe?.content
-    }
     override func awakeFromNib() {
         super.awakeFromNib()
-        print("____________________________________________________________")
-        autoLayout()
+        // Initialization code
     }
-}
 
-extension RecipeCommentTableViewCell {
-    func autoLayout() {
-        content.snp.makeConstraints { (make) in
-            make.top.equalTo(self.contentView).inset(10)
-            make.left.equalTo(self.contentView).inset(10)
-            make.right.equalTo(self.contentView).inset(10)
-            make.bottom.equalTo(self.contentView).inset(10)
-        }
+    override func setSelected(_ selected: Bool, animated: Bool) {
+        super.setSelected(selected, animated: animated)
+
+        // Configure the view for the selected state
     }
+
 }

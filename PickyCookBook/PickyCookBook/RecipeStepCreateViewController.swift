@@ -49,7 +49,7 @@ class RecipeStepCreateViewController: UIViewController, UITextFieldDelegate, UII
         } else if is_timer == nil {
             Toast(text: "타이머 유/무 선택해주세요").show()
             return
-        } else if captureImage == nil {
+        } else if captureImage.images == nil {
             Toast(text: "이미지를 선택해주세요").show()
             return
         }
@@ -79,12 +79,6 @@ class RecipeStepCreateViewController: UIViewController, UITextFieldDelegate, UII
     //
     override func viewDidLoad() {
         super.viewDidLoad()
-        if #available(iOS 11.0, *) {
-            navigationController?.navigationBar.prefersLargeTitles = true
-            
-        } else {
-            
-        }
         descriptionTextField.delegate = self
         timer.delegate = self
         // Do any additional setup after loading the view.
@@ -159,7 +153,6 @@ extension RecipeStepCreateViewController {
                         } else {
                             guard let nextViewController = self.storyboard?.instantiateViewController(withIdentifier: "RECIPESTEP") else { return }
                             self.navigationController?.pushViewController(nextViewController, animated: true)
-                            self.captureImage = nil
                         }
                         UIApplication.shared.isNetworkActivityIndicatorVisible = false
                     case .failure(let error):

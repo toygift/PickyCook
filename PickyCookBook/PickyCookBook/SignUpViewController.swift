@@ -151,6 +151,8 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.pictureConfirm.layer.cornerRadius = self.pictureConfirm.frame.width / 2
+        self.pictureConfirm.layer.masksToBounds = true
         let gesture = UITapGestureRecognizer(target: self, action: #selector(tappedProfile(_:)))
         self.pictureConfirm.addGestureRecognizer(gesture)
         
@@ -161,8 +163,6 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
         passwordConfirmTextField.delegate = self
         contentTextField.delegate = self
         //DataTelecom.shared.allRecipeList()
-        
-
     }
     @objc func tappedProfile(_ sender: Any){
         
@@ -248,20 +248,14 @@ extension SignUpViewController {
 
 //                            UserDefaults.standard.set(userpk, forKey: "userpk")
 //                            print("UserDefaults Set UserPK  :   ", UserDefaults.standard.string(forKey: "userpk") ?? "데이터없음")
-                            if let viewController = self.storyboard?.instantiateViewController(withIdentifier: "MainTabBarView") {
-                                UIApplication.shared.keyWindow?.rootViewController = viewController
+                            guard let nextViewController = self.storyboard?.instantiateViewController(withIdentifier: "TABBAR") as? MainTabBar else { return }
+                            self.present(nextViewController, animated: true, completion: {
+                                
                                 DataTelecom.shared.myPageUserData()
                                 UIApplication.shared.isNetworkActivityIndicatorVisible = false
-                                self.dismiss(animated: true, completion: nil)
-                            }
-//                            guard let nextViewController = self.storyboard?.instantiateViewController(withIdentifier: "TABBAR") as? MainTabBar else { return }
-//                            self.present(nextViewController, animated: true, completion: {
-//                                
-//                                DataTelecom.shared.myPageUserData()
-//                                UIApplication.shared.isNetworkActivityIndicatorVisible = false
-//                                
-//                                
-//                            })
+                                
+                                
+                            })
                         }
                     case .failure(let error):
                         print(error)

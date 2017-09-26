@@ -40,7 +40,7 @@ class RecipeCreateViewController: UIViewController, UITextFieldDelegate, UIImage
         } else if tagTextField.text == "" {
             Toast(text: "테그를 입력해주세요").show()
             return
-        } else if captureImage.images != nil {
+        } else if captureImage.images == nil {
             Toast(text: "메인사진은 필수입니다").show()
             return
         }
@@ -65,13 +65,9 @@ class RecipeCreateViewController: UIViewController, UITextFieldDelegate, UIImage
     //
     override func viewDidLoad() {
         super.viewDidLoad()
-        if #available(iOS 11.0, *) {
-            navigationController?.navigationBar.prefersLargeTitles = true
-            navigationItem.largeTitleDisplayMode = .always
-        } else {
-            
-        }
-       
+        
+        self.img_recipe.layer.cornerRadius = self.img_recipe.frame.width / 2
+        self.img_recipe.layer.masksToBounds = true
         let gesture = UITapGestureRecognizer(target: self, action: #selector(tappedProfile(_:)))
         self.img_recipe.addGestureRecognizer(gesture)
         
@@ -79,7 +75,7 @@ class RecipeCreateViewController: UIViewController, UITextFieldDelegate, UIImage
         descriptionTextField.delegate = self
         ingredientTextField.delegate = self
         tagTextField.delegate = self
-        self.img_recipe.image = UIImage(named: "ss.jpg")
+        self.img_recipe.image = UIImage(named: "no_im.png")
         // Do any additional setup after loading the view.
     }
     
@@ -87,10 +83,10 @@ class RecipeCreateViewController: UIViewController, UITextFieldDelegate, UIImage
     
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         alertController.addAction(UIAlertAction(title: "포토라이브러리", style: .default, handler: { (_) in
-            //self.media(.photoLibrary, flag: false, editing: true)
+            self.media(.photoLibrary, flag: false, editing: true)
         }))
         alertController.addAction(UIAlertAction(title: "카메라", style: .default, handler: { (_) in
-           // self.media(.camera, flag: true, editing: false)
+            self.media(.camera, flag: true, editing: false)
         }))
         alertController.addAction(UIAlertAction(title: "취소", style: .cancel, handler: nil))
         self.present(alertController, animated: true, completion: nil)
