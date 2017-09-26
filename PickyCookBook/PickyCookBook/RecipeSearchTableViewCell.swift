@@ -9,25 +9,35 @@
 import UIKit
 
 class RecipeSearchTableViewCell: UITableViewCell {
-
+    
     @IBOutlet var img_recipe: UIImageView!
     @IBOutlet var title: UILabel!
     @IBOutlet var descriptions: UILabel!
     @IBOutlet var ingredient: UILabel!
     @IBOutlet var tags: UILabel!
-    
-    
- 
-    
+//    var searchRecipe: PickyCookBook.Recipe_Search? { didSet { updateUI()}}
+    var searchRecipe: PickyCookBook.Recipe_Search? { didSet { updateUI()}}
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
+       
     }
-
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
+    private func updateUI() {
+        title.text = searchRecipe?.title
+        descriptions.text = searchRecipe?.description
+        ingredient.text = searchRecipe?.ingredient
+        tags.text = searchRecipe?.tag
+        DispatchQueue.global().async {
+            guard let path = self.searchRecipe?.img_recipe else { return }
+            if let imageURL = URL(string: path) {
+                let task = URLSession.shared.dataTask(with: imageURL, completionHandler: { (data, response, error) in
+                    guard let putImage = data else { return }
+                    DispatchQueue.main.async {
+                        self.img_recipe.image = UIImage(data: putImage)
+                    }
+                })
+                task.resume()
+            }
+        }
     }
-
 }
+

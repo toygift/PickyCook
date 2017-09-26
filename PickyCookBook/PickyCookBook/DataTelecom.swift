@@ -16,7 +16,7 @@ class DataTelecom {
     static let shared: DataTelecom = DataTelecom()
     
     var user: User?
-    var recipe: Recipe?
+//    var recipe: Recipe?
     
     //var recipe_review: [Recipe_Review]?
 //    var recipe_comment: [Recipe_Comment]?
@@ -55,40 +55,40 @@ class DataTelecom {
     // MARK: Recipe
     //
     //
-    func recipeList(){
-        print("====================================================================")
-        print("=========================recipeList()===============================")
-        print("====================================================================")
-        //        guard let token = UserDefaults.standard.string(forKey: "token") else { return }
-        let recipepk = UserDefaults.standard.integer(forKey: "recipepk")
-        print("recipepkkkkkkkkkkkk:",recipepk)
-        
-        let call = Alamofire.request(rootDomain + "recipe/detail/\(recipepk)", method: .get)
-        
-        call.responseJSON { (response) in
-            switch response.result {
-            case .success(let value):
-                let json = JSON(value)
-                print(json)
-                
-//                self.recipe_comment = DataCentre.shared.commentList(response: json["recipes"][0]["comments"]) // Comment
-                //self.recipe_step = DataCentre.shared.recipeStepList(response: json["recipes"]) //Step
-                print("recipe",self.recipe ?? "데이터없음")
-                print("============================================")
-//                print("recipe_comment",self.recipe_comment ?? "데이터없음")
-                print("============================================")
-               // print("recipe_step",self.recipe_step ?? "데이터없음")
-                print("============================================")
-                
-            case .failure(let error):
-                print(error)
-                
-            }
-        }
-    }
-    
-    // MARK: AllRecipe
-    //
-    //
+//    func recipeList(){
+//        print("====================================================================")
+//        print("=========================recipeList()===============================")
+//        print("====================================================================")
+//        //        guard let token = UserDefaults.standard.string(forKey: "token") else { return }
+//        let recipepk = UserDefaults.standard.integer(forKey: "recipepk")
+//        print("recipepkkkkkkkkkkkk:",recipepk)
+//        
+//        let call = Alamofire.request(rootDomain + "recipe/detail/\(recipepk)", method: .get)
+//        
+//        call.responseJSON { (response) in
+//            switch response.result {
+//            case .success(let value):
+//                let json = JSON(value)
+//                print(json)
+//                
+////                self.recipe_comment = DataCentre.shared.commentList(response: json["recipes"][0]["comments"]) // Comment
+//                //self.recipe_step = DataCentre.shared.recipeStepList(response: json["recipes"]) //Step
+//                print("recipe",self.recipe ?? "데이터없음")
+//                print("============================================")
+////                print("recipe_comment",self.recipe_comment ?? "데이터없음")
+//                print("============================================")
+//               // print("recipe_step",self.recipe_step ?? "데이터없음")
+//                print("============================================")
+//                
+//            case .failure(let error):
+//                print(error)
+//                
+//            }
+//        }
+//    }
+//    
+//    // MARK: AllRecipe
+//    //
+//    //
     
 }
