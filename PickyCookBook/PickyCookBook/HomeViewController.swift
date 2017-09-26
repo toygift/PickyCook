@@ -10,98 +10,77 @@ import UIKit
 import Alamofire
 import SwiftyJSON
 import Toaster
-import Social
-import MobileCoreServices
 
-class HomeViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate {
+protocol Refresh {
+    func refresh()
+}
+
+class HomeViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+    
+    
     
     @IBOutlet var tableView: UITableView!
-    lazy var refreshControl = UIRefreshControl()
-    var recipes: [Recipe] = []
-    var myrecipes: [Recipe] = []
+    
+    var recipes: [Recipe]?
+    var myrecipes: [Recipe]?
     var select: Bool = false
-    
-    // MARK: Life Cycle
-    //
-    //
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        self.customViewLoadAppear()
-        if #available(iOS 11.0, *) {
-            navigationController?.navigationBar.prefersLargeTitles = true
-        } else {
-            
-        }
-        refreshControl = UIRefreshControl()
-        self.refreshControl.attributedTitle = NSAttributedString(string: "잡아당기면 리프레쉬")
-        self.refreshControl.addTarget(self, action: #selector(HomeViewController.refresh), for: UIControlEvents.valueChanged)
-        self.refreshControl.tintColor = UIColor.darkGray
-        
-        
-        tableView.rowHeight = UITableViewAutomaticDimension
-        
-        tableView.refreshControl = refreshControl
-    }
-    func refresh(){
-        self.customViewLoadAppear()
-        
-    }
-    
-    
-    override func viewDidAppear(_ animated: Bool) {
-        if #available(iOS 11.0, *) {
-            navigationItem.largeTitleDisplayMode = .always
-        } else {
-            // Fallback on earlier versions
-        }
-    }
-    override func viewWillAppear(_ animated: Bool) {
-        print("HOMEviewWillAppear")
-        //self.customViewLoadAppear()
-        
-    }
-    // MARK: view Load and Appear
-    func customViewLoadAppear(){
+//    var selects: Bool = false
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        var returnValue: Int = 0
         if select == false {
-            UIApplication.shared.isNetworkActivityIndicatorVisible = true
-            self.navigationItem.title = "레시피"
-            self.allRecipeList()
-            print("select : false", select)
-        } else if select == true {
-            UIApplication.shared.isNetworkActivityIndicatorVisible = true
-            self.navigationItem.title = "My레시피"
-            self.mycreateRecipe()
-            print("select : true", select)
-            
+            returnValue = (self.recipes?.count ?? 1)!
+        } else {
+            returnValue = (self.myrecipes?.count ?? 1)!
         }
-        
+        return returnValue
     }
     // MARK : TableView
     //
     //
     
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        var returnValue: Int = 0
-        if select == false {
-            returnValue = (self.recipes.count)
-        } else {
-            returnValue = (self.myrecipes.count)
-        }
-        return returnValue
-    }
-    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ALLRECIPE", for: indexPath) as? AllRecipeTableViewCell
         
-        if self.select == false {
-            let allRecipes: Recipe = recipes[indexPath.row]
-            cell?.allRecipe = allRecipes
             
-        } else  {
-            let myRecipes: Recipe = myrecipes[indexPath.row]
-            cell?.myRecipe = myRecipes
-            
-        }
+            if self.select == false {
+                let count_like = self.recipes?[indexPath.row].like_count
+                let sum_rate = self.recipes?[indexPath.row].rate_sum
+                
+                cell?.title.text = self.recipes?[indexPath.row].title
+                cell?.descriptions.text = self.recipes?[indexPath.row].description
+                cell?.tags.text = self.recipes?[indexPath.row].tag
+                cell?.like_count.text = "좋아요 " + "\(count_like ?? 1)"
+                cell?.rate_sum.text = "평점 " + "\(sum_rate ?? 1)"
+                
+                
+                DispatchQueue.main.async {
+                    if let path = self.recipes?[indexPath.row].img_recipe {
+                        if let image = try? Data(contentsOf: URL(string: path)!) {
+                            cell?.img_recipe.image = UIImage(data: image)
+                        }
+                    }
+                }
+                
+                
+            } else  {
+                let count_like = self.myrecipes?[indexPath.row].like_count
+                let sum_rate = self.myrecipes?[indexPath.row].rate_sum
+                
+                cell?.title.text = self.myrecipes?[indexPath.row].title
+                cell?.descriptions.text = self.myrecipes?[indexPath.row].description
+                cell?.tags.text = self.myrecipes?[indexPath.row].tag
+                cell?.like_count.text = "좋아요 " + "\(count_like ?? 1)"
+                cell?.rate_sum.text = "평점 " + "\(sum_rate ?? 1)"
+                
+                DispatchQueue.main.async {
+                    if let path = self.myrecipes?[indexPath.row].img_recipe {
+                        if let image = try? Data(contentsOf: URL(string: path)!) {
+                            cell?.img_recipe.image = UIImage(data: image)
+                        }
+                    }
+                }
+            }
+        
         
         return cell!
     }
@@ -115,15 +94,14 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         }
         let recipePk:Int!
         if select == false {
-            recipePk = self.recipes[indexPath.row].pk
+            recipePk = self.recipes?[indexPath.row].pk
             nextViewController.recipepk_r = recipePk
-            
             print("recipePk 메인레시피 :  ",recipePk ?? "NO")
             
         } else if select == true {
-            let recipePk = self.myrecipes[indexPath.row].pk
+            let recipePk = self.myrecipes?[indexPath.row].pk
             nextViewController.recipepk_r = recipePk
-            print("recipePk 내가작성한 레시피 :  ",recipePk)
+            print("recipePk 내가작성한 레시피 :  ",recipePk ?? "NO")
             
         }
         
@@ -133,8 +111,8 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         
         let bookmark = UITableViewRowAction(style: .default, title: "북마크") { (action, indexPath) in
-            let recipepk = self.recipes[indexPath.row].pk
-            print("ppkpkpkpkpkpkpkpkpkpkpkpkpk     ",recipepk)
+            let recipepk = self.recipes?[indexPath.row].pk
+            print("ppkpkpkpkpkpkpkpkpkpkpkpkpk     ",recipepk ?? 1)
             
             let alertController = UIAlertController(title: "북마크", message: "메모를작성해주세요", preferredStyle: .alert)
             alertController.addTextField(configurationHandler: { (textfield) in
@@ -144,7 +122,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
                 if let title = alertController.textFields?[0].text {
                     if title.isEmpty == false {
                         
-                        self.bookmarkRecipe(recipepks: recipepk, memo: title)
+                        self.bookmarkRecipe(recipepks: recipepk!, memo: title)
                         UIApplication.shared.isNetworkActivityIndicatorVisible = true
                         self.tableView.reloadData()
                     } else {
@@ -154,33 +132,48 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
             })))
             alertController.addAction(UIAlertAction(title: "취소", style: .cancel, handler: nil))
             self.present(alertController, animated: true, completion: nil)
-            print("레시피 PK :                  ",recipepk)
+            print("레시피 PK :                  ",recipepk ?? "no")
         }
-        
-        
-        let shareAction = UITableViewRowAction(style: UITableViewRowActionStyle.default, title: "보내기") { (action, indexPath) in
-            
-            
-            
-            let defaultText = "PickyCookBook에서 공유하는 레시피 입니다   \n" + self.recipes[indexPath.row].title!
-            
-            let imageData = try? Data(contentsOf: URL(string: self.recipes[indexPath.row].img_recipe)!)
-            let activityController = UIActivityViewController(activityItems: [defaultText, imageData!], applicationActivities: nil)
-            self.present(activityController, animated: true, completion: nil)
-            
-        }
-        
         bookmark.backgroundColor = UIColor.lightGray
         
-        shareAction.backgroundColor = UIColor.brown
+        return [bookmark]
+    }
+    
+    // MARK: Life Cycle
+    //
+    //
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        self.customViewLoadAppear()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        print("HOMEviewWillAppear")
+        self.customViewLoadAppear()
+           }
+    // MARK: view Load and Appear
+    func customViewLoadAppear(){
+        if select == false {
+            UIApplication.shared.isNetworkActivityIndicatorVisible = true
+            self.navigationItem.title = "레시피"
+            self.allRecipeList()
+            print("select : false", select)
+        } else if select == true {
+            UIApplication.shared.isNetworkActivityIndicatorVisible = true
+            self.navigationItem.title = "내가작성한레시피"
+            self.mycreateRecipe()
+            print("select : true", select)
+            
+        }
+
+    }
+    override func viewDidDisappear(_ animated: Bool) {
         
-        return [shareAction, bookmark]
     }
-    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-        return UITableViewAutomaticDimension
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        
     }
-    
-    
 }
 extension HomeViewController {
     // MARK: 전체레시피 함수
@@ -195,10 +188,9 @@ extension HomeViewController {
         //        let userPK = UserDefaults.standard.object(forKey: "userpk") as! Int
         //        let headers: HTTPHeaders = ["Authorization":"token \(token)"]
         
-        let call: DataRequest?
-        call = Alamofire.request(rootDomain + "recipe/", method: .get)
+        let call = Alamofire.request(rootDomain + "recipe/", method: .get)
         print("=========================AllrecipeList()============================")
-        call?.responseJSON { (response) in
+        call.responseJSON { (response) in
             switch response.result {
             case .success(let value):
                 print("=========================AllrecipeList()============================")
@@ -209,9 +201,7 @@ extension HomeViewController {
                 DispatchQueue.main.async {
                     self.tableView.reloadData()
                 }
-                
                 UIApplication.shared.isNetworkActivityIndicatorVisible = false
-                self.refreshControl.endRefreshing()
             case .failure(let error):
                 print(error)
                 UIApplication.shared.isNetworkActivityIndicatorVisible = false
@@ -247,7 +237,6 @@ extension HomeViewController {
                 DispatchQueue.main.async {
                     self.tableView.reloadData()
                 }
-                self.refreshControl.endRefreshing()
                 UIApplication.shared.isNetworkActivityIndicatorVisible = false
             case .failure(let error):
                 print(error)
@@ -297,6 +286,3 @@ extension HomeViewController {
         }
     }
 }
-
-
-

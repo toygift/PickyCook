@@ -14,29 +14,16 @@ import FBSDKLoginKit
 import FBSDKCoreKit
 import LocalAuthentication
 
-
-// MARK: 로그인관련 프로토콜
-//
-//
-@objc
-protocol SignInViewControllerDelegate: class {
-    func signInDidDismiss(signIn: SignInViewController)
-    func signInCompleteDismiss(signIn: SignInViewController)
-}
-
 class SignInViewController: UIViewController, UITextFieldDelegate, UINavigationControllerDelegate, FBSDKLoginButtonDelegate {
 
-    weak var signIndelegate: SignInViewControllerDelegate?
-    
     let touchID = TouchID()
-    
     
     // MARK: OUTLET 및 Properties
     // 
     @IBOutlet var emailTextField: UITextField!
     @IBOutlet var passwordTextField: UITextField!
     @IBOutlet var buttonSignIn: UIButton!
-    @IBOutlet var cancel: UIButton!
+    
     // MARK : SignIn
     //
     //
@@ -45,12 +32,6 @@ class SignInViewController: UIViewController, UITextFieldDelegate, UINavigationC
         guard let password = passwordTextField.text else { return }
         self.signIn(email: email, password: password)
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
-    }
-    @IBAction func cancel(_ sender: UIButton) {
-        self.signIndelegate?.signInDidDismiss(signIn: self)
-        
-        print("캔슬버튼 클릭")
-
     }
     
     // MARK : TouchID
@@ -161,11 +142,9 @@ class SignInViewController: UIViewController, UITextFieldDelegate, UINavigationC
         emailTextField.delegate = self
         passwordTextField.delegate = self
         emailTextField.becomeFirstResponder()
-        
         //DataTelecom.shared.allRecipeList()
     }
 
- 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -206,7 +185,6 @@ extension SignInViewController {
                 } else {
                     
                     let accessToken = json["token"].stringValue
-                    print(accessToken)
                     let userpk = json["pk"].stringValue
                     
                     
@@ -223,13 +201,18 @@ extension SignInViewController {
                     tokenValue.save(serviceName, account: "password", value: password)
                     
                     /********************************************************************************************/
-                    // SignInViewControllerDelegate
-                    //
-                    //
-                    self.signIndelegate?.signInCompleteDismiss(signIn: self)
+                    
+//                    UserDefaults.standard.set(userToken, forKey: "token")
+//                    print("UserDefaults Set Token   :   ", UserDefaults.standard.string(forKey: "token") ?? "데이터없음")
+//                    UserDefaults.standard.set(userpk, forKey: "userpk")
+//                    print("UserDefaults Set UserPK  :   ", UserDefaults.standard.string(forKey: "userpk") ?? "데이터없음")
 
+                    DataTelecom.shared.myPageUserData()
                     
-                    
+                    guard let nextViewController = self.storyboard?.instantiateViewController(withIdentifier: "TABBAR") as? MainTabBar else { return }
+                    self.present(nextViewController, animated: true, completion: { 
+                        UIApplication.shared.isNetworkActivityIndicatorVisible = false
+                    })
                 }
                 
             case .failure(let error):

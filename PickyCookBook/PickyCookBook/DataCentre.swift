@@ -67,13 +67,6 @@ class DataCentre {
         }
         return recipe
     }
-//    func seRecipeList(response structure: [Recipe]) -> [Recipe] {
-//        let recipe: [Recipe] = structure.map { (jsonmap) -> Recipe in
-//            let value = Recipe(pk: jsonmap.pk, user: jsonmap.user, title: jsonmap.title, img_recipe: jsonmap.img_recipe, ingredient: jsonmap.ingredient, description: jsonmap.description, like_count: jsonmap.like_count, rate_sum: jsonmap.rate_sum, tag: jsonmap.tag)
-//            return value
-//        }
-//        return recipe
-//    }
     
     // MARK: CommentList
     //

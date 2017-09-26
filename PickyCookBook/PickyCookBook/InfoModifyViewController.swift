@@ -186,33 +186,26 @@ class InfoModifyViewController: UIViewController, UITextFieldDelegate, UIImagePi
     //
     override func viewDidLoad() {
         super.viewDidLoad()
-        if #available(iOS 11.0, *) {
-            navigationController?.navigationBar.prefersLargeTitles = true
-            
-        } else {
-            
-        }
         print("================================================================")
         print("===========================viewDidLoad==========================")
         print("================================================================")
-        navigationItem.title = "정보변경"
         
+        self.img_profile.layer.cornerRadius = self.img_profile.frame.width / 2
+        self.img_profile.layer.masksToBounds = true
         let gesture = UITapGestureRecognizer(target: self, action: #selector(tappedProfile(_:)))
         self.img_profile.addGestureRecognizer(gesture)
         
         self.email.text = DataTelecom.shared.user?.email
         self.nickname.text = DataTelecom.shared.user?.nickname
         
-        DispatchQueue.global().async {
-            guard let path = DataTelecom.shared.user?.img_profile else { return }
-            if let imageURL = URL(string: path) {
-                let task = URLSession.shared.dataTask(with: imageURL, completionHandler: { (data, response, error) in
-                    guard let putImage = data else { return }
-                    DispatchQueue.main.async {
-                        self.img_profile.image = UIImage(data: putImage)
-                    }
-                })
-                task.resume()
+        DispatchQueue.main.async {
+            if let path = DataTelecom.shared.user?.img_profile {
+                if let imageData = try? Data(contentsOf: URL(string: path)!) {
+                    self.img_profile.image = UIImage(data: imageData)
+                    
+//                    self.img_profile.setImage(back?.withRenderingMode(.alwaysOriginal), for: .normal)
+                    
+                }
             }
         }
         
