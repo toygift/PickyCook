@@ -16,6 +16,8 @@ import MobileCoreServices
 class HomeViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate {
     
     @IBOutlet var tableView: UITableView!
+    
+    
     lazy var refreshControl = UIRefreshControl()
     var recipes: [Recipe] = []
     var myrecipes: [Recipe] = []
@@ -72,14 +74,12 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
             self.navigationItem.title = "My레시피"
             self.mycreateRecipe()
             print("select : true", select)
-            
         }
-        
     }
+    
     // MARK : TableView
     //
     //
-    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         var returnValue: Int = 0
         if select == false {
@@ -96,13 +96,10 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         if self.select == false {
             let allRecipes: Recipe = recipes[indexPath.row]
             cell?.allRecipe = allRecipes
-            
         } else  {
             let myRecipes: Recipe = myrecipes[indexPath.row]
             cell?.myRecipe = myRecipes
-            
         }
-        
         return cell!
     }
     
@@ -110,28 +107,25 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         print("====================================================================")
         print("=========================didSelectRowAt=============================")
         print("====================================================================")
-        guard let nextViewController = self.storyboard?.instantiateViewController(withIdentifier: "RECIPEDETAIL") as? RecipeDetailViewController else {
-            return
-        }
+        guard let nextViewController = self.storyboard?.instantiateViewController(withIdentifier: "RECIPEDETAIL") as? RecipeDetailViewController else { return }
         let recipePk:Int!
         if select == false {
             recipePk = self.recipes[indexPath.row].pk
             nextViewController.recipepk_r = recipePk
-            
             print("recipePk 메인레시피 :  ",recipePk ?? "NO")
-            
         } else if select == true {
             let recipePk = self.myrecipes[indexPath.row].pk
             nextViewController.recipepk_r = recipePk
             print("recipePk 내가작성한 레시피 :  ",recipePk)
-            
         }
-        
         self.navigationController?.pushViewController(nextViewController, animated: true)
     }
     
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         
+        // MARK : BookMakr
+        //
+        //
         let bookmark = UITableViewRowAction(style: .default, title: "북마크") { (action, indexPath) in
             let recipepk = self.recipes[indexPath.row].pk
             print("ppkpkpkpkpkpkpkpkpkpkpkpkpk     ",recipepk)
@@ -143,7 +137,6 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
             alertController.addAction((UIAlertAction(title: "확인", style: .default, handler: { (action) in
                 if let title = alertController.textFields?[0].text {
                     if title.isEmpty == false {
-                        
                         self.bookmarkRecipe(recipepks: recipepk, memo: title)
                         UIApplication.shared.isNetworkActivityIndicatorVisible = true
                         self.tableView.reloadData()
@@ -156,12 +149,10 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
             self.present(alertController, animated: true, completion: nil)
             print("레시피 PK :                  ",recipepk)
         }
-        
-        
+        // MARK : 공유하기
+        //
+        //
         let shareAction = UITableViewRowAction(style: UITableViewRowActionStyle.default, title: "보내기") { (action, indexPath) in
-            
-            
-            
             let defaultText = "PickyCookBook에서 공유하는 레시피 입니다   \n" + self.recipes[indexPath.row].title!
             
             let imageData = try? Data(contentsOf: URL(string: self.recipes[indexPath.row].img_recipe)!)
@@ -169,24 +160,22 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
             self.present(activityController, animated: true, completion: nil)
             
         }
-        
         bookmark.backgroundColor = UIColor.lightGray
-        
         shareAction.backgroundColor = UIColor.brown
-        
         return [shareAction, bookmark]
     }
+    
     func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
         return UITableViewAutomaticDimension
     }
-    
-    
 }
+
+
 extension HomeViewController {
+    
     // MARK: 전체레시피 함수
     //
     //
-    
     func allRecipeList(){
         print("====================================================================")
         print("=========================AllrecipeList()============================")
@@ -256,6 +245,9 @@ extension HomeViewController {
             }
         }
     }
+    // MARK : 레시피북마크 메모
+    //
+    //
     func bookmarkRecipe(recipepks: Int, memo: String){
         print("====================================================================")
         print("========================bookmarkRecipe()============================")
@@ -297,6 +289,3 @@ extension HomeViewController {
         }
     }
 }
-
-
-

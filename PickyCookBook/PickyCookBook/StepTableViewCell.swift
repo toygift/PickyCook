@@ -19,26 +19,38 @@ protocol StepTableViewCellDelegate {
 class StepTableViewCell: UITableViewCell {
     
     var stepTableViewCellDelegate: StepTableViewCellDelegate?
-    
     var stepRecipe: PickyCookBook.Recipe_Step? { didSet { updateUI()}}
     
+    @IBOutlet var timerGoButton: UIButton!
     @IBOutlet var stepLabel: UILabel!
     @IBOutlet var descriptionLabel: UILabel!
     @IBOutlet var img_step: UIImageView!
-//    @IBOutlet var timerLabel: UILabel!
-//    @IBAction func timerViewControllerGo(_ sender: UIButton){
-//        let stroyboard = UIStoryboard()
-//        let view = UIViewController()
-//        guard let nextViewcontroller = stroyboard.instantiateViewController(withIdentifier: "TIMER") as? TimerViewController else { return }
-//        nextViewcontroller.seconds = (stepRecipe?.timer)!
-//        view.present(nextViewcontroller, animated: true, completion: nil)
-//    }
+    
+    
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        if stepRecipe?.is_timer == false {
+            timerGoButton.isHidden = true
+        }
+    }
     var seconds: Int = 0
     var timer = Timer()
     
     var isTimerRunning = false
     var resumeTapped = false
     
+    func autoauto() {
+        // 레시피 이미지 받아오기
+        // 우선 오토레이아웃부터 설정해야함
+        // 2017.9.27
+        
+        let width = (img_step.image?.size.width)! / img_step.frame.size.width
+        let height = (img_step.image?.size.height)! / img_step.frame.size.height
+        let ratio = width / height
+        
+        
+    }
 
     
     @IBAction func timerGo(_ sender: UIButton) {

@@ -6,9 +6,6 @@ target 'PickyCookBook' do
   use_frameworks!
   pod 'Alamofire', '~> 4.5'
   pod 'SwiftyJSON' 
-  pod 'FBSDKCoreKit'
-  pod 'FBSDKShareKit'
-  pod 'FBSDKLoginKit'
   pod 'Toaster'
   pod 'SnapKit', '~> 3.2.0'
 

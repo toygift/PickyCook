@@ -14,9 +14,13 @@ import Toaster
 class MyPageTableViewController: UITableViewController {
     let tokenValue = TokenAuth()
     
+    @IBOutlet var abc: UITableView!
+    
     @IBOutlet var img_profile: UIImageView!
     @IBOutlet var email: UILabel!
+    @IBOutlet var profile: UIView!
     
+    @IBOutlet weak var aaa: UIStackView!
     
     @IBAction func mycreateRecipe(_ sender: UIButton) {
         print("1")
@@ -42,6 +46,7 @@ class MyPageTableViewController: UITableViewController {
             DataTelecom.shared.user = nil
             self.img_profile.image = nil
             self.email.text = nil
+            
             self.tabBarController?.selectedIndex = 0
             print(DataTelecom.shared.user ?? "데이터 없음!")
         }))
@@ -58,6 +63,7 @@ class MyPageTableViewController: UITableViewController {
         alertController.addAction(UIAlertAction(title: "확인", style: .destructive, handler: { (_) in
             self.userWithDrawal()
             DataTelecom.shared.user = nil
+            BookMarkViewController.shared.recipe_bookmark = []
             self.tabBarController?.selectedIndex = 0
             
             print(DataTelecom.shared.user ?? "데이터 없음!")
@@ -98,14 +104,18 @@ class MyPageTableViewController: UITableViewController {
                 task.resume()
             }
         }
-        
+//        tableView.reloadData()
        
     }
-
+    override func viewWillAppear(_ animated: Bool) {
+        
+    }
     override func viewDidAppear(_ animated: Bool) {
+        
         self.email.text = DataTelecom.shared.user?.email
         //        let back = UIImage(named: "no_image.jpg")
         //        self.img_profile.setImage(back?.withRenderingMode(.alwaysOriginal), for: .normal)
+        print("마이페이지 뷰디드어피어")
         DispatchQueue.global().async {
             guard let path = DataTelecom.shared.user?.img_profile else { return }
             if let imageURL = URL(string: path) {
@@ -116,8 +126,21 @@ class MyPageTableViewController: UITableViewController {
                     }
                 })
                 task.resume()
+                print("task.resume()")
             }
         }
+        profile.setNeedsLayout()
+        profile.setNeedsDisplay()
+        
+    
+    }
+    override func viewDidLayoutSubviews() {
+        print("viewDidLayoutSubviews")
+        
+    }
+    override func viewWillLayoutSubviews() {
+        print("viewWillLayoutSubviews")
+        
     }
     // MARK: - Table view data source
 
@@ -196,7 +219,7 @@ extension MyPageTableViewController {
                 tokenValue.delete(serviceName, account: "userpk")
                 tokenValue.delete(serviceName, account: "id")
                 tokenValue.delete(serviceName, account: "password")
-                print(tokenValue.load(serviceName, account: "accessToken") ?? "ㅜno data")
+                print(tokenValue.load(serviceName, account: "accessToken") ?? "no data")
             case .failure(let error):
                 print(error)
                 UIApplication.shared.isNetworkActivityIndicatorVisible = false

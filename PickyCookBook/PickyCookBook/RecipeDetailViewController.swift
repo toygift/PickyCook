@@ -35,7 +35,8 @@ class RecipeDetailViewController: UIViewController, UITableViewDelegate, UITable
     func timerSetModal(timer: Int) {
         guard let nextViewController = storyboard?.instantiateViewController(withIdentifier: "TIMER") as? TimerViewController else { return }
         nextViewController.seconds = timer
-        self.present(nextViewController, animated: true, completion: nil)
+        nextViewController.modalPresentationStyle = .overCurrentContext
+        self.present(nextViewController, animated: false, completion: nil)
         
     }
     

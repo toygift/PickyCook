@@ -28,6 +28,11 @@ class RecipeStepTableViewController: UITableViewController, UITextFieldDelegate,
     @IBAction func is_timerOn(_ sender: UISwitch) {
         is_timer = sender.isOn
         print(is_timer)
+        if is_timer == false {
+            timer.isHidden = true
+        } else {
+            timer.isHidden = false
+        }
     }
     @IBOutlet var img_recipe: UIImageView!
     @IBAction func recipeStepComplete(_ sender: UIButton) {

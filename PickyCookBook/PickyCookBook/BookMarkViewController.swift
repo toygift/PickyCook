@@ -12,7 +12,9 @@ import SwiftyJSON
 
 
 class BookMarkViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
-
+    
+    static let shared: BookMarkViewController = BookMarkViewController()
+    
     lazy var refreshControl = UIRefreshControl()
     var recipe_bookmark: [Recipe_Bookmark] = []
     let tokenValue = TokenAuth()

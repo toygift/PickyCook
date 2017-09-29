@@ -10,21 +10,20 @@ import UIKit
 import Alamofire
 import SwiftyJSON
 import Toaster
-import FBSDKLoginKit
-import FBSDKCoreKit
+//import FBSDKLoginKit
+//import FBSDKCoreKit
 import LocalAuthentication
 
 
 // MARK: 로그인관련 프로토콜
 //
 //
-@objc
 protocol SignInViewControllerDelegate: class {
     func signInDidDismiss(signIn: SignInViewController)
     func signInCompleteDismiss(signIn: SignInViewController)
 }
 
-class SignInViewController: UIViewController, UITextFieldDelegate, UINavigationControllerDelegate, FBSDKLoginButtonDelegate {
+class SignInViewController: UIViewController, UITextFieldDelegate, UINavigationControllerDelegate/*, FBSDKLoginButtonDelegate*/ {
 
     weak var signIndelegate: SignInViewControllerDelegate?
     
@@ -33,6 +32,8 @@ class SignInViewController: UIViewController, UITextFieldDelegate, UINavigationC
     
     // MARK: OUTLET 및 Properties
     // 
+    @IBOutlet var popUpView: UIView!
+    @IBOutlet var signInPopUp: NSLayoutConstraint!
     @IBOutlet var emailTextField: UITextField!
     @IBOutlet var passwordTextField: UITextField!
     @IBOutlet var buttonSignIn: UIButton!
@@ -90,43 +91,43 @@ class SignInViewController: UIViewController, UITextFieldDelegate, UINavigationC
     //
     @IBAction func signInFacebook(_ sender: UIButton){
         
-        sender.addTarget(self, action: #selector(handleCostomFBlogin), for: .touchUpInside)
-        UIApplication.shared.isNetworkActivityIndicatorVisible = true
+//        sender.addTarget(self, action: #selector(handleCostomFBlogin), for: .touchUpInside)
+//        UIApplication.shared.isNetworkActivityIndicatorVisible = true
     }
-    func handleCostomFBlogin() {
-        FBSDKLoginManager().logIn(withReadPermissions: ["email", "public_profile"], from: self) { (result, err) in
-            if err != nil {
-                print(11)
-                return
-            }
-            
-            let accessToken = FBSDKAccessToken.current()
-            
-            guard let accessTokenString = accessToken?.tokenString else { return }
-            print("페이스북토큰:   ",accessTokenString)
-            self.faceBookSignin(token: accessTokenString)
-        }
-    }
-    func loginButtonDidLogOut(_ loginButton: FBSDKLoginButton!) {
-        print("did log out facebook")
-    }
-    
-    // MARK: Facebook login get Token
-    //
-    func loginButton(_ loginButton: FBSDKLoginButton!, didCompleteWith result: FBSDKLoginManagerLoginResult!, error: Error!) {
-        
-        if error != nil {
-            print(error)
-            return
-        }
-        FBSDKGraphRequest(graphPath: "/me", parameters: ["fields":"id, name, email"]).start { (connection, result, err) in
-            if err != nil {
-                return 
-            }
-            print(result ?? "dd")
-        }
-        
-    }
+//    func handleCostomFBlogin() {
+//        FBSDKLoginManager().logIn(withReadPermissions: ["email", "public_profile"], from: self) { (result, err) in
+//            if err != nil {
+//                print(11)
+//                return
+//            }
+//
+//            let accessToken = FBSDKAccessToken.current()
+//
+//            guard let accessTokenString = accessToken?.tokenString else { return }
+//            print("페이스북토큰:   ",accessTokenString)
+//            self.faceBookSignin(token: accessTokenString)
+//        }
+//    }
+//    func loginButtonDidLogOut(_ loginButton: FBSDKLoginButton!) {
+//        print("did log out facebook")
+//    }
+//
+//    // MARK: Facebook login get Token
+//    //
+//    func loginButton(_ loginButton: FBSDKLoginButton!, didCompleteWith result: FBSDKLoginManagerLoginResult!, error: Error!) {
+//
+//        if error != nil {
+//            print(error)
+//            return
+//        }
+//        FBSDKGraphRequest(graphPath: "/me", parameters: ["fields":"id, name, email"]).start { (connection, result, err) in
+//            if err != nil {
+//                return
+//            }
+//            print(result ?? "dd")
+//        }
+//
+//    }
 
         @IBAction func signUpButton(_ sender: UIButton) {
         guard let nextViewController = storyboard?.instantiateViewController(withIdentifier: "SIGNUP") as? SignUpViewController else { return }
@@ -157,14 +158,25 @@ class SignInViewController: UIViewController, UITextFieldDelegate, UINavigationC
     // 라이프사이클 관리
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        signInPopUp.constant = 1000
         emailTextField.delegate = self
         passwordTextField.delegate = self
         emailTextField.becomeFirstResponder()
-        
+        popUpView.layer.cornerRadius = 10
+        buttonSignIn.layer.borderWidth = 1.0
+        buttonSignIn.layer.borderColor = UIColor.black.cgColor
+        cancel.layer.borderWidth = 1.0
+        cancel.layer.borderColor = UIColor.black.cgColor
         //DataTelecom.shared.allRecipeList()
+     
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        signInPopUp.constant = 0
+        UIView.animate(withDuration: 0.2) {
+            self.view.layoutIfNeeded()
+        }
+    }
  
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -241,53 +253,49 @@ extension SignInViewController {
     // MARK: Facebook AlamoFire
     //
     //
-    func faceBookSignin(token: String){
-        //페이스북 토큰도 키체인에 저장해야 하나..?
-        //
-        let parameters: Parameters = ["token":token]
-        let call = Alamofire.request(rootDomain + "/member/facebook-login/", method: .post, parameters: parameters, encoding: JSONEncoding.default)
-        
-        call.responseJSON { (response) in
-            
-            switch response.result {
-            case .success(let value):
-                let json = JSON(value)
-                print(json)
-                print("=================================================================")
-                print("======================    FacebookSignIn    =====================")
-                print("=================================================================")
-                
-//                UserDefaults.standard.set(userToken, forKey: "token")
-//                print("UserDefaults Set Token   :   ", UserDefaults.standard.string(forKey: "token") ?? "데이터없음")
-                let accessToken = json["token"].stringValue
-                let userpk = json["pk"].intValue
-                
-                let tokenValue = TokenAuth()
-                tokenValue.save(serviceName, account: "accessToken", value: accessToken)
-                tokenValue.save(serviceName, account: "userpk", value: "\(userpk)")
-                
-                
-//                UserDefaults.standard.set(userpk, forKey: "userpk")
-//                print("UserDefaults Set UserPK  :   ", UserDefaults.standard.string(forKey: "userpk") ?? "데이터없음")
-//                // UserDefaults 에 토큰 저장
-                
-                
-                guard let nextViewController = self.storyboard?.instantiateViewController(withIdentifier: "TABBAR") as? MainTabBar else { return }
-                self.present(nextViewController, animated: true, completion: {
-                  UIApplication.shared.isNetworkActivityIndicatorVisible = false
-                })
-                    
-                
-            case .failure(let error):
-                Toast(text: "네트워크에러").show()
-                UIApplication.shared.isNetworkActivityIndicatorVisible = false
-                print(error)
-            }
-        }
-    }
+//    func faceBookSignin(token: String){
+//        //페이스북 토큰도 키체인에 저장해야 하나..?
+//        //
+//        let parameters: Parameters = ["token":token]
+//        let call = Alamofire.request(rootDomain + "/member/facebook-login/", method: .post, parameters: parameters, encoding: JSONEncoding.default)
+//
+//        call.responseJSON { (response) in
+//
+//            switch response.result {
+//            case .success(let value):
+//                let json = JSON(value)
+//                print(json)
+//                print("=================================================================")
+//                print("======================    FacebookSignIn    =====================")
+//                print("=================================================================")
+//
+////                UserDefaults.standard.set(userToken, forKey: "token")
+////                print("UserDefaults Set Token   :   ", UserDefaults.standard.string(forKey: "token") ?? "데이터없음")
+//                let accessToken = json["token"].stringValue
+//                let userpk = json["pk"].intValue
+//
+//                let tokenValue = TokenAuth()
+//                tokenValue.save(serviceName, account: "accessToken", value: accessToken)
+//                tokenValue.save(serviceName, account: "userpk", value: "\(userpk)")
+//
+//
+////                UserDefaults.standard.set(userpk, forKey: "userpk")
+////                print("UserDefaults Set UserPK  :   ", UserDefaults.standard.string(forKey: "userpk") ?? "데이터없음")
+////                // UserDefaults 에 토큰 저장
+//
+//
+//                guard let nextViewController = self.storyboard?.instantiateViewController(withIdentifier: "TABBAR") as? MainTabBar else { return }
+//                self.present(nextViewController, animated: true, completion: {
+//                  UIApplication.shared.isNetworkActivityIndicatorVisible = false
+//                })
+//
+//
+//            case .failure(let error):
+//                Toast(text: "네트워크에러").show()
+//                UIApplication.shared.isNetworkActivityIndicatorVisible = false
+//                print(error)
+//            }
+//        }
+//    }
 }
 
-extension SignInViewController {
-    
-   
-}
