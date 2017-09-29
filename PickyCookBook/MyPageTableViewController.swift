@@ -14,13 +14,9 @@ import Toaster
 class MyPageTableViewController: UITableViewController {
     let tokenValue = TokenAuth()
     
-    @IBOutlet var abc: UITableView!
-    
+    // 다음버젼에 추가하기
     @IBOutlet var img_profile: UIImageView!
     @IBOutlet var email: UILabel!
-    @IBOutlet var profile: UIView!
-    
-    @IBOutlet weak var aaa: UIStackView!
     
     @IBAction func mycreateRecipe(_ sender: UIButton) {
         print("1")
@@ -29,7 +25,6 @@ class MyPageTableViewController: UITableViewController {
         //        nextViewController.selects = true
         self.navigationController?.pushViewController(nextViewController, animated: true)
     }
-    
     
     @IBAction func myInfoChange(_ sender: UIButton) {
         print("2")
@@ -44,9 +39,8 @@ class MyPageTableViewController: UITableViewController {
         alertController.addAction(UIAlertAction(title: "확인", style: .destructive, handler: { (_) in
             self.userSignOut()
             DataTelecom.shared.user = nil
-            self.img_profile.image = nil
-            self.email.text = nil
-            
+//            self.img_profile.image = nil
+//            self.email.text = nil
             self.tabBarController?.selectedIndex = 0
             print(DataTelecom.shared.user ?? "데이터 없음!")
         }))
@@ -89,50 +83,47 @@ class MyPageTableViewController: UITableViewController {
         print("===========================viewDidLoad==========================")
         print("================================================================")
      
-        self.email.text = DataTelecom.shared.user?.email
-        //        let back = UIImage(named: "no_image.jpg")
-        //        self.img_profile.setImage(back?.withRenderingMode(.alwaysOriginal), for: .normal)
-        DispatchQueue.global().async {
-            guard let path = DataTelecom.shared.user?.img_profile else { return }
-            if let imageURL = URL(string: path) {
-                let task = URLSession.shared.dataTask(with: imageURL, completionHandler: { (data, response, error) in
-                    guard let putImage = data else { return }
-                    DispatchQueue.main.async {
-                        self.img_profile.image = UIImage(data: putImage)
-                    }
-                })
-                task.resume()
-            }
-        }
-//        tableView.reloadData()
-       
+//        self.email.text = DataTelecom.shared.user?.email
+//        //        let back = UIImage(named: "no_image.jpg")
+//        //        self.img_profile.setImage(back?.withRenderingMode(.alwaysOriginal), for: .normal)
+//        DispatchQueue.global().async {
+//            guard let path = DataTelecom.shared.user?.img_profile else { return }
+//            if let imageURL = URL(string: path) {
+//                let task = URLSession.shared.dataTask(with: imageURL, completionHandler: { (data, response, error) in
+//                    guard let putImage = data else { return }
+//                    DispatchQueue.main.async {
+//                        self.img_profile.image = UIImage(data: putImage)
+//                    }
+//                })
+//                task.resume()
+//            }
+//        }
     }
     override func viewWillAppear(_ animated: Bool) {
         
     }
     override func viewDidAppear(_ animated: Bool) {
         
-        self.email.text = DataTelecom.shared.user?.email
-        //        let back = UIImage(named: "no_image.jpg")
-        //        self.img_profile.setImage(back?.withRenderingMode(.alwaysOriginal), for: .normal)
-        print("마이페이지 뷰디드어피어")
-        DispatchQueue.global().async {
-            guard let path = DataTelecom.shared.user?.img_profile else { return }
-            if let imageURL = URL(string: path) {
-                let task = URLSession.shared.dataTask(with: imageURL, completionHandler: { (data, response, error) in
-                    guard let putImage = data else { return }
-                    DispatchQueue.main.async {
-                        self.img_profile.image = UIImage(data: putImage)
-                    }
-                })
-                task.resume()
-                print("task.resume()")
-            }
-        }
-        profile.setNeedsLayout()
-        profile.setNeedsDisplay()
-        
-    
+//        self.email.text = DataTelecom.shared.user?.email
+//        //        let back = UIImage(named: "no_image.jpg")
+//        //        self.img_profile.setImage(back?.withRenderingMode(.alwaysOriginal), for: .normal)
+//        print("마이페이지 뷰디드어피어")
+//        DispatchQueue.global().async {
+//            guard let path = DataTelecom.shared.user?.img_profile else { return }
+//            if let imageURL = URL(string: path) {
+//                let task = URLSession.shared.dataTask(with: imageURL, completionHandler: { (data, response, error) in
+//                    guard let putImage = data else { return }
+//                    DispatchQueue.main.async {
+//                        self.img_profile.image = UIImage(data: putImage)
+//                    }
+//                })
+//                task.resume()
+//                print("task.resume()")
+//            }
+//        }
+//        tableView.reloadData()
+//        
+//    
     }
     override func viewDidLayoutSubviews() {
         print("viewDidLayoutSubviews")
@@ -158,19 +149,15 @@ class MyPageTableViewController: UITableViewController {
         default:
             return 1
         }
-        
-        
     }
 }
 extension MyPageTableViewController {
-    
     
     func userWithDrawal(){
         //        guard let token = UserDefaults.standard.string(forKey: "token") else { return }
         //        let userpk = UserDefaults.standard.object(forKey: "userpk") as! Int
         //        let headers: HTTPHeaders = ["Authorization":"token \(token)"]
-        
-        
+     
         let tokenValue = TokenAuth()
         guard let headers: HTTPHeaders = tokenValue.getAuthHeaders() else { return }
         guard let userpk = Int(tokenValue.load(serviceName, account: "userpk")!) else { return }

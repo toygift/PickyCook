@@ -11,7 +11,7 @@ import SwiftyJSON
 import Toaster
 
 class RecipeCreateTableViewController: UITableViewController, UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate{
-
+    
     let imagePicker: UIImagePickerController = UIImagePickerController()
     var flagImageSave = false
     var captureImage: UIImage!
@@ -66,11 +66,20 @@ class RecipeCreateTableViewController: UITableViewController, UITextFieldDelegat
         let gesture = UITapGestureRecognizer(target: self, action: #selector(tappedProfile(_:)))
         self.img_recipe.addGestureRecognizer(gesture)
         
+        let tap = UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
+        self.view.addGestureRecognizer(tap)
+        
         titleTextField.delegate = self
         descriptionTextField.delegate = self
         ingredientTextField.delegate = self
         tagTextField.delegate = self
         self.img_recipe.image = UIImage(named: "ss.jpg")
+    }
+    @objc func handleTap(_ recognizer: UITapGestureRecognizer) {
+        titleTextField.resignFirstResponder()
+        descriptionTextField.resignFirstResponder()
+        ingredientTextField.resignFirstResponder()
+        tagTextField.resignFirstResponder()
     }
     @objc func tappedProfile(_ sender: Any){
         
@@ -84,12 +93,12 @@ class RecipeCreateTableViewController: UITableViewController, UITextFieldDelegat
         alertController.addAction(UIAlertAction(title: "취소", style: .cancel, handler: nil))
         self.present(alertController, animated: true, completion: nil)
     }
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        titleTextField.resignFirstResponder()
-        descriptionTextField.resignFirstResponder()
-        ingredientTextField.resignFirstResponder()
-        tagTextField.resignFirstResponder()
-    }
+//    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+//        titleTextField.resignFirstResponder()
+//        descriptionTextField.resignFirstResponder()
+//        ingredientTextField.resignFirstResponder()
+//        tagTextField.resignFirstResponder()
+//    }
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         if(textField.isEqual(self.titleTextField)) {
             self.descriptionTextField.becomeFirstResponder()
@@ -98,19 +107,20 @@ class RecipeCreateTableViewController: UITableViewController, UITextFieldDelegat
         } else if(textField.isEqual(self.ingredientTextField)){
             self.tagTextField.becomeFirstResponder()
         } else if (textField.isEqual(self.tagTextField)) {
+            self.tagTextField.resignFirstResponder()
             self.view.endEditing(true)
         }
         
         return true
     }
-
+    
     // MARK: - Table view data source
-
+    
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
         return 3
     }
-
+    
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
         switch section {
@@ -176,15 +186,14 @@ extension RecipeCreateTableViewController {
                             print("피케이값을 알려줘라",recipepk)
                             
                             print("JSON                   :", value)
-                            guard let nextViewController = self.storyboard?.instantiateViewController(withIdentifier: "RECIPESTEPS") as? RecipeStepTableViewController else { return
-                            }
+                            guard let nextViewController = self.storyboard?.instantiateViewController(withIdentifier: "RECIPESTEPS") as? RecipeStepTableViewController else { return }
                             nextViewController.recipepk_r = recipepk
                             guard let nextViewControllers = self.storyboard?.instantiateViewController(withIdentifier: "HOME") as? HomeViewController else { return }
                             nextViewControllers.select = true
                             //nextViewControllers.mycreateRecipe()
                             self.navigationController?.pushViewController(nextViewController, animated: true)
                             self.captureImage = nil
-//                            self.present(nextViewController, animated: true, completion: nil)
+                            //                            self.present(nextViewController, animated: true, completion: nil)
                         }
                         UIApplication.shared.isNetworkActivityIndicatorVisible = false
                     case .failure(let error):

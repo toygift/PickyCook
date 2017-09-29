@@ -13,6 +13,7 @@ class MainTabBar: UITabBarController, UITabBarControllerDelegate, SignInViewCont
     
     var tabBarIndexofItem: Int?
     let tokenValue = TokenAuth()
+
     // MARK : SignInViewControllerDelegate
     //
     //
@@ -30,7 +31,7 @@ class MainTabBar: UITabBarController, UITabBarControllerDelegate, SignInViewCont
             
             UIApplication.shared.isNetworkActivityIndicatorVisible = false
             signIn.dismiss(animated: true, completion: {
-                DataTelecom.shared.myPageUserData()
+                DataTelecom.shared.myPageUserData()                
                 self.tabBarController?.selectedIndex = self.tabBarIndexofItem!
             })
         }

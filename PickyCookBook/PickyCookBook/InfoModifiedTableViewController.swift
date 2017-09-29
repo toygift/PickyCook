@@ -57,14 +57,14 @@ class InfoModifiedTableViewController: UITableViewController, UITextFieldDelegat
         }
         return true
     }
-    
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        modifyNickname.resignFirstResponder()
-        modifyContent.resignFirstResponder()
-        oldPassword.resignFirstResponder()
-        newModifyPassword.resignFirstResponder()
-        newModifyPasswordConfirm.resignFirstResponder()
-    }
+//
+//    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+//        modifyNickname.resignFirstResponder()
+//        modifyContent.resignFirstResponder()
+//        oldPassword.resignFirstResponder()
+//        newModifyPassword.resignFirstResponder()
+//        newModifyPasswordConfirm.resignFirstResponder()
+//    }
     
     
     override func viewDidLoad() {
@@ -105,9 +105,19 @@ class InfoModifiedTableViewController: UITableViewController, UITextFieldDelegat
         oldPassword.delegate = self
         newModifyPassword.delegate = self
         newModifyPasswordConfirm.delegate = self
-        
+        let tap = UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
+        self.view.addGestureRecognizer(tap)
         
     }
+    
+    @objc func handleTap(_ recognizer: UITapGestureRecognizer) {
+        modifyNickname.resignFirstResponder()
+        modifyContent.resignFirstResponder()
+        oldPassword.resignFirstResponder()
+        newModifyPassword.resignFirstResponder()
+        newModifyPasswordConfirm.resignFirstResponder()
+    }
+    
     @objc func tappedProfile(_ sender: Any){
         
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)

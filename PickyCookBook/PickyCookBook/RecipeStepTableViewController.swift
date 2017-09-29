@@ -14,7 +14,6 @@ import MobileCoreServices
 
 class RecipeStepTableViewController: UITableViewController, UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
 
-    
     var recipepk_r: Int!
     let imagePicker: UIImagePickerController = UIImagePickerController()
     var flagImageSave = false
@@ -23,21 +22,20 @@ class RecipeStepTableViewController: UITableViewController, UITextFieldDelegate,
     var is_timer = true
     
     
+    @IBOutlet var timerSwitch: UISwitch!
     @IBOutlet var descriptionTextField: UITextField!
     @IBOutlet var timer: UITextField!
+    
     @IBAction func is_timerOn(_ sender: UISwitch) {
         is_timer = sender.isOn
-        print(is_timer)
-        if is_timer == false {
-            timer.isHidden = true
-        } else {
+        if is_timer == true {
             timer.isHidden = false
+        } else {
+            timer.isHidden = true
         }
     }
     @IBOutlet var img_recipe: UIImageView!
     @IBAction func recipeStepComplete(_ sender: UIButton) {
-        print("눌려라 오바오바오바")
-        
         upDateStep()
     }
     
@@ -58,21 +56,80 @@ class RecipeStepTableViewController: UITableViewController, UITextFieldDelegate,
         
     }
     func upDateStep() {
-        if descriptionTextField.text == "" {
-            Toast(text: "설명을 입력해주세요").show()
-        } else if timer.text == "" {
-            Toast(text: "시간을 입력해주세요").show()
-        } else if is_timer {
-            Toast(text: "타이머 유/무 선택해주세요").show()
-        } else if captureImage == nil {
-            Toast(text: "이미지를 선택해주세요").show()
+        
+        if is_timer == true {
+            if descriptionTextField.text == "" {
+                Toast(text: "설명을 입력해주세요").show()
+            } else if timer.text == "" {
+                Toast(text: "시간을 입력해주세요").show()
+            } else if captureImage == nil {
+                self.captureImage = UIImage(named: "ss.jpg")
+            } else {
+                let timer = Int(self.timer.text!)
+                recipeStepCreate(recipepk: recipepk_r, description: descriptionTextField.text!, is_timer: is_timer, timer: timer!, img_step: self.captureImage)
+            }
+        } else if is_timer == false {
+            if descriptionTextField.text == "" {
+                Toast(text: "설명을 입력해주세요").show()
+            } else if captureImage == nil {
+                self.captureImage = UIImage(named: "ss.jpg")
+            } else {
+                recipeStepCreate(recipepk: recipepk_r, description: descriptionTextField.text!, is_timer: is_timer, timer: 0, img_step: self.captureImage)
+            }
         }
-        guard let desc = descriptionTextField.text else { return }
-        guard let timer = Int(timer.text!) else { return }
-        guard let recipepk = recipepk_r else { return }
-        //        guard let  is_timer = is_timer else { return }
-        guard let image = captureImage else { return }
-        recipeStepCreate(recipepk: recipepk, description: desc, is_timer: is_timer, timer: timer, img_step: image)
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        //        if descriptionTextField.text == "" {
+        //            Toast(text: "설명을 입력해주세요").show()
+        //        } else if is_timer == true {
+        //            if self.timer.text == "" {
+        //                Toast(text: "시간을 입력해주세요").show()
+        //            }
+        //        } else if captureImage == nil {
+        //            self.captureImage = UIImage(named: "ss.jpg")
+        //        }
+        //
+        //        guard let recipepk = recipepk_r else { return }
+        //        guard let desc = descriptionTextField.text else { return }
+        //        let timer = Int(self.timer.text!)
+        //        let image = captureImage
+        //        recipeStepCreate(recipepk: recipepk, description: desc, is_timer: self.is_timer, timer: timer!, img_step: image!)
+        //
+        
+//        if descriptionTextField.text == "" {
+//            Toast(text: "설명을 입력해주세요").show()
+//        } else if captureImage == nil {
+//            Toast(text: "이미지를 선택해주세요").show()
+//        }
+//
+//
+//
+//        //        guard let is_timer = timerSwitch.isOn else { return }
+//        guard let image = captureImage else { return }
+//
+//
+//        if is_timer == true {
+//            if self.timer.text == "" {
+//                Toast(text: "시간을 입력해주세요").show()
+//            }
+//            recipeStepCreate(recipepk: recipepk, description: desc, is_timer: is_timer, timer: timer!, img_step: image)
+//        } else {
+//
+//            recipeStepCreate(recipepk: recipepk, description: desc, is_timer: is_timer, timer: 0, img_step: image)
+//        }
+        
+        
+        
+//        recipeStepCreate(recipepk: recipepk, description: desc, is_timer: timerSwitch.isOn, timer: timer, img_step: image)
     }
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -86,15 +143,23 @@ class RecipeStepTableViewController: UITableViewController, UITextFieldDelegate,
         } else {
             
         }
-        descriptionTextField.delegate = self
-        timer.delegate = self
         let gesture = UITapGestureRecognizer(target: self, action: #selector(tappedProfile(_:)))
         self.img_recipe.addGestureRecognizer(gesture)
+        
+        let tap = UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
+        self.view.addGestureRecognizer(tap)
+        
+        descriptionTextField.delegate = self
+        timer.delegate = self
     }
     override func viewWillAppear(_ animated: Bool) {
-        print("뷰윌어피어어어어어")
-//        let gesture = UITapGestureRecognizer(target: self, action: #selector(tappedProfile(_:)))
-//        self.img_recipe.addGestureRecognizer(gesture)
+
+    }
+    @objc func handleTap(_ recognizer: UITapGestureRecognizer) {
+        descriptionTextField.resignFirstResponder()
+        timer.resignFirstResponder()
+        timerSwitch.resignFirstResponder()
+        img_recipe.resignFirstResponder()
     }
     @objc func tappedProfile(_ sender: Any){
         
@@ -108,14 +173,21 @@ class RecipeStepTableViewController: UITableViewController, UITextFieldDelegate,
         alertController.addAction(UIAlertAction(title: "취소", style: .cancel, handler: nil))
         self.present(alertController, animated: true, completion: nil)
     }
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        descriptionTextField.resignFirstResponder()
-        timer.resignFirstResponder()
-    }
+//    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+//        descriptionTextField.resignFirstResponder()
+//        timer.resignFirstResponder()
+//        timerSwitch.resignFirstResponder()
+//        img_recipe.resignFirstResponder()
+//
+//    }
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         if(textField.isEqual(self.descriptionTextField)) {
+            self.timerSwitch.becomeFirstResponder()
+        }else if (UISwitch.isEqual(self.timerSwitch))  {
             self.timer.becomeFirstResponder()
-        }else if (textField.isEqual(self.timer))  {
+        }else if(textField.isEqual(self.timer)) {
+            self.img_recipe.becomeFirstResponder()
+        }else if(UIImageView.isEqual(self.img_recipe)) {
             self.view.endEditing(true)
         }
         
@@ -135,9 +207,7 @@ class RecipeStepTableViewController: UITableViewController, UITextFieldDelegate,
         default:
             return 1
         }
-        
     }
-
 }
 extension RecipeStepTableViewController {
     func recipeStepCreate(recipepk: Int, description: String, is_timer: Bool, timer: Int, img_step: UIImage){
